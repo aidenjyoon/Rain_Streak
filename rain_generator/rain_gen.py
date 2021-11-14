@@ -151,65 +151,64 @@ def add_rain(image, slant=0, drop_length=15, drop_width=1, drop_color=(c,c,c), r
     rain_streak_img = rain_streak_img1 + rain_streak_img2
     return rain_streak_img
 
+if __name__ == '__main__':
+    args = parse_args()
 
+    images_dataset = glob.glob(f'./{args.gt}/*.{args.data_type}')
 
-images_dataset = glob.glob(f'./{args.gt}/*.{args.data_type}')
+    lower_range = args.rain_lower_range
+    upper_range = args.rain_upper_range
+    increment = args.rain_increment
+    img_n = args.rain_image_count
 
-lower_range = args.rain_lower_range
-upper_range = args.rain_upper_range
-increment = args.rain_increment
-img_n = args.rain_image_count
+    rain_types = (upper_range - lower_range) // increment + 1
 
-rain_types = (upper_range - lower_range) // increment + 1
+    # TRAIN
+    for idx, image in enumerate(images_dataset[:int(len(images_dataset) * 0.6 )]):
+        img = cv2.imread(f"{image}")
+        
+        slant = args.slant
+        drop_length = args.drop_length
+        drop_width = args.drop_width
+        drop_color = (args.c, args.c, args.c)
+        
+        # 3 rain types
+        # 100 per type = 500 rainy images per clean image
+        for rain_count in range(lower_range, upper_range+1, increment):
+            for i in range(img_n):
+                rainy_img = add_rain(img, slant, drop_length, drop_width, drop_color, rain_count)
+                cv2.imwrite(f'train/img_n{idx}_rc{rain_count}_{i}.jpg',  img + rainy_img)
 
+    # VALIDATION
+    for idx, image in enumerate(images_dataset[int(len(images_dataset) * 0.6) : int(len(images_dataset) * 0.8)]):
+        img = cv2.imread(f"{image}")
+        idx += img_n * (int(len(images_dataset) * 0.6) * rain_types # for naming sake
 
+        slant = args.slant
+        drop_length = args.drop_length
+        drop_width = args.drop_width
+        drop_color = (args.c, args.c, args.c)
+        
+        # 3 rain types
+        # 100 per type = 500 rainy images per clean image
+        for rain_count in range(lower_range, upper_range+1, increment):
+            for i in range(img_n):
+                rainy_img = add_rain(img, slant, drop_length, drop_width, drop_color, rain_count)
+                cv2.imwrite(f'validation/img_n{idx}_rc{rain_count}_{i}.jpg', img + rainy_img)
 
- # TRAIN
-for idx, image in enumerate(images_dataset[:int(len(images_dataset) * 0.6 )]):
-    img = cv2.imread(f"{image}")
-    
-    slant = args.slant
-    drop_length = args.drop_length
-    drop_width = args.drop_width
-    drop_color = (args.c, args.c, args.c)
-    
-    # 3 rain types
-    # 100 per type = 500 rainy images per clean image
-    for rain_count in range(lower_range, upper_range+1, increment):
-        for i in range(img_n):
-            rainy_img = add_rain(img, slant, drop_length, drop_width, drop_color, rain_count)
-            cv2.imwrite(f'train/img_n{idx}_rc{rain_count}_{i}.jpg',  img + rainy_img)
+    # TEST
+    for idx, image in enumerate(images_dataset[int(len(images_dataset) * 0.8): ]):
+        img = cv2.imread(f"{image}")
+        idx = img_n * (int(len(images_dataset) * 0.8)) * rain_types # for naming sake
 
-# VALIDATION
-for idx, image in enumerate(images_dataset[int(len(images_dataset) * 0.6) : int(len(images_dataset) * 0.8)]):
-    img = cv2.imread(f"{image}")
-    idx += img_n * (int(len(images_dataset) * 0.6) * rain_types # for naming sake
-
-    slant = args.slant
-    drop_length = args.drop_length
-    drop_width = args.drop_width
-    drop_color = (args.c, args.c, args.c)
-    
-    # 3 rain types
-    # 100 per type = 500 rainy images per clean image
-    for rain_count in range(lower_range, upper_range+1, increment):
-        for i in range(img_n):
-            rainy_img = add_rain(img, slant, drop_length, drop_width, drop_color, rain_count)
-            cv2.imwrite(f'validation/img_n{idx}_rc{rain_count}_{i}.jpg', img + rainy_img)
-
-# TEST
-for idx, image in enumerate(images_dataset[int(len(images_dataset) * 0.8): ]):
-    img = cv2.imread(f"{image}")
-    idx = img_n * (int(len(images_dataset) * 0.8)) * rain_types # for naming sake
-
-    slant = args.slant
-    drop_length = args.drop_length
-    drop_width = args.drop_width
-    drop_color = (args.c, args.c, args.c)
-    
-    # 3 rain types
-    # 100 per type = 500 rainy images per clean image
-    for rain_count in range(lower_range, upper_range+1, increment):
-        for i in range(img_n):
-            rainy_img = add_rain(img, slant, drop_length, drop_width, drop_color, rain_count)
-            cv2.imwrite(f'test/img_n{idx}_rc{rain_count}_{i}.jpg', img + rainy_img)
+        slant = args.slant
+        drop_length = args.drop_length
+        drop_width = args.drop_width
+        drop_color = (args.c, args.c, args.c)
+        
+        # 3 rain types
+        # 100 per type = 500 rainy images per clean image
+        for rain_count in range(lower_range, upper_range+1, increment):
+            for i in range(img_n):
+                rainy_img = add_rain(img, slant, drop_length, drop_width, drop_color, rain_count)
+                cv2.imwrite(f'test/img_n{idx}_rc{rain_count}_{i}.jpg', img + rainy_img)
