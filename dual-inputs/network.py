@@ -128,7 +128,7 @@ class UnetSkipConnectionBlock(nn.Module):
                  use_dropout=False,
                  outermost_input_nc=-1):
     
-        super(UnetGenerator, self).__init__()
+        super(UnetSkipConnectionBlock, self).__init__()
         self.outermost = outermost
         
         ### downsampling ###

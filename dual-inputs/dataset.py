@@ -25,6 +25,7 @@ class rain_dataset(Dataset):
             self.ids = sorted(os.listdir(os.path.join(root,"fake")))
         
     def __getitem__(self, index):
+        print("THIS IS THE INDEX", index)
         img = self.ids[index]
         if self.real:
             input = Image.open(os.path.join(self.root, img)).conver('RGB')
@@ -47,3 +48,36 @@ class rain_dataset(Dataset):
             
     def __len__(self):
         return len(self.ids)
+    
+    
+    
+# import torch
+# import torch.nn as nn
+# import torch.nn.parallel
+# import torch.backends.cudnn as cudnn
+# import torch.optim as optim
+# import torch.utils.data
+# import torchvision.datasets as dset
+# import torchvision.transforms as transforms
+# import torchvision.utils as vutils
+# from torch.autograd import Variable
+# transform = transforms.Compose([
+#     # transforms.Scale(opt.imageSize),
+#     # transforms.CenterCrop(opt.imageSize),
+#     transforms.ToTensor(),
+#     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+# ])
+# dataset = rain_dataset("img",
+#                        transform = transform,
+#                        target_transform=transform,
+#                        rain_transform=transform,
+#                        real=0)
+
+# dataloader = torch.utils.data.DataLoader(
+#     dataset,
+#     batch_size=1,
+#     shuffle=False,
+#     num_workers=int(1)
+# )
+# for i, data in enumerate(dataloader, 1):
+#     print(data)

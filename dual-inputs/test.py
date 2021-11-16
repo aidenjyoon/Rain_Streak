@@ -17,7 +17,6 @@ from math import log10
 from PIL import Image
 
 from dataset import rain_dataset
-from vutil import save_image
 import network
 
 parser = argparse.ArgumentParser()
@@ -32,7 +31,7 @@ parser.add_argument(
     default='cascade_unet',
     help='selects model to use for netG')
 parser.add_argument(
-    '--ns', type=str, default='5', help='number of blocks for each module')
+    '--ns', type=str, default='5,5,5', help='number of blocks for each module')
 parser.add_argument(
     '--netG', default='', help="path to netG (to continue training)")
 parser.add_argument(
@@ -94,3 +93,29 @@ dataset = rain_dataset(
     real=opt.real
 )
 assert dataset
+
+dataloader = torch.utils.data.DataLoader(
+    dataset,
+    batch_size=opt.batchSize,
+    shuffle=False,
+    num_workers=int(opt.workers)
+)
+
+input = torch.FloatTensor(opt.batchSize, 3, opt.imageSize, opt.imageSize)
+input = input.cuda()
+netG.cuda()
+netG.eval()
+
+criterion = nn.MSELoss()
+criterion.cuda()
+
+for i, data in enumerate(dataloader, 1):
+    if opt.reaL:
+        input_cpu = data
+        category = 'real'
+    else:
+        input_cpu, target_B, target_R = data
+        category = 'test'
+    
+    input.resize_
+    print(data)
