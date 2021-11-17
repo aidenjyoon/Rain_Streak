@@ -110,7 +110,7 @@ criterion = nn.MSELoss()
 criterion.cuda()
 
 for i, data in enumerate(dataloader, 1):
-    if opt.reaL:
+    if opt.real:
         input_cpu = data
         category = 'real'
     else:
