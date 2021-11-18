@@ -119,3 +119,4 @@ for i, data in enumerate(dataloader, 1):
     
     input.resize_
     print(data)
+    print(data.shape)
