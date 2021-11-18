@@ -6,6 +6,58 @@ import numpy as np
 import torch.nn.functional as F
 from torch.nn import init
 
+
+#######################################
+### Network ###
+#######################################
+def get_norm_layer(norm_type):
+    if norm_type == 'batch':
+        norm_layer = functools.partial(nn.BatchNorm2d, affine=True)
+    elif norm_type == 'instance':
+        norm_layer = functools.partial(nn.InstanceNorm2d, affine=False)
+    else:
+        print('normalization layer [%s] is not found' % norm_type)
+    return norm_layer
+
+def define_G(input_nc,
+             output_nc,
+             ngf,
+             netG_model,
+             ns,
+             norm='batch',
+             use_dropout=False,
+             gpu_ids=[],
+             iteration=0,
+             padding_type='zero',
+             upsample_type='transpose',
+             init_type='normal'):
+    
+    use_gpu = len(gpu_ids) > 0
+    if use_gpu:
+        assert (torch.cuda.is_available())
+    
+    norm_layer = get_norm_layer(norm_type=norm)
+
+    if netG_model == 'cascade_unet':
+        netG = Generator_cascade(
+            input_nc,
+            output_nc,
+            'unet',
+            ns,
+            ngf,
+            norm_layer=norm_layer,
+            use_dropout=use_dropout,
+            gpu_ids=gpu_ids,
+            iteration=iteration
+        )
+    else:
+        raise Exception(f'Model name {netG_model} is not recognized')    
+    
+    if len(gpu_ids) > 0:
+        netG.cuda(device=gpu_ids[0])
+        
+    return netG
+        
 #######################################
 ### Layers ###
 #######################################
@@ -214,54 +266,3 @@ class UnetSkipConnectionBlock(nn.Module):
         else:
             return torch.cat([x1, x], 1)
     
-#######################################
-### Network ###
-#######################################
-def get_norm_layer(norm_type):
-    if norm_type == 'batch':
-        norm_layer = functools.partial(nn.BatchNorm2d, affine=True)
-    elif norm_type == 'instance':
-        norm_layer = functools.partial(nn.InstanceNorm2d, affine=False)
-    else:
-        print('normalization layer [%s] is not found' % norm_type)
-    return norm_layer
-
-def define_G(input_nc,
-             output_nc,
-             ngf,
-             netG_model,
-             ns,
-             norm='batch',
-             use_dropout=False,
-             gpu_ids=[],
-             iteration=0,
-             padding_type='zero',
-             upsample_type='transpose',
-             init_type='normal'):
-    
-    use_gpu = len(gpu_ids) > 0
-    if use_gpu:
-        assert (torch.cuda.is_available())
-    
-    norm_layer = get_norm_layer(norm_type=norm)
-
-    if netG_model == 'cascade_unet':
-        netG = Generator_cascade(
-            input_nc,
-            output_nc,
-            'unet',
-            ns,
-            ngf,
-            norm_layer=norm_layer,
-            use_dropout=use_dropout,
-            gpu_ids=gpu_ids,
-            iteration=iteration
-        )
-    else:
-        raise Exception(f'Model name {netG_model} is not recognized')    
-    
-    if len(gpu_ids) > 0:
-        netG.cuda(device=gpu_ids[0])
-        
-    return netG
-        

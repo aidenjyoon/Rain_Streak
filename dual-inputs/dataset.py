@@ -25,7 +25,9 @@ class rain_dataset(Dataset):
             self.ids = sorted(os.listdir(os.path.join(root,"fake")))
         
     def __getitem__(self, index):
+        
         print("THIS IS THE INDEX", index)
+        
         img = self.ids[index]
         if self.real:
             input = Image.open(os.path.join(self.root, img)).convert('RGB')
