@@ -118,5 +118,6 @@ for i, data in enumerate(dataloader, 1):
         category = 'test'
     
     input.resize_
-    print(data)
+    # print(data)
+    print(i)
     print(data.shape)
