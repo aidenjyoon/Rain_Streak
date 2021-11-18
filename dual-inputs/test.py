@@ -118,6 +118,10 @@ for i, data in enumerate(dataloader, 1):
         category = 'test'
     
     input.resize_(input_cpu.size()).copy_(input_cpu)
+    
+    print('INPUT',input)
+    print('netG:', netG)
+    
     if opt.which_model_netG.startswith('cascade'):
         res = netG(input)
         if len(res) % 2 == 1:
