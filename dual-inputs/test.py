@@ -24,7 +24,7 @@ parser.add_argument('--dataroot', required=True, help='path to dataset')
 parser.add_argument(
     '--workers', type=int, help='number of data loading workers', default=2)
 parser.add_argument(
-    '--batchSize', type=int, default=8, help='input batch size')
+    '--batchSize', type=int, default=2, help='input batch size')
 parser.add_argument(
     '--which_model_netG',
     type=str,
