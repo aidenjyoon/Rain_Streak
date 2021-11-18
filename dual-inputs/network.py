@@ -168,6 +168,33 @@ class UnetGenerator(nn.Module):
                 use_dropout=use_dropout
             )
             
+        unet_block = UnetSkipConnectionBlock(
+            ngf * 4, ngf * 8, 
+            unet_block, norm_layer=norm_layer
+        )
+        unet_block = UnetSkipConnectionBlock(
+            ngf * 2, ngf * 4, 
+            unet_block, norm_layer=norm_layer
+        )
+        unet_block = UnetSkipConnectionBlock(
+            ngf, ngf * 2, 
+            unet_block, norm_layer=norm_layer
+        )
+        unet_block = UnetSkipConnectionBlock(
+            output_nc, ngf, unet_block, 
+            outermost=True, 
+            norm_layer=norm_layer, 
+            outermost_input_nc=input_nc
+        )
+        
+        self.model = unet_block
+    
+    def forward(self, input):
+        if self.gpu_ids and isinstance(input.data, torch.cuda.FloatTensor):
+            return nn.parallel.data_parallel(self.model, input, self.gpu_ids)
+        else:
+            return self.model(input)
+            
 # | downsampling | submodule | upsampling |
 class UnetSkipConnectionBlock(nn.Module):
     def __init__(self,
