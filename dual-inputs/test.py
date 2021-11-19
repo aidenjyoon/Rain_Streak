@@ -120,8 +120,10 @@ for i, data in enumerate(dataloader, 1):
     input.resize_(input_cpu.size()).copy_(input_cpu)
     
     print('INPUT',input.shape)
-    print('netG:', netG)
-    
+    asdf = [4]
+    asdf += [2]
+    asdf -= [5]
+    print(asdf)
     if opt.which_model_netG.startswith('cascade'):
         res = netG(input)
         if len(res) % 2 == 1:
@@ -129,12 +131,11 @@ for i, data in enumerate(dataloader, 1):
         else:
             output_B, output_R = res[-2], res[-1]
 
+    # if opt.n_ouputs == 0 or i <= opt.n_outputs:
+    #     save_image(output_B / 2 + 0.5, f'{opt.outf}/B_{i}.png')
             
     # print(data)
     # print(i)
     # print(data.shape)
     
-    asdf = [4]
-    asdf += [2]
-    asdf -= [5]
-    print(asdf)
+    
