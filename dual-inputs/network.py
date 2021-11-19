@@ -129,6 +129,7 @@ class Generator_cascade(nn.Module):
                 xy = torch.cat([x, input], 1)
                 z = self.model2(xy)
                 res += [z]
+                print("THIS IS res+Z:", res)
             else:
                 zy = torch.cat([z, input], 1)
                 x = self.model3(zy)
