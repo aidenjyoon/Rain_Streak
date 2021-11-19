@@ -122,7 +122,7 @@ for i, data in enumerate(dataloader, 1):
     print('INPUT',input.shape)
     asdf = [4]
     asdf += [2]
-    asdf -= [5]
+    asdf += [5]
     print(asdf)
     if opt.which_model_netG.startswith('cascade'):
         res = netG(input)
