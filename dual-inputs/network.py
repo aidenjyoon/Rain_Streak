@@ -256,6 +256,15 @@ from torch.nn import init
 #         else:
 #             return torch.cat([x1, x], 1)
 
+
+
+
+
+
+
+
+
+
 #######################################
 ### Network ###
 #######################################
@@ -280,7 +289,8 @@ def define_G(input_nc,
              padding_type='zero',
              upsample_type='transpose',
              init_type='normal'):
-    
+             
+    netG = None
     use_gpu = len(gpu_ids) > 0
     if use_gpu:
         assert (torch.cuda.is_available())
