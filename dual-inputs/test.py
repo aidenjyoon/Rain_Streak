@@ -90,7 +90,7 @@ dataset = rain_dataset(
     opt.dataroot,
     transform=transform,
     target_transform=transform,
-    rf_transform=transform,
+    rain_transform=transform,
     real=opt.real)
 assert dataset
 
