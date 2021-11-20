@@ -119,9 +119,10 @@ for i, data in enumerate(dataloader, 1):
     
     input.resize_(input_cpu.size()).copy_(input_cpu)
     
-    print('INPUT', input.shape)
 
     if opt.which_model_netG.startswith('cascade'):
+        print('INPUT', input.shape)
+
         res = netG(input)
         if len(res) % 2 == 1:
             output_B, output_R = res[-1], res[-2]
