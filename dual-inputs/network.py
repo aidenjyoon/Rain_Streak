@@ -127,6 +127,7 @@ class Generator_cascade(nn.Module):
         for i in range(self.iteration + 1):
             if i % 2 == 0:
                 xy = torch.cat([x, input], 1)
+                print("XY SHAPE: ",xy.shape)
                 z = self.model2(xy)
                 res += [z]
             else:
