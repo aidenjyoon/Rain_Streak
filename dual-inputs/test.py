@@ -86,7 +86,7 @@ transform = transforms.Compose([
     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
 ])
 
-dataset = ref_dataset(
+dataset = rain_dataset(
     opt.dataroot,
     transform=transform,
     target_transform=transform,
