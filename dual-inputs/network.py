@@ -93,7 +93,7 @@ class Generator_cascade(nn.Module):
                  iteration=0,
                  padding_type='zero',
                  upsample_type='transpose'):
-        super(Generator_cascade,self).__init__()
+        super(Generator_cascade, self).__init__()
         
         self.input_nc = input_nc
         self.output_nc = output_nc
@@ -112,7 +112,7 @@ class Generator_cascade(nn.Module):
                 gpu_ids=gpu_ids
             )
             self.model2 = UnetGenerator(
-                input_nc,
+                input_nc * 2,
                 output_nc,
                 ns[1],
                 ngf,
@@ -121,6 +121,7 @@ class Generator_cascade(nn.Module):
                 gpu_ids=gpu_ids
             )
             if self.iteration > 0:
+                print("THIS IS THE 3RD MODEL")
                 self.model3 = UnetGenerator(
                     input_nc * 2,
                     output_nc,
@@ -146,7 +147,10 @@ class Generator_cascade(nn.Module):
                 res += [x]
         return res
 
-
+# Defines the Unet generator.
+# |num_downs|: number of downsamplings in UNet. For example,
+# if |num_downs| == 7, image of size 128x128 will become of size 1x1
+# at the bottleneck
 class UnetGenerator(nn.Module):
     def __init__(self,
                  input_nc,
@@ -156,55 +160,48 @@ class UnetGenerator(nn.Module):
                  norm_layer=nn.BatchNorm2d,
                  use_dropout=False,
                  gpu_ids=[]):
-        
         super(UnetGenerator, self).__init__()
         self.gpu_ids = gpu_ids
-        
-        # submodule
+
+        # currently support only input_nc == output_nc
+        # assert (input_nc == output_nc)
+
+        # construct unet structure
         unet_block = UnetSkipConnectionBlock(
             ngf * 8,
             ngf * 8,
-            norm_layer = norm_layer,
+            norm_layer=norm_layer,
             innermost=True,
-            use_dropout=use_dropout
-        )
-        
-        # building network
+            use_dropout=use_dropout)
         for i in range(num_downs - 5):
             unet_block = UnetSkipConnectionBlock(
                 ngf * 8,
                 ngf * 8,
                 unet_block,
                 norm_layer=norm_layer,
-                use_dropout=use_dropout
-            )
-            
+                use_dropout=use_dropout)
         unet_block = UnetSkipConnectionBlock(
-            ngf * 4, ngf * 8, 
-            unet_block, norm_layer=norm_layer
-        )
+            ngf * 4, ngf * 8, unet_block, norm_layer=norm_layer)
         unet_block = UnetSkipConnectionBlock(
-            ngf * 2, ngf * 4, 
-            unet_block, norm_layer=norm_layer
-        )
+            ngf * 2, ngf * 4, unet_block, norm_layer=norm_layer)
         unet_block = UnetSkipConnectionBlock(
-            ngf, ngf * 2, 
-            unet_block, norm_layer=norm_layer
-        )
+            ngf, ngf * 2, unet_block, norm_layer=norm_layer)
         unet_block = UnetSkipConnectionBlock(
-            output_nc, ngf, unet_block, 
-            outermost=True, 
-            norm_layer=norm_layer, 
-            outermost_input_nc=input_nc
-        )
-        
+            output_nc,
+            ngf,
+            unet_block,
+            outermost=True,
+            norm_layer=norm_layer,
+            outermost_input_nc=input_nc)
+
         self.model = unet_block
-    
+
     def forward(self, input):
         if self.gpu_ids and isinstance(input.data, torch.cuda.FloatTensor):
             return nn.parallel.data_parallel(self.model, input, self.gpu_ids)
         else:
             return self.model(input)
+
 
 # Defines the submodule with skip connection.
 # X -------------------identity---------------------- X
