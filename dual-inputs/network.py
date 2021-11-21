@@ -197,7 +197,8 @@ class UnetGenerator(nn.Module):
             print('----gpu is parallel----')
             return nn.parallel.data_parallel(self.model, input, self.gpu_ids)
         else:
-            print(self.model(input).shape)
+            print('gpu not parallel:', self.gpu_ids) 
+            print('model output: ', self.model(input).shape)
             return self.model(input)
             
 # | downsampling | submodule | upsampling |
