@@ -194,8 +194,10 @@ class UnetGenerator(nn.Module):
     
     def forward(self, input):
         if self.gpu_ids and isinstance(input.data, torch.cuda.FloatTensor):
+            print('----gpu is parallel----')
             return nn.parallel.data_parallel(self.model, input, self.gpu_ids)
         else:
+            print(self.model(input).shape)
             return self.model(input)
             
 # | downsampling | submodule | upsampling |
