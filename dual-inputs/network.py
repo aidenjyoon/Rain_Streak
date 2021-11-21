@@ -126,6 +126,7 @@ class Generator_cascade(nn.Module):
         x = self.model1(input)
         res = [x]
         for i in range(self.iteration + 1):
+            print("INPUT: ", input.shape)
             if i % 2 == 0:
                 xy = torch.cat([x, input], 1)
                 print("XY SHAPE: ",xy.shape)
@@ -150,10 +151,6 @@ class UnetGenerator(nn.Module):
         
         super(UnetGenerator, self).__init__()
         self.gpu_ids = gpu_ids
-        
-        ## delete
-        print("INPUT_NC: ", input_nc)
-        print("OUTPUT_NC: ", output_nc)
 
         # submodule
         unet_block = UnetSkipConnectionBlock(
