@@ -103,7 +103,7 @@ class Generator_cascade(nn.Module):
                 gpu_ids=gpu_ids
             )
             self.model2 = UnetGenerator(
-                input_nc,
+                input_nc * 2,
                 output_nc,
                 ns[1],
                 ngf,
