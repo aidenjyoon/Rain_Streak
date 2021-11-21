@@ -33,7 +33,6 @@ def define_G(input_nc,
              init_type='normal'):
              
     netG = None
-    print('gpu', torch.cuda.is_available())
     use_gpu = len(gpu_ids) > 0
     if use_gpu:
         assert (torch.cuda.is_available())
