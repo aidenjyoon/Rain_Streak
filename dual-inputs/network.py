@@ -36,6 +36,8 @@ def define_G(input_nc,
     use_gpu = len(gpu_ids) > 0
     if use_gpu:
         assert (torch.cuda.is_available())
+        
+    print(torch.cuda.device_count())
     
     norm_layer = get_norm_layer(norm_type=norm)
 
