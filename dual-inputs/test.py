@@ -75,7 +75,7 @@ except OSError:
 nc = 3
 ngf = 64
 netG = network.define_G(nc, nc, ngf, opt.which_model_netG, opt.ns, opt.norm,
-                        opt.use_dropout, [7,8], opt.iteration)
+                        opt.use_dropout, ["cuda:7"], opt.iteration)
 if opt.netG != '':
     netG.load_state_dict(torch.load(opt.netG))
 
