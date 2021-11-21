@@ -153,7 +153,8 @@ class UnetGenerator(nn.Module):
         
         ## delete
         print("INPUT_NC: ", input_nc)
-        
+        print("OUTPUT_NC: ", output_nc)
+
         # submodule
         unet_block = UnetSkipConnectionBlock(
             ngf * 8,
