@@ -151,6 +151,9 @@ class UnetGenerator(nn.Module):
         super(UnetGenerator, self).__init__()
         self.gpu_ids = gpu_ids
         
+        ## delete
+        print("INPUT_NC: ", input_nc)
+        
         # submodule
         unet_block = UnetSkipConnectionBlock(
             ngf * 8,
