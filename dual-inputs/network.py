@@ -20,11 +20,10 @@ def get_norm_layer(norm_type):
         print('normalization layer [%s] is not found' % norm_type)
     return norm_layer
 
-
 def define_G(input_nc,
              output_nc,
              ngf,
-             which_model_netG,
+             netG_model,
              ns,
              norm='batch',
              use_dropout=False,
@@ -33,14 +32,15 @@ def define_G(input_nc,
              padding_type='zero',
              upsample_type='transpose',
              init_type='normal'):
+             
     netG = None
     use_gpu = len(gpu_ids) > 0
-    norm_layer = get_norm_layer(norm_type=norm)
-
     if use_gpu:
         assert (torch.cuda.is_available())
+    
+    norm_layer = get_norm_layer(norm_type=norm)
 
-    if which_model_netG == 'cascade_unet':
+    if netG_model == 'cascade_unet':
         netG = Generator_cascade(
             input_nc,
             output_nc,
@@ -50,12 +50,14 @@ def define_G(input_nc,
             norm_layer=norm_layer,
             use_dropout=use_dropout,
             gpu_ids=gpu_ids,
-            iteration=iteration)
+            iteration=iteration
+        )
     else:
-        print('Model name [%s] is not recognized' % which_model_netG)
+        raise Exception(f'Model name {netG_model} is not recognized')    
+    
     if len(gpu_ids) > 0:
         netG.cuda(device=gpu_ids[0])
-    # init_weights(netG, init_type=init_type)
+        
     return netG
 
 
