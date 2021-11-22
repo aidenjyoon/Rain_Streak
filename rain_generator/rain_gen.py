@@ -183,6 +183,8 @@ if __name__ == '__main__':
         os.mkdir(test_path)
         print(f'made directory {test_path}')
 
+    
+    print('images_dataset:', images_dataset)
     # TRAIN
     for idx, image in enumerate(images_dataset[:int(len(images_dataset) * 0.6 )]):
         print('making TRAINING rain images...')
@@ -205,7 +207,6 @@ if __name__ == '__main__':
     for idx, image in enumerate(images_dataset[int(len(images_dataset) * 0.6) : int(len(images_dataset) * 0.8)]):
         print('making VALIDATION rain images...')
 
-        
         img = cv2.imread(f"{image}")
         idx += img_n * (int(len(images_dataset) * 0.6) * rain_types) # for naming sake
 
