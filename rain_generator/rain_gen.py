@@ -192,7 +192,7 @@ if __name__ == '__main__':
         slant = args.slant
         drop_length = args.drop_length
         drop_width = args.drop_width
-        drop_color = (args.c, args.c, args.c)
+        drop_color = (args.color, args.color, args.color)
         
         # 3 rain types
         # 100 per type = 500 rainy images per clean image
