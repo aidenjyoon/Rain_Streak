@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import cv2
 import imutils
@@ -162,6 +163,25 @@ if __name__ == '__main__':
     img_n = args.rain_image_count
 
     rain_types = (upper_range - lower_range) // increment + 1
+
+    # check if directories exist if not create
+    train_path = './train'
+    validation_path = './validation'
+    test_path = './test'
+    isTrain_dir = os.path.isdir(train_path)
+    isVal_dir = os.path.isdir(validation_path)
+    isTest_dir = os.path.isdir(test_path)
+    
+    if isTrain_dir == False:
+        os.mkdir(train_path)
+        print(f'made directory {train_path}')
+    if isVal_dir == False:
+        os.mkdir(validation_path)
+        print(f'made directory {validation_path}')
+
+    if isTest_dir == False:
+        os.mkdir(test_path)
+        print(f'made directory {test_path}')
 
     # TRAIN
     for idx, image in enumerate(images_dataset[:int(len(images_dataset) * 0.6 )]):
