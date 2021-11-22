@@ -15,7 +15,7 @@ parser.add_argument('--kernel-size',
 parser.add_argument('--drop-length', help='rain streak length. best to keep it small', default=10, type=int)
 parser.add_argument('--drop-width', help='thickness of streak', default=1, type=int)
 parser.add_argument('--degree', help='angle of rain streak', default=33, type=int)
-parser.add_arguemnt('--slant', help='slant of streak. (don\'t use since we using imutil.rotate)', default=0, type=int) 
+parser.add_argument('--slant', help='slant of streak. (don\'t use since we using imutil.rotate)', default=0, type=int) 
 parser.add_argument('--color', help='rain streak color', default=200, type=int)
 # parser.add_argument('-rc', '--rain-count', help='rain drop count', default=20, type=int)
 
@@ -27,7 +27,7 @@ parser.add_argument('--data-type', help='data img type', default='jpg')
 parser.add_argument('--rain-lower-range', help='how many different rain types to produce, lower range', default=200, type=int)
 parser.add_argument('--rain-upper-range', help='how many different rain types to produce, upper range', default=1001, type=int)
 parser.add_argument('--rain-increment', help='how much to increment every loop. range(rlr, rur, ri)', default=300, type=int)
-parser.add_argumnet('--rain-images-count', help='how many different rain images per rain type', default=100, type=int)
+parser.add_argument('--rain-images-count', help='how many different rain images per rain type', default=100, type=int)
 
 
 
