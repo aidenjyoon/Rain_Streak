@@ -182,7 +182,7 @@ if __name__ == '__main__':
     # VALIDATION
     for idx, image in enumerate(images_dataset[int(len(images_dataset) * 0.6) : int(len(images_dataset) * 0.8)]):
         img = cv2.imread(f"{image}")
-        idx += img_n * (int(len(images_dataset) * 0.6) * rain_types # for naming sake
+        idx += img_n * (int(len(images_dataset) * 0.6) * rain_types) # for naming sake
 
         slant = args.slant
         drop_length = args.drop_length
