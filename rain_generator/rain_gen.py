@@ -24,9 +24,9 @@ parser.add_argument('--data-gt', help='data ground truth root path', default='gr
 parser.add_argument('--data-type', help='data img type', default='jpg')
 
 # params for creating rain variance dataset
-parser.add_argument('--rain-lower-range', help='how many different rain types to produce, lower range', default=20, type=int)
-parser.add_argument('--rain-upper-range', help='how many different rain types to produce, upper range', default=101, type=int)
-parser.add_argument('--rain-increment', help='how much to increment every loop. range(rlr, rur, ri)', default=30, type=int)
+parser.add_argument('--rain-lower-range', help='how many different rain types to produce, lower range', default=200, type=int)
+parser.add_argument('--rain-upper-range', help='how many different rain types to produce, upper range', default=1001, type=int)
+parser.add_argument('--rain-increment', help='how much to increment every loop. range(rlr, rur, ri)', default=300, type=int)
 parser.add_argumnet('--rain-images-count', help='how many different rain images per rain type', default=100, type=int)
 
 
