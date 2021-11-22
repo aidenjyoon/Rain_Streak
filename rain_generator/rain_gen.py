@@ -152,7 +152,7 @@ def add_rain(image, slant=0, drop_length=15, drop_width=1, drop_color=(c,c,c), r
     return rain_streak_img
 
 if __name__ == '__main__':
-    args = parse_args()
+    args = parser.parse_args()
 
     images_dataset = glob.glob(f'./{args.gt}/*.{args.data_type}')
 
