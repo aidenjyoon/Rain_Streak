@@ -160,7 +160,7 @@ if __name__ == '__main__':
     lower_range = args.rain_lower_range
     upper_range = args.rain_upper_range
     increment = args.rain_increment
-    img_n = args.rain_image_count
+    img_n = args.rain_images_count
 
     rain_types = (upper_range - lower_range) // increment + 1
 
