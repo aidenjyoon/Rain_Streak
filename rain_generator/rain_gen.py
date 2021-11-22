@@ -154,7 +154,7 @@ def add_rain(image, slant=0, drop_length=15, drop_width=1, drop_color=(c,c,c), r
 if __name__ == '__main__':
     args = parser.parse_args()
 
-    images_dataset = glob.glob(f'./{args.gt}/*.{args.data_type}')
+    images_dataset = glob.glob(f'./{args.data_gt}/*.{args.data_type}')
 
     lower_range = args.rain_lower_range
     upper_range = args.rain_upper_range
