@@ -7,4 +7,4 @@ dataset = foz.load_zoo_dataset(
     max_samples=25,
     shuffle=True
 )
-session = fo.launch_app(dataset)
+print(dataset)
