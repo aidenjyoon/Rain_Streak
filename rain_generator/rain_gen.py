@@ -185,6 +185,8 @@ if __name__ == '__main__':
 
     # TRAIN
     for idx, image in enumerate(images_dataset[:int(len(images_dataset) * 0.6 )]):
+        print('making TRAINING rain images...')
+        
         img = cv2.imread(f"{image}")
         
         slant = args.slant
@@ -201,6 +203,9 @@ if __name__ == '__main__':
 
     # VALIDATION
     for idx, image in enumerate(images_dataset[int(len(images_dataset) * 0.6) : int(len(images_dataset) * 0.8)]):
+        print('making VALIDATION rain images...')
+
+        
         img = cv2.imread(f"{image}")
         idx += img_n * (int(len(images_dataset) * 0.6) * rain_types) # for naming sake
 
@@ -218,6 +223,8 @@ if __name__ == '__main__':
 
     # TEST
     for idx, image in enumerate(images_dataset[int(len(images_dataset) * 0.8): ]):
+        print('making TEST rain images...')
+        
         img = cv2.imread(f"{image}")
         idx = img_n * (int(len(images_dataset) * 0.8)) * rain_types # for naming sake
 
