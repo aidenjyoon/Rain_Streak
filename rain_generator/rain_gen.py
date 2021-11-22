@@ -12,7 +12,7 @@ parser = ArgumentParser(description='Rain Synthesis')
 # Data parameters
 # rain params
 parser.add_argument('--kernel-size',
-                    help='kenel size of motion blur, can be used to increase rain streak size', default='30')
+                    help='kenel size of motion blur, can be used to increase rain streak size', default='30', type=int)
 parser.add_argument('--drop-length', help='rain streak length. best to keep it small', default=10, type=int)
 parser.add_argument('--drop-width', help='thickness of streak', default=1, type=int)
 parser.add_argument('--degree', help='angle of rain streak', default=33, type=int)
