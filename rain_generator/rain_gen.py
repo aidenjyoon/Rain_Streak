@@ -183,8 +183,6 @@ if __name__ == '__main__':
         os.mkdir(test_path)
         print(f'made directory {test_path}')
 
-    
-    print('images_dataset:', images_dataset)
     # TRAIN
     for idx, image in enumerate(images_dataset[:int(len(images_dataset) * 0.6 )]):
         print('making TRAINING rain images...')
