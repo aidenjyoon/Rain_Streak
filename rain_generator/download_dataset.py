@@ -1,16 +1,10 @@
-import importlib.util
-import sys
+import fiftyone as fo
+import fiftyone.zoo as foz
 
-name = 'fiftyone'
-
-if name in sys.modules:
-    print(f"{name!r} already in sys.modules")
-elif (spec := importlib.util.find_spec(name)) is not None:
-    # If you choose to perform the actual import ...
-    module = importlib.util.module_from_spec(spec)
-    sys.modules[name] = module
-    spec.loader.exec_module(module)
-    print(f"{name!r} has been imported")
-else:
-    print(f"can't find the {name!r} module")
-    
+dataset = foz.load_zoo_dataset(
+    "open-images-v6",
+    split="validation",
+    max_samples=25,
+    shuffle=True
+)
+session = fo.launch_app(dataset)
