@@ -184,8 +184,9 @@ if __name__ == '__main__':
         print(f'made directory {test_path}')
 
     # TRAIN
+    print('making TRAINING rain images...')
     for idx, image in enumerate(images_dataset[:int(len(images_dataset) * 0.6 )]):
-        print('making TRAINING rain images...')
+        print(f'{idx}/{len(int(len(images_dataset) * 0.6))} images completed')
         
         img = cv2.imread(f"{image}")
         
@@ -199,11 +200,12 @@ if __name__ == '__main__':
         for rain_count in range(lower_range, upper_range+1, increment):
             for i in range(img_n):
                 rainy_img = add_rain(img, slant, drop_length, drop_width, drop_color, rain_count)
-                cv2.imwrite(f'train/img_n{idx}_rc{rain_count}_{i}.jpg',  img + rainy_img)
+                cv2.imwrite(f'train/img_n{idx}_{args.degree}deg_rc{rain_count}_{i}.jpg',  img + rainy_img)
 
     # VALIDATION
+    print('making VALIDATION rain images...')
     for idx, image in enumerate(images_dataset[int(len(images_dataset) * 0.6) : int(len(images_dataset) * 0.8)]):
-        print('making VALIDATION rain images...')
+        print(f'{idx}/{len(int(len(images_dataset) * 0.8 ) - int(len(images_dataset) * 0.6))} images completed')
 
         img = cv2.imread(f"{image}")
         idx += img_n * (int(len(images_dataset) * 0.6) * rain_types) # for naming sake
@@ -218,11 +220,12 @@ if __name__ == '__main__':
         for rain_count in range(lower_range, upper_range+1, increment):
             for i in range(img_n):
                 rainy_img = add_rain(img, slant, drop_length, drop_width, drop_color, rain_count)
-                cv2.imwrite(f'validation/img_n{idx}_rc{rain_count}_{i}.jpg', img + rainy_img)
+                cv2.imwrite(f'validation/img_n{idx}_{args.degree}deg_rc{rain_count}_{i}.jpg', img + rainy_img)
 
     # TEST
+    print('making TEST rain images...')
     for idx, image in enumerate(images_dataset[int(len(images_dataset) * 0.8): ]):
-        print('making TEST rain images...')
+        print(f'{idx}/{len(int(len(images_dataset) * 1) - int(len(images_dataset * 0.8)))} images completed')
         
         img = cv2.imread(f"{image}")
         idx = img_n * (int(len(images_dataset) * 0.8)) * rain_types # for naming sake
@@ -237,4 +240,4 @@ if __name__ == '__main__':
         for rain_count in range(lower_range, upper_range+1, increment):
             for i in range(img_n):
                 rainy_img = add_rain(img, slant, drop_length, drop_width, drop_color, rain_count)
-                cv2.imwrite(f'test/img_n{idx}_rc{rain_count}_{i}.jpg', img + rainy_img)
+                cv2.imwrite(f'test/img_n{idx}_{args.degree}deg_rc{rain_count}_{i}.jpg', img + rainy_img)
