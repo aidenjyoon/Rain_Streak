@@ -188,7 +188,7 @@ if __name__ == '__main__':
     # TRAIN
     print('making TRAINING rain images...')
     for idx, image in enumerate(images_dataset[:int(len(images_dataset) * 0.6 )]):
-        print(f'{idx}/{len(int(len(images_dataset) * 0.6))} images completed')
+        print(f'{idx}/{int(len(images_dataset) * 0.6)} images completed')
         
         img = cv2.imread(f"{image}")
         
@@ -208,7 +208,7 @@ if __name__ == '__main__':
     # VALIDATION
     print('making VALIDATION rain images...')
     for idx, image in enumerate(images_dataset[int(len(images_dataset) * 0.6) : int(len(images_dataset) * 0.8)]):
-        print(f'{idx}/{len(int(len(images_dataset) * 0.8 ) - int(len(images_dataset) * 0.6))} images completed')
+        print(f'{idx}/{int(len(images_dataset) * 0.8 ) - int(len(images_dataset) * 0.6)} images completed')
 
         img = cv2.imread(f"{image}")
         idx += img_n * (int(len(images_dataset) * 0.6) * rain_types) # for naming sake
@@ -229,7 +229,7 @@ if __name__ == '__main__':
     # TEST
     print('making TEST rain images...')
     for idx, image in enumerate(images_dataset[int(len(images_dataset) * 0.8): ]):
-        print(f'{idx}/{len(int(len(images_dataset) * 1) - int(len(images_dataset * 0.8)))} images completed')
+        print(f'{idx}/{int(len(images_dataset) * 1) - int(len(images_dataset * 0.8))} images completed')
         
         img = cv2.imread(f"{image}")
         idx = img_n * (int(len(images_dataset) * 0.8)) * rain_types # for naming sake
