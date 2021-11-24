@@ -15,7 +15,7 @@ parser.add_argument('--kernel-size',
                     help='kenel size of motion blur, can be used to increase rain streak size', default='30', type=int)
 parser.add_argument('--drop-length', help='rain streak length. best to keep it small', default=10, type=int)
 parser.add_argument('--drop-width', help='thickness of streak', default=1, type=int)
-parser.add_argument('--degrees', help='angle of rain streak', default=33, type=int)
+parser.add_argument('--degrees', help='angle of rain streak', default="33,0,-33", type=str)
 parser.add_argument('--slant', help='slant of streak. (don\'t use since we using imutil.rotate)', default=0, type=int) 
 parser.add_argument('--color', help='rain streak color', default=200, type=int)
 # parser.add_argument('-rc', '--rain-count', help='rain drop count', default=20, type=int)
