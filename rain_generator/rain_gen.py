@@ -53,13 +53,13 @@ def motion_blur(blur_img, kernel_size=30):
 
 
 def rotate(img, deg=33):
-    deg = args.degree
+    # deg = args.degree
     
     rotated = imutils.rotate_bound(img, deg)
     return rotated
 
 def rotate_and_blur(img, deg=33, blur_kernel=30):
-    deg = args.degree
+    # deg = args.degree
     blur_kernel = args.kernel_size
 
     x = img.shape[0]
@@ -157,14 +157,19 @@ if __name__ == '__main__':
 
     images_dataset = glob.glob(f'./{args.data_gt}/*.{args.data_type}')
 
+    # rain range params
     lower_range = args.rain_lower_range
     upper_range = args.rain_upper_range
     increment = args.rain_increment
     img_n = args.rain_images_count
-
+    
+    # number of rain types not including degrees
+    rain_types = (upper_range - lower_range) // increment + 1
+    
+    # degrees
     degrees = [int(d) for d in args.degrees.split(',')]
 
-    rain_types = (upper_range - lower_range) // increment + 1
+
 
     # check if directories exist if not create
     train_path = './train'
