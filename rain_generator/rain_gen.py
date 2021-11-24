@@ -15,7 +15,7 @@ parser.add_argument('--kernel-size',
                     help='kenel size of motion blur, can be used to increase rain streak size', default='30', type=int)
 parser.add_argument('--drop-length', help='rain streak length. best to keep it small', default=10, type=int)
 parser.add_argument('--drop-width', help='thickness of streak', default=1, type=int)
-parser.add_argument('--degree', help='angle of rain streak', default=33, type=int)
+parser.add_argument('--degrees', help='angle of rain streak', default=33, type=int)
 parser.add_argument('--slant', help='slant of streak. (don\'t use since we using imutil.rotate)', default=0, type=int) 
 parser.add_argument('--color', help='rain streak color', default=200, type=int)
 # parser.add_argument('-rc', '--rain-count', help='rain drop count', default=20, type=int)
@@ -162,6 +162,8 @@ if __name__ == '__main__':
     increment = args.rain_increment
     img_n = args.rain_images_count
 
+    degrees = [int(d) for d in args.degrees.split(',')]
+
     rain_types = (upper_range - lower_range) // increment + 1
 
     # check if directories exist if not create
@@ -199,8 +201,9 @@ if __name__ == '__main__':
         # 100 per type = 500 rainy images per clean image
         for rain_count in range(lower_range, upper_range+1, increment):
             for i in range(img_n):
-                rainy_img = add_rain(img, slant, drop_length, drop_width, drop_color, rain_count)
-                cv2.imwrite(f'train/img_n{idx}_{args.degree}deg_rc{rain_count}_{i}.jpg',  img + rainy_img)
+                for deg in degrees:
+                    rainy_img = add_rain(img, slant, drop_length, drop_width, drop_color, rain_count)
+                    cv2.imwrite(f'train/img_n{idx}_{deg}deg_rc{rain_count}_{i}.jpg',  img + rainy_img)
 
     # VALIDATION
     print('making VALIDATION rain images...')
@@ -219,8 +222,9 @@ if __name__ == '__main__':
         # 100 per type = 500 rainy images per clean image
         for rain_count in range(lower_range, upper_range+1, increment):
             for i in range(img_n):
-                rainy_img = add_rain(img, slant, drop_length, drop_width, drop_color, rain_count)
-                cv2.imwrite(f'validation/img_n{idx}_{args.degree}deg_rc{rain_count}_{i}.jpg', img + rainy_img)
+                for deg in degrees:
+                    rainy_img = add_rain(img, slant, drop_length, drop_width, drop_color, rain_count)
+                    cv2.imwrite(f'validation/img_n{idx}_{deg}deg_rc{rain_count}_{i}.jpg', img + rainy_img)
 
     # TEST
     print('making TEST rain images...')
@@ -239,5 +243,6 @@ if __name__ == '__main__':
         # 100 per type = 500 rainy images per clean image
         for rain_count in range(lower_range, upper_range+1, increment):
             for i in range(img_n):
-                rainy_img = add_rain(img, slant, drop_length, drop_width, drop_color, rain_count)
-                cv2.imwrite(f'test/img_n{idx}_{args.degree}deg_rc{rain_count}_{i}.jpg', img + rainy_img)
+                for deg in degrees:
+                    rainy_img = add_rain(img, slant, drop_length, drop_width, drop_color, rain_count)
+                    cv2.imwrite(f'test/img_n{idx}_{deg}deg_rc{rain_count}_{i}.jpg', img + rainy_img)
