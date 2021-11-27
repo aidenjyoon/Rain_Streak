@@ -35,18 +35,33 @@ class rain_dataset(Dataset):
                 input = self.transform(input)
             return input
         else:
-            input = Image.open(os.path.join(self.root, 'I', img)).convert('RGB')        # Image
-            target = Image.open(os.path.join(self.root, 'B', img)).convert('RGB')       # Background
-            target_rain = Image.open(os.path.join(self.root, 'R', img)).convert('RGB')  # Rain
+            # input = Image.open(os.path.join(self.root, 'I', img)).convert('RGB')        # Image
+            # target = Image.open(os.path.join(self.root, 'B', img)).convert('RGB')       # Background
+            # target_rain = Image.open(os.path.join(self.root, 'R', img)).convert('RGB')  # Rain
+            
+            input1 = Image.open(os.path.join(self.root, img)).convert('RGB')        # Image
+            input2 = Image.open(os.path.join(self.root, img)).convert('RGB')        # Image
+            
+            mask1 = input1 - input2
+            mask2 = input2 - input1
+            target1_mask = mask1 >= 0
+            target2_mask = mask2 >= 0
+            target1 = mask1[target1_mask]
+            target2 = mask2[target2_mask]
+            target_rain1 = mask1[target2_mask]
+            target_rain2 = mask2[target1_mask]
             
             if self.transform is not None:
-                input = self.transform(input)
+                input1 = self.transform(input1)
+                input2 = self.transform(input2)
             if self.target_transform is not None:
-                target = self.target_transform(target)
+                target1 = self.target_transform(target1)
+                target2 = self.target_transform(target2)
             if self.rain_transform is not None:
-                target_rain = self.rain_transform(target_rain)
+                target_rain1 = self.rain_transform(target_rain1)
+                target_rain2 = self.rain_transform(target_rain2)
             
-            return input, target, target_rain
+            return input1, input2, target1, target2, target_rain1, target_rain2
             
     def __len__(self):
         return len(self.ids)
