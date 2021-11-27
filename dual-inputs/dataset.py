@@ -6,6 +6,9 @@ import torch
 from torch.utils.data import Dataset
 import random
 
+from skimage import io
+from skimage.util import img_as_float
+
 class rain_dataset(Dataset):
     def __init__(self,
                  root,
@@ -42,14 +45,15 @@ class rain_dataset(Dataset):
             input1 = Image.open(os.path.join(self.root, img)).convert('RGB')        # Image
             input2 = Image.open(os.path.join(self.root, img)).convert('RGB')        # Image
             
-            mask1 = input1 - input2
-            mask2 = input2 - input1
+            mask1 = img_as_float(input1) - img_as_float(input2)
+            mask2 = img_as_float(input2) - img_as_float(input1)
+            
             target1_mask = mask1 >= 0
             target2_mask = mask2 >= 0
-            target1 = mask1[target1_mask]
-            target2 = mask2[target2_mask]
-            target_rain1 = mask1[target2_mask]
-            target_rain2 = mask2[target1_mask]
+            target1 = mask1 * target1_mask
+            target2 = mask2 * target2_mask
+            target_rain1 = mask1 * target2_mask
+            target_rain2 = mask2 * target1_mask
             
             if self.transform is not None:
                 input1 = self.transform(input1)
