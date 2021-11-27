@@ -57,6 +57,9 @@ parser.add_argument(
     '--iteration', type=int, default=0, help='number of iterative updates')
 parser.add_argument(
     '--n_outputs', type=int, default=0, help='number of images to save')
+parser.add_argument(
+    '--gpu', type=int, default=0, help='cuda:_x_ number')
+
 
 opt = parser.parse_args()
 
@@ -75,7 +78,7 @@ except OSError:
 nc = 3
 ngf = 64
 netG = network.define_G(nc, nc, ngf, opt.which_model_netG, opt.ns, opt.norm,
-                        opt.use_dropout, ["cuda:0"], opt.iteration)
+                        opt.use_dropout, [f"cuda:{args.gpu}"], opt.iteration)
 if opt.netG != '':
     netG.load_state_dict(torch.load(opt.netG))
 
@@ -115,6 +118,7 @@ for i, data in enumerate(dataloader, 1):
     else:
         input_cpu, target_B_cpu, target_R_cpu = data
         category = 'test'
+        
     input.resize_(input_cpu.size()).copy_(input_cpu)
     if opt.which_model_netG.startswith('cascade'):
         res = netG(input)
