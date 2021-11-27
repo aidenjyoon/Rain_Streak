@@ -36,9 +36,7 @@ def define_G(input_nc,
     use_gpu = len(gpu_ids) > 0
     if use_gpu:
         assert (torch.cuda.is_available())
-        
-    print(torch.cuda.device_count())
-    
+            
     norm_layer = get_norm_layer(norm_type=norm)
 
     if netG_model == 'cascade_unet':
@@ -128,10 +126,8 @@ class Generator_cascade(nn.Module):
         x = self.model1(input)
         res = [x]
         for i in range(self.iteration + 1):
-            print("INPUT: ", input.shape)
             if i % 2 == 0:
                 xy = torch.cat([x, input], 1)
-                print("XY SHAPE: ",xy.shape)
                 z = self.model2(xy)
                 res += [z]
             else:
