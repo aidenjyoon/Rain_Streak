@@ -22,7 +22,7 @@ class rain_dataset(Dataset):
         if real:
             self.ids = sorted(os.listdir(root))
         else:
-            self.ids = sorted(os.listdir(os.path.join(root,"fake")))
+            self.ids = sorted(os.listdir(os.path.join(root)))
         
     def __getitem__(self, index):
         
