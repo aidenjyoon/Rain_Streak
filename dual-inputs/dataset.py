@@ -6,6 +6,7 @@ import torch
 from torch.utils.data import Dataset
 import random
 
+import cv2
 from skimage import io
 from skimage.util import img_as_float
 
@@ -45,25 +46,25 @@ class rain_dataset(Dataset):
             input1 = Image.open(os.path.join(self.root, img)).convert('RGB')        # Image
             input2 = Image.open(os.path.join(self.root, img)).convert('RGB')        # Image
             
-            mask1 = img_as_float(input1) - img_as_float(input2)
-            mask2 = img_as_float(input2) - img_as_float(input1)
+            extracted_rain1 = img_as_float(input1) - img_as_float(input2)
+            extracted_rain2 = img_as_float(input2) - img_as_float(input1)
             
-            target1_mask = mask1 >= 0
-            target2_mask = mask2 >= 0
-            target1 = mask1 * target1_mask
-            target2 = mask2 * target2_mask
-            target_rain1 = mask1 * target2_mask
-            target_rain2 = mask2 * target1_mask
+            rain1_mask = extracted_rain1 >= 0
+            rain2_mask = extracted_rain2 >= 0
+            rain1 = extracted_rain1 * rain1_mask
+            rain2 = extracted_rain2 * rain2_mask
+            background1 = img_as_float(input1) - img_as_float(rain1)
+            background2 = img_as_float(input2) - img_as_float(rain2)
             
             if self.transform is not None:
                 input1 = self.transform(input1)
                 input2 = self.transform(input2)
             if self.target_transform is not None:
-                target1 = self.target_transform(target1)
-                target2 = self.target_transform(target2)
+                target1 = self.target_transform(background1)
+                target2 = self.target_transform(background2)
             if self.rain_transform is not None:
-                target_rain1 = self.rain_transform(target_rain1)
-                target_rain2 = self.rain_transform(target_rain2)
+                target_rain1 = self.rain_transform(rain1)
+                target_rain2 = self.rain_transform(rain2)
             
             return input1, input2, target1, target2, target_rain1, target_rain2
             
