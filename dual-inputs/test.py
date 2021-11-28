@@ -103,8 +103,12 @@ dataloader = torch.utils.data.DataLoader(
     shuffle=False,
     num_workers=int(opt.workers))
 
-input = torch.FloatTensor(opt.batchSize, 3, opt.imageSize, opt.imageSize)
-input = input.cuda()
+input_real = torch.FloatTensor(opt.batchSize, 3, opt.imageSize, opt.imageSize)
+input1 = torch.FloatTensor(opt.batchSize, 3, opt.imageSize, opt.imageSize)
+input2 = torch.FloatTensor(opt.batchSize, 3, opt.imageSize, opt.imageSize)
+input_real = input_real.cuda()
+input1 = input1.cuda()
+input2 = input2.cuda()
 netG.cuda()
 netG.eval()
 
@@ -116,9 +120,9 @@ for i, data in enumerate(dataloader, 1):
         input_cpu = data
         category = 'real'
         
-        input.resize_(input_cpu.size()).copy_(input_cpu)
+        input_real.resize_(input_cpu.size()).copy_(input_cpu)
         if opt.which_model_netG.startswith('cascade'):
-            res = netG(input)
+            res = netG(input_real)
             if len(res) % 2 == 1:
                 output_B, output_R = res[-1], res[-2]
             else:
@@ -130,9 +134,10 @@ for i, data in enumerate(dataloader, 1):
         input_cpu1, input_cpu2, target_B_cpu1, target_B_cpu2, target_R_cpu1, target_R_cpu2 = data
         category = 'test'
         
-        input.resize_(input_cpu.size()).copy_(input_cpu)
+        input1.resize_(input_cpu1.size()).copy_(input_cpu1)
+        input2.resize_(input_cpu2.size()).copy_(input_cpu2)
         if opt.which_model_netG.startswith('cascade'):
-            res = netG(input)
+            res = netG(input1, input2)
             
             print(res)
             print(res.shape)
