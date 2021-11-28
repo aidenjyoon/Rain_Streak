@@ -115,16 +115,31 @@ for i, data in enumerate(dataloader, 1):
     if opt.real:
         input_cpu = data
         category = 'real'
+        
+        input.resize_(input_cpu.size()).copy_(input_cpu)
+        if opt.which_model_netG.startswith('cascade'):
+            res = netG(input)
+            if len(res) % 2 == 1:
+                output_B, output_R = res[-1], res[-2]
+            else:
+                output_B, output_R = res[-2], res[-1]
+        else:
+            output_B = netG(input)
+
     else:
-        input_cpu, target_B_cpu, target_R_cpu = data
+        input_cpu1, input_cpu2, target_B_cpu1, target_B_cpu2, target_R_cpu1, target_R_cpu2 = data
         category = 'test'
         
-    input.resize_(input_cpu.size()).copy_(input_cpu)
-    if opt.which_model_netG.startswith('cascade'):
-        res = netG(input)
-        if len(res) % 2 == 1:
-            output_B, output_R = res[-1], res[-2]
+        input.resize_(input_cpu.size()).copy_(input_cpu)
+        if opt.which_model_netG.startswith('cascade'):
+            res = netG(input)
+            
+            print(res)
+            print(res.shape)
+            
+            if len(res) % 2 == 1:
+                output_B, output_R = res[-1], res[-2]
+            else:
+                output_B, output_R = res[-2], res[-1]
         else:
-            output_B, output_R = res[-2], res[-1]
-    else:
-        output_B = netG(input)
+            output_B = netG(input)
