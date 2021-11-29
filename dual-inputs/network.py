@@ -99,8 +99,6 @@ class Generator_cascade(nn.Module):
         self.gpu_ids = gpu_ids
         self.iteration = iteration
         
-        print('iteration: ', iteration)
-
         if base_model == 'unet':
             self.model1 = UnetGenerator(
                 input_nc,
@@ -132,6 +130,7 @@ class Generator_cascade(nn.Module):
                 )
             
     def forward(self, input1, input2):
+        print('INPUT1: ', input1)
         x1 = self.model1(input1)
         res1 = [x1]
         for i in range(self.iteration + 1):
