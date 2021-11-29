@@ -57,6 +57,12 @@ def define_G(input_nc,
     if len(gpu_ids) > 0:
         netG.cuda(device=gpu_ids[0])
         
+    # Handle multi-gpu if desired
+    if len(gpu_ids) > 1:
+        netG =netG.to('cuda')
+        netG = nn.DataParallel(netG, list(range(len(gpu_ids))))
+    elif len(gpu_ids) == 1:
+        netG = netG.to(device=gpu_ids[0])
     return netG
         
 #######################################
