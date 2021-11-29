@@ -91,6 +91,8 @@ class Generator_cascade(nn.Module):
         self.ngf = ngf
         self.gpu_ids = gpu_ids
         self.iteration = iteration
+        
+        print('iteration: ', iteration)
 
         if base_model == 'unet':
             self.model1 = UnetGenerator(
