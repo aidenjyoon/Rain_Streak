@@ -111,7 +111,7 @@ input1 = input1.cuda()
 input2 = input2.cuda()
 netG.cuda()
 netG.eval()
-
+print(netG)
 criterion = nn.MSELoss()
 criterion.cuda()
 
