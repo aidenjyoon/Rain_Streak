@@ -30,7 +30,7 @@ class rain_dataset(Dataset):
         
     def __getitem__(self, index):
         
-        print("THIS IS THE INDEX", index)
+        # print("THIS IS THE INDEX", index)
         
         img = self.ids[index]
         if self.real:
