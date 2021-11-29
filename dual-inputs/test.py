@@ -137,14 +137,20 @@ for i, data in enumerate(dataloader, 1):
         input1.resize_(input_cpu1.size()).copy_(input_cpu1)
         input2.resize_(input_cpu2.size()).copy_(input_cpu2)
         if opt.which_model_netG.startswith('cascade'):
-            res = netG(input1, input2)
+            res1, res2 = netG(input1, input2)
             
-            print(res)
-            print(res.shape)
-            
-            if len(res) % 2 == 1:
-                output_B, output_R = res[-1], res[-2]
+            print(res1)
+            print(res1.shape)
+            # Output training stats
+
+            if len(res1) % 2 == 1:
+                output_B, output_R = res1[-1], res1[-2]
             else:
-                output_B, output_R = res[-2], res[-1]
+                output_B, output_R = res1[-2], res1[-1]
+                
+            if len(res2) % 2 == 1:
+                output_B, output_R = res2[-1], res2[-2]
+            else:
+                output_B, output_R = res2[-2], res2[-1]
         else:
             output_B = netG(input)
