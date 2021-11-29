@@ -126,7 +126,7 @@ class Generator_cascade(nn.Module):
                     output_nc,
                     ns[2],
                     ngf,
-                    nrom_layer=norm_layer,
+                    norm_layer=norm_layer,
                     use_dropout=use_dropout,
                     gpu_ids=gpu_ids
                 )
