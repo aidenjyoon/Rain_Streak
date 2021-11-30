@@ -63,13 +63,22 @@ parser.add_argument(
 
 opt = parser.parse_args()
 
+# number of downsampling into array
 str_ids = opt.ns.split(',')
 opt.ns = []
 for str_id in str_ids:
     id = int(str_id)
     if id >= 0:
         opt.ns.append(id)
-
+        
+# number of gpu into array
+str_ids = opt.gpu.split(',')
+opt.gpu = []
+for str_id in str_ids:
+    id = int(str_id)
+    if id >= 0:
+        opt.gpu.append(id)
+        
 try:
     os.makedirs(opt.outf)
 except OSError:
@@ -77,8 +86,10 @@ except OSError:
 
 nc = 3
 ngf = 64
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
 netG = network.define_G(nc, nc, ngf, opt.which_model_netG, opt.ns, opt.norm,
-                        opt.use_dropout, [f"cuda:{opt.gpu}"], opt.iteration)
+                        opt.use_dropout, opt.gpu, opt.iteration)
 if opt.netG != '':
     netG.load_state_dict(torch.load(opt.netG))
 
@@ -103,17 +114,19 @@ dataloader = torch.utils.data.DataLoader(
     shuffle=False,
     num_workers=int(opt.workers))
 
+
+
 input_real = torch.FloatTensor(opt.batchSize, 3, opt.imageSize, opt.imageSize)
 input1 = torch.FloatTensor(opt.batchSize, 3, opt.imageSize, opt.imageSize)
 input2 = torch.FloatTensor(opt.batchSize, 3, opt.imageSize, opt.imageSize)
-input_real = input_real.cuda()
-input1 = input1.cuda()
-input2 = input2.cuda()
-netG.cuda()
+input_real = input_real.to(device)
+input1 = input1.to(device)
+input2 = input2.to(device)
+netG.to(device)
 netG.eval()
-print(netG)
+
 criterion = nn.MSELoss()
-criterion.cuda()
+criterion.to(device)
 
 for i, data in enumerate(dataloader, 1):
     if opt.real:

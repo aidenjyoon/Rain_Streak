@@ -63,7 +63,7 @@ def define_G(input_nc,
         netG =netG.to('cuda')
         netG = nn.DataParallel(netG, list(range(len(gpu_ids))))
     elif len(gpu_ids) == 1:
-        netG = netG.to(device=gpu_ids[0])
+        netG = netG.to(device=f"cuda:{gpu_ids[0]}")
     return netG
         
 #######################################
@@ -130,7 +130,7 @@ class Generator_cascade(nn.Module):
                 )
             
     def forward(self, input1, input2):
-        print('INPUT1: ', input1)
+        print('INPUT1: ', input1.shape)
         x1 = self.model1(input1)
         res1 = [x1]
         for i in range(self.iteration + 1):
