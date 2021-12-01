@@ -58,7 +58,7 @@ parser.add_argument(
 parser.add_argument(
     '--n_outputs', type=int, default=0, help='number of images to save')
 parser.add_argument(
-    '--gpu', type=int, default=0, help='cuda:_x_ number')
+    '--gpu', type=str, default=0, help='cuda:_x_ number')
 
 
 opt = parser.parse_args()
