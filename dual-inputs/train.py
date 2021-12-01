@@ -128,6 +128,8 @@ netG.eval()
 criterion = nn.MSELoss()
 criterion.to(device)
 
+print('this is device ', device)
+
 for i, data in enumerate(dataloader, 1):
     if opt.real:
         input_cpu = data
