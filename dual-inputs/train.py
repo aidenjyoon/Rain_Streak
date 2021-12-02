@@ -86,7 +86,7 @@ except OSError:
 
 nc = 3
 ngf = 64
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu', index=opt.gpu)
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu', index=opt.gpu[0])
 
 netG = network.define_G(nc, nc, ngf, opt.which_model_netG, opt.ns, opt.norm,
                         opt.use_dropout, opt.gpu, opt.iteration)
