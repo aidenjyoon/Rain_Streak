@@ -135,6 +135,7 @@ class Generator_cascade(nn.Module):
         res1 = [x1]
         for i in range(self.iteration + 1):
             if i % 2 == 0:
+                print('[X1, input]:', [x1, input], x1.shape, input.shape, [x1,input].shape)
                 xy = torch.cat([x1, input], 1)
                 z = self.model2(xy)
                 res1 += [z]
@@ -212,10 +213,10 @@ class UnetGenerator(nn.Module):
     
     def forward(self, input):
         if self.gpu_ids and isinstance(input.data, torch.cuda.FloatTensor):
-            print('----gpu is parallel----')
+            print('----gpu being used----')
             return nn.parallel.data_parallel(self.model, input, self.gpu_ids)
         else:
-            print('gpu not parallel:', self.gpu_ids) 
+            print('gpu not used:', self.gpu_ids) 
             print('model output: ', self.model(input).shape)
             return self.model(input)
             
