@@ -135,7 +135,10 @@ class Generator_cascade(nn.Module):
         res1 = [x1]
         for i in range(self.iteration + 1):
             if i % 2 == 0:
-                print('[X1, input]:', [x1, input], x1.shape, input.shape, [x1,input].shape)
+                print('[X1, input]:', [x1, input])
+                print('x1 shape: ', x1.shape)
+                print('input shape: ', input.shape)
+                print('[x1,input.shape: ', [x1,input].shape)
                 xy = torch.cat([x1, input], 1)
                 z = self.model2(xy)
                 res1 += [z]
