@@ -204,10 +204,9 @@ for i, data in enumerate(dataloader, 1):
         errR1 = criterion(output_R1, target_R1)
         errR2 = criterion(output_R2, target_R2)
 
-        errB1.backward()
-        errB2.backward()
-        errR1.backward()
-        errR2.backward()
+        errN = errB1 + errB2 + errR1 + errR2
+        
+        errN.backward()
 
         optimizer.step()
         
