@@ -119,6 +119,12 @@ netG.eval()
 criterion = nn.MSELoss()
 criterion.to(device)
 
+
+lr = 0.0001
+beta1 = 0.9
+beta2 = 0.999
+optimizer = optim.Adam(netG.parameters(), lr=lr, betas=(beta1, beta2))
+
 print('this is device ', device)
 
 for i, data in enumerate(dataloader, 1):
@@ -130,10 +136,11 @@ for i, data in enumerate(dataloader, 1):
         if opt.which_model_netG.startswith('cascade'):
             res = netG(input_real)
             if len(res) % 2 == 1:
-                output_B, output_R = res[-1], res[-2]
+                output_B1, output_R1 = res[-1], res[-2]
             else:
-                output_B, output_R = res[-2], res[-1]
+                output_B2, output_R2 = res[-2], res[-1]
         else:
+            # don't use atm
             output_B = netG(input)
 
     else:
@@ -151,17 +158,50 @@ for i, data in enumerate(dataloader, 1):
             # Output training stats
 
             if len(res1) % 2 == 1:
-                output_B, output_R = res1[-1], res1[-2]
+                output_B1, output_R1 = res1[-1], res1[-2]
             else:
-                output_B, output_R = res1[-2], res1[-1]
+                output_B1, output_R1 = res1[-2], res1[-1]
                 
             if len(res2) % 2 == 1:
-                output_B, output_R = res2[-1], res2[-2]
+                output_B2, output_R2 = res2[-1], res2[-2]
             else:
-                output_B, output_R = res2[-2], res2[-1]
+                output_B2, output_R2 = res2[-2], res2[-1]
         else:
+            # don't use atm
             output_B = netG(input)
 
+        target_B1 = target_B1.to(device)
+        target_B2 = target_B2.to(device)
+        target_R1 = target_R1.to(device)
+        target_R2 = target_R2.to(device)
+        target_B1.resize_(target_B_cpu1.size()).copy_(target_B_cpu1)
+        target_B2.resize_(target_B_cpu2.size()).copy_(target_B_cpu2)
+        target_R1.resize_(target_R_cpu1.size()).copy_(target_R_cpu1)
+        target_R2.resize_(target_R_cpu2.size()).copy_(target_R_cpu2)
+
+        # error
+        errB1 = criterion(output_B1, target_B1)
+        errB2 = criterion(output_B2, target_B2)
+        errR1 = criterion(output_R1, target_R1)
+        errR2 = criterion(output_R2, target_R2)
+
+        errB1.backward()
+        errB2.backward()
+        errR1.backward()
+        errR2.backward()
+
+        optimizer.step()
+        
+    # Output training stats
+    if i % 50 == 0:
+        print(f'{i}/{len(dataloader)}\tLoss_B1: {errB1}/tLoss_R1: {errR1}\tLoss_B2: {errB2}\tLoss_R2: {errR2}')
+        
+        print('[%d/%d][%d/%d]\tLoss_D: %.4f\tLoss_G: %.4f\tD(x): %.4f\tD(G(z)): %.4f / %.4f'
+                % (epoch, num_epochs, i, len(dataloader),
+                    errD.item(), errG.item(), D_x, D_G_z1, D_G_z2))
+
+
+    # save trained image
     if opt.n_outputs == 0 or i <= opt.n_outputs:
             save_image(output_B / 2 + 0.5, f'../trained_imgs/{opt.outf}/B_{i}.png')
             if opt.which_model_netG.startswith('cascade'):
