@@ -145,7 +145,8 @@ for i, data in enumerate(dataloader, 1):
             res1, res2 = netG(input1, input2)
             
             print(res1)
-            print(res1.shape)
+            print(len(res1))
+            print(len(res2))
             # Output training stats
 
             if len(res1) % 2 == 1:
