@@ -53,6 +53,14 @@ parser.add_argument(
     '--outf',
     default='.',
     help='folder to output images and model checkpoints')
+parser.add_argument(
+    '--outf1',
+    default='.',
+    help='folder to output images and model checkpoints')
+parser.add_argument(
+    '--outf2',
+    default='.',
+    help='folder to output images and model checkpoints')
 parser.add_argument('--real', action='store_true', help='test real images')
 parser.add_argument(
     '--iteration', type=int, default=0, help='number of iterative updates')
@@ -169,7 +177,18 @@ for i, data in enumerate(dataloader, 1):
         else:
             # don't use atm
             output_B = netG(input)
+        
+        target_B1 = torch.FloatTensor(opt.batchSize, 3, opt.imageSize, opt.imageSize)
+        target_B2 = torch.FloatTensor(opt.batchSize, 3, opt.imageSize, opt.imageSize)
+        target_R1 = torch.FloatTensor(opt.batchSize, 3, opt.imageSize, opt.imageSize)
+        target_R2 = torch.FloatTensor(opt.batchSize, 3, opt.imageSize, opt.imageSize)
 
+        target_B1.resize_(target_B_cpu1.size()).copy_(target_B_cpu1)
+        target_B2.resize_(target_B_cpu2.size()).copy_(target_B_cpu2)
+        target_R1.resize_(target_R_cpu1.size()).copy_(target_R_cpu1)
+        target_R2.resize_(target_R_cpu2.size()).copy_(target_R_cpu2)
+
+        
         target_B1 = target_B1.to(device)
         target_B2 = target_B2.to(device)
         target_R1 = target_R1.to(device)
@@ -195,14 +214,24 @@ for i, data in enumerate(dataloader, 1):
     # Output training stats
     if i % 50 == 0:
         print(f'{i}/{len(dataloader)}\tLoss_B1: {errB1}/tLoss_R1: {errR1}\tLoss_B2: {errB2}\tLoss_R2: {errR2}')
-        
-        print('[%d/%d][%d/%d]\tLoss_D: %.4f\tLoss_G: %.4f\tD(x): %.4f\tD(G(z)): %.4f / %.4f'
-                % (epoch, num_epochs, i, len(dataloader),
-                    errD.item(), errG.item(), D_x, D_G_z1, D_G_z2))
-
 
     # save trained image
     if opt.n_outputs == 0 or i <= opt.n_outputs:
-            save_image(output_B / 2 + 0.5, f'../trained_imgs/{opt.outf}/B_{i}.png')
+        # if we don't want dedicated directories for images
+        if opt.outf1 == '.' and opt.outf2 == '.':
+            save_image(output_B1 / 2 + 0.5, f'../trained_imgs/{opt.outf}/B1_{i}.png')
             if opt.which_model_netG.startswith('cascade'):
-                save_image(output_R / 2 + 0.5, f'../trained_imgs/{opt.outf}/R_{i}.png')
+                save_image(output_R1 / 2 + 0.5, f'../trained_imgs/{opt.outf}/R1_{i}.png')
+
+            save_image(output_B2 / 2 + 0.5, f'../trained_imgs/{opt.outf}/B2_{i}.png')
+            if opt.which_model_netG.startswith('cascade'):
+                save_image(output_R2 / 2 + 0.5, f'../trained_imgs/{opt.outf}/R2_{i}.png')
+
+        else:    
+            save_image(output_B1 / 2 + 0.5, f'../trained_imgs/{opt.outf1}/B1_{i}.png')
+            if opt.which_model_netG.startswith('cascade'):
+                save_image(output_R1 / 2 + 0.5, f'../trained_imgs/{opt.outf1}/R1_{i}.png')
+
+            save_image(output_B2 / 2 + 0.5, f'../trained_imgs/{opt.outf2}/B2_{i}.png')
+            if opt.which_model_netG.startswith('cascade'):
+                save_image(output_R2 / 2 + 0.5, f'../trained_imgs/{opt.outf2}/R2_{i}.png')
