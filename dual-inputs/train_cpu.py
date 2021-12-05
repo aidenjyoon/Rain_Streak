@@ -15,6 +15,7 @@ import torchvision.utils as vutils
 from torch.autograd import Variable
 from math import log10
 from PIL import Image
+from vutil import save_image
 
 from dataset import rain_dataset
 import network
@@ -160,3 +161,8 @@ for i, data in enumerate(dataloader, 1):
                 output_B, output_R = res2[-2], res2[-1]
         else:
             output_B = netG(input)
+
+    if opt.n_outputs == 0 or i <= opt.n_outputs:
+            save_image(output_B / 2 + 0.5, f'../trained_imgs/{opt.outf}/B_{i}.png')
+            if opt.which_model_netG.startswith('cascade'):
+                save_image(output_R / 2 + 0.5, f'../trained_imgs/{opt.outf}/R_{i}.png')
