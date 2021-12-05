@@ -132,14 +132,9 @@ class Generator_cascade(nn.Module):
     def forward(self, input1, input2):
         x1 = self.model1(input1)
         res1 = [x1]
-        print('[x1, input], 1: ', torch.cat([x1, input1], 1).shape)
 
         for i in range(self.iteration + 1):
             if i % 2 == 0:
-                # print('[X1, input]:', [x1, input])
-                # print('x1 shape: ', x1.shape)
-                # print('input shape: ', input1.shape)
-                # print('[x1,input.shape: ', [x1,input1].shape)
                 xy = torch.cat([x1, input1], 1)
                 z = self.model2(xy)
                 res1 += [z]
@@ -217,11 +212,8 @@ class UnetGenerator(nn.Module):
     
     def forward(self, input):
         if self.gpu_ids and isinstance(input.data, torch.cuda.FloatTensor):
-            print('----gpu being used----')
             return nn.parallel.data_parallel(self.model, input, self.gpu_ids)
         else:
-            print('gpu not used:', self.gpu_ids) 
-            print('model output: ', self.model(input).shape)
             return self.model(input)
             
 # | downsampling | submodule | upsampling |

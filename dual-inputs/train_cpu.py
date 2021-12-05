@@ -160,9 +160,6 @@ for i, data in enumerate(dataloader, 1):
         if opt.which_model_netG.startswith('cascade'):
             res1, res2 = netG(input1, input2)
             
-            print(res1)
-            print(len(res1))
-            print(len(res2))
             # Output training stats
 
             if len(res1) % 2 == 1:
