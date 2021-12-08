@@ -212,9 +212,8 @@ for i, data in enumerate(dataloader, 1):
         print(f'{i}/{len(dataloader)}\tLoss_B1: {errB1}/tLoss_R1: {errR1}\tLoss_B2: {errB2}\tLoss_R2: {errR2}')
 
     # save trained image
-    if opt.n_outputs == 0 or i <= opt.n_outputs:
-        # if we don't want dedicated directories for images
-        if opt.outf1 == '.' and opt.outf2 == '.':
+    if i % 1000 == 0:
+        if opt.n_outputs == 0 or i <= opt.n_outputs:
             save_image(output_B1 / 2 + 0.5, f'../trained_imgs/{opt.outf}/B1_{i}.png')
             if opt.which_model_netG.startswith('cascade'):
                 save_image(output_R1 / 2 + 0.5, f'../trained_imgs/{opt.outf}/R1_{i}.png')
@@ -222,12 +221,24 @@ for i, data in enumerate(dataloader, 1):
             save_image(output_B2 / 2 + 0.5, f'../trained_imgs/{opt.outf}/B2_{i}.png')
             if opt.which_model_netG.startswith('cascade'):
                 save_image(output_R2 / 2 + 0.5, f'../trained_imgs/{opt.outf}/R2_{i}.png')
+            
+            
+            
+            # # we don't want dedicated directories for images
+            # if opt.outf1 == '.' and opt.outf2 == '.':
+            #     save_image(output_B1 / 2 + 0.5, f'../trained_imgs/{opt.outf}/B1_{i}.png')
+            #     if opt.which_model_netG.startswith('cascade'):
+            #         save_image(output_R1 / 2 + 0.5, f'../trained_imgs/{opt.outf}/R1_{i}.png')
 
-        else:    
-            save_image(output_B1 / 2 + 0.5, f'../trained_imgs/{opt.outf1}/B1_{i}.png')
-            if opt.which_model_netG.startswith('cascade'):
-                save_image(output_R1 / 2 + 0.5, f'../trained_imgs/{opt.outf1}/R1_{i}.png')
+            #     save_image(output_B2 / 2 + 0.5, f'../trained_imgs/{opt.outf}/B2_{i}.png')
+            #     if opt.which_model_netG.startswith('cascade'):
+            #         save_image(output_R2 / 2 + 0.5, f'../trained_imgs/{opt.outf}/R2_{i}.png')
 
-            save_image(output_B2 / 2 + 0.5, f'../trained_imgs/{opt.outf2}/B2_{i}.png')
-            if opt.which_model_netG.startswith('cascade'):
-                save_image(output_R2 / 2 + 0.5, f'../trained_imgs/{opt.outf2}/R2_{i}.png')
+            # else:    
+            #     save_image(output_B1 / 2 + 0.5, f'../trained_imgs/{opt.outf1}/B1_{i}.png')
+            #     if opt.which_model_netG.startswith('cascade'):
+            #         save_image(output_R1 / 2 + 0.5, f'../trained_imgs/{opt.outf1}/R1_{i}.png')
+
+            #     save_image(output_B2 / 2 + 0.5, f'../trained_imgs/{opt.outf2}/B2_{i}.png')
+            #     if opt.which_model_netG.startswith('cascade'):
+            #         save_image(output_R2 / 2 + 0.5, f'../trained_imgs/{opt.outf2}/R2_{i}.png')
