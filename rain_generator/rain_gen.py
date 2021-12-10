@@ -258,7 +258,7 @@ if __name__ == '__main__':
             print(f'working on {idx+1}/{int(len(images_dataset) * 0.6)}...')
 
             img = cv2.imread(f"{image}")
-            print(img)
+            print(f"{image}")
             
             slant = args.slant
             drop_length = args.drop_length
