@@ -62,7 +62,7 @@ parser.add_argument('--rain-increment',
                         type=int)
 parser.add_argument('--rain-images-count', 
                         help='how many different rain images per rain type',
-                        default=100, 
+                        default=30, 
                         type=int)
 
 # bool for creating datasets
