@@ -258,7 +258,7 @@ if __name__ == '__main__':
             print(f'working on {idx+1}/{int(len(images_dataset) * 0.6)}...')
 
             # img = cv2.imread(f"{image}")
-            img = Image.open(f"{image}")
+            img = Image.open(f"{args.data_gt}/{image}")
             print(img)
             
             slant = args.slant
@@ -273,7 +273,7 @@ if __name__ == '__main__':
                     for deg in degrees:
                         rainy_img = add_rain(img, slant, drop_length, drop_width, drop_color, rain_count)
                         # cv2.imwrite(f'train/img_n{idx}_{deg}deg_rc{rain_count}_{i}.jpg',  img + rainy_img)
-                        Image.save(f'train/img_n{idx}_{deg}deg_rc{rain_count}_{i}.jpg',  img + rainy_img)
+                        Image.save(f'{args.train_path}/img_n{idx}_{deg}deg_rc{rain_count}_{i}.jpg',  img + rainy_img)
                         
             print(f'{idx+1}/{int(len(images_dataset) * 0.6)} images completed')
 
