@@ -259,7 +259,6 @@ if __name__ == '__main__':
 
             img = cv2.imread(f"{args.data_gt}/{image}")
             # img = Image.open(f"{args.data_gt}/{image}")
-            print(img)
             
             slant = args.slant
             drop_length = args.drop_length
