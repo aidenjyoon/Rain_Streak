@@ -183,7 +183,6 @@ def add_rain(image, slant=0, drop_length=15, drop_width=1, drop_color=(200,200,2
     drop_color - color
     rain_count - number of droplets
     '''
-    print(type(image))
     imshape = image.shape
     
     # to have distant effect with darker rain color
