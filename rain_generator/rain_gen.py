@@ -65,6 +65,20 @@ parser.add_argument('--rain-images-count',
                         default=30, 
                         type=int)
 
+# dataset save directories
+parser.add_argument('--train_path',
+                        help='train save path',
+                        default='./train',
+                        type=str)
+parser.add_argument('--val_path',
+                        help='validattion save path',
+                        default='./validation',
+                        type=str)
+parser.add_argument('--test_path',
+                        help='ttest save path',
+                        default='./test',
+                        type=str)
+
 # bool for creating datasets
 parser.add_argument('--train', 
                         help='create train dataset', 
