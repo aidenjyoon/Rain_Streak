@@ -66,15 +66,15 @@ parser.add_argument('--rain-images-count',
                         type=int)
 
 # dataset save directories
-parser.add_argument('--train_path',
+parser.add_argument('--train-path',
                         help='train save path',
                         default='./train',
                         type=str)
-parser.add_argument('--val_path',
+parser.add_argument('--val-path',
                         help='validattion save path',
                         default='./validation',
                         type=str)
-parser.add_argument('--test_path',
+parser.add_argument('--test-path',
                         help='ttest save path',
                         default='./test',
                         type=str)
@@ -230,9 +230,9 @@ if __name__ == '__main__':
     degrees = [int(d) for d in args.degrees.split(',')]
 
     # check if directories exist if not create
-    train_path = './train'
-    validation_path = './validation'
-    test_path = './test'
+    train_path = args.train_path
+    validation_path = args.val_path
+    test_path = args.test_path
     isTrain_dir = os.path.isdir(train_path)
     isVal_dir = os.path.isdir(validation_path)
     isTest_dir = os.path.isdir(test_path)
