@@ -188,7 +188,7 @@ def add_rain(image, slant=0, drop_length=15, drop_width=1, drop_color=(200,200,2
     
     # to have distant effect with darker rain color
     alpha = 0.2
-    background_rain_color = (c * alpha, c * alpha, c * alpha)
+    background_rain_color = (drop_color[0] * alpha, drop_color[1] * alpha, drop_color[2] * alpha)
     
     # rain streaks 1
     rain_streak_img1 = np.zeros((imshape[0], imshape[1],imshape[2]))
