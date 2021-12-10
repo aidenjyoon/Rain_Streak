@@ -173,7 +173,7 @@ def generate_random_lines(imshape, slant, drop_length, rain_count):
     return drops
 
 
-def add_rain(image, slant=0, drop_length=15, drop_width=1, drop_color=(c,c,c), rain_count=100):
+def add_rain(image, slant=0, drop_length=15, drop_width=1, drop_color=(200,200,200), rain_count=100):
     '''
     PARAMS:
     image - input image
