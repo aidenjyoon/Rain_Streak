@@ -215,7 +215,7 @@ if __name__ == '__main__':
     # make sure we're creating at least one of train, validatiton, test
     assert(args.train or args.validation or args.test == True)
     
-    images_dataset = glob.glob(f'./{args.data_gt}/*.{args.data_type}')
+    images_dataset = glob.glob(f'./{args.data_gt}/*')
     assert(images_dataset)
     
     # rain range params
