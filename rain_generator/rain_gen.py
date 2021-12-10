@@ -12,28 +12,69 @@ parser = ArgumentParser(description='Rain Synthesis')
 # Data parameters
 # rain params
 parser.add_argument('--kernel-size',
-                    help='kenel size of motion blur, can be used to increase rain streak size', default='30', type=int)
-parser.add_argument('--drop-length', help='rain streak length. best to keep it small', default=10, type=int)
-parser.add_argument('--drop-width', help='thickness of streak', default=1, type=int)
-parser.add_argument('--degrees', help='angle of rain streak', default="33,0,-33", type=str)
-parser.add_argument('--slant', help='slant of streak. (don\'t use since we using imutil.rotate)', default=0, type=int) 
-parser.add_argument('--color', help='rain streak color', default=200, type=int)
+                        help='kenel size of motion blur, can be used to increase rain streak size',
+                        default='30',
+                        type=int)
+parser.add_argument('--drop-length',
+                        help='rain streak length. best to keep it small',
+                        default=10,
+                        type=int)
+parser.add_argument('--drop-width',
+                        help='thickness of streak',
+                        default=1, 
+                        type=int)
+parser.add_argument('--degrees',
+                        help='angle of rain streak',
+                        default="33,0,-33",
+                        type=str)
+parser.add_argument('--slant',
+                        help='slant of streak. (don\'t use since we using imutil.rotate)',
+                        default=0,
+                        type=int) 
+parser.add_argument('--color',
+                        help='rain streak color',
+                        default=200,
+                        type=int)
 # parser.add_argument('-rc', '--rain-count', help='rain drop count', default=20, type=int)
 
 # dataset
-parser.add_argument('--data-gt', help='data ground truth root path', default='ground-truth', type=str, required=True)
-parser.add_argument('--data-type', help='data img type', default='jpg')
+parser.add_argument('--data-gt', 
+                        help='data ground truth root path', 
+                        default='ground-truth', 
+                        type=str,
+                        required=True)
+parser.add_argument('--data-type', 
+                        help='data img type', 
+                        default='jpg')
 
 # params for creating rain variance dataset
-parser.add_argument('--rain-lower-range', help='how many different rain types to produce, lower range', default=200, type=int)
-parser.add_argument('--rain-upper-range', help='how many different rain types to produce, upper range', default=1001, type=int)
-parser.add_argument('--rain-increment', help='how much to increment every loop. range(rlr, rur, ri)', default=300, type=int)
-parser.add_argument('--rain-images-count', help='how many different rain images per rain type', default=100, type=int)
+parser.add_argument('--rain-lower-range',
+                        help='how many different rain types to produce, lower range', 
+                        default=200, 
+                        type=int)
+parser.add_argument('--rain-upper-range',
+                        help='how many different rain types to produce, upper range', 
+                        default=1001,
+                        type=int)
+parser.add_argument('--rain-increment', 
+                        help='how much to increment every loop. range(rlr, rur, ri)', 
+                        default=300, 
+                        type=int)
+parser.add_argument('--rain-images-count', 
+                        help='how many different rain images per rain type',
+                        default=100, 
+                        type=int)
 
 # bool for creating datasets
-parser.add_argument('--train', help='create train dataset', default=True, type=bool)
-parser.add_argument('--validation', help='create validation dataset', default=True, type=bool)
-parser.add_argument('--test', help='create test dataset', default=True, type=bool)
+parser.add_argument('--train', 
+                        help='create train dataset', 
+                        action='store_true')
+parser.add_argument('--validation', 
+                        help='create validation dataset', 
+                        action='store_true')
+parser.add_argument('--test', 
+                        help='create test dataset',
+                        action='store_true')
 
 
 def motion_blur(blur_img, kernel_size=30):
@@ -157,6 +198,9 @@ def add_rain(image, slant=0, drop_length=15, drop_width=1, drop_color=(c,c,c), r
 if __name__ == '__main__':
     args = parser.parse_args()
 
+    # make sure we're creating at least one of train, validatiton, test
+    assert(args.train or args.validation or args.test == True)
+    
     images_dataset = glob.glob(f'./{args.data_gt}/*.{args.data_type}')
 
     # rain range params

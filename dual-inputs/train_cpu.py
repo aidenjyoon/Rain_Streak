@@ -129,9 +129,10 @@ criterion.to(device)
 
 
 lr = 0.0001
-beta1 = 0.9
-beta2 = 0.999
-optimizer = optim.Adam(netG.parameters(), lr=lr, betas=(beta1, beta2))
+beta = [0.9, 0.999]
+optimizer = optim.Adam(netG.parameters(), 
+                       lr=lr, 
+                       betas=beta[:2])
 
 print('this is device ', device)
 
