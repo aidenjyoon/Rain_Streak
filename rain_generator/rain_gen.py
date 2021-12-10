@@ -257,8 +257,9 @@ if __name__ == '__main__':
         for idx, image in enumerate(images_dataset[:int(len(images_dataset) * 0.6 )]):
             print(f'working on {idx+1}/{int(len(images_dataset) * 0.6)}...')
 
-            img = cv2.imread(f"{image}")
-            print(f"{image}")
+            # img = cv2.imread(f"{image}")
+            img = Image.open(f"{image}")
+            print(img)
             
             slant = args.slant
             drop_length = args.drop_length
@@ -271,7 +272,8 @@ if __name__ == '__main__':
                 for i in range(img_n):
                     for deg in degrees:
                         rainy_img = add_rain(img, slant, drop_length, drop_width, drop_color, rain_count)
-                        cv2.imwrite(f'train/img_n{idx}_{deg}deg_rc{rain_count}_{i}.jpg',  img + rainy_img)
+                        # cv2.imwrite(f'train/img_n{idx}_{deg}deg_rc{rain_count}_{i}.jpg',  img + rainy_img)
+                        Image.save(f'train/img_n{idx}_{deg}deg_rc{rain_count}_{i}.jpg',  img + rainy_img)
                         
             print(f'{idx+1}/{int(len(images_dataset) * 0.6)} images completed')
 
