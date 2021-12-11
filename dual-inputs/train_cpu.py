@@ -23,49 +23,61 @@ import network
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--dataroot', required=True, help='path to dataset')
-parser.add_argument(
-    '--workers', type=int, help='number of data loading workers', default=2)
-parser.add_argument(
-    '--batchSize', type=int, default=8, help='input batch size')
-parser.add_argument(
-    '--which_model_netG',
-    type=str,
-    default='cascade_unet',
-    help='selects model to use for netG')
-parser.add_argument(
-    '--ns', type=str, default='5', help='number of blocks for each module')
-parser.add_argument(
-    '--netG', default='', help="path to netG (to continue training)")
-parser.add_argument(
-    '--norm',
-    type=str,
-    default='batch',
-    help='instance normalization or batch normalization')
-parser.add_argument(
-    '--use_dropout', action='store_true', help='use dropout for the generator')
-parser.add_argument(
-    '--imageSize',
-    type=int,
-    default=256,
-    help='the height / width of the input image to network')
-parser.add_argument(
-    '--outf',
-    default='.',
-    help='folder to output images and model checkpoints')
-parser.add_argument(
-    '--outf1',
-    default='.',
-    help='folder to output images and model checkpoints')
-parser.add_argument(
-    '--outf2',
-    default='.',
-    help='folder to output images and model checkpoints')
-parser.add_argument('--real', action='store_true', help='test real images')
-parser.add_argument(
-    '--iteration', type=int, default=0, help='number of iterative updates')
-parser.add_argument(
-    '--n_outputs', type=int, default=0, help='number of images to save')
+parser.add_argument('--dataroot', 
+                        help='path to dataset',
+                        required=True)
+parser.add_argument('--workers', 
+                        help='number of data loading workers', 
+                        default=2,
+                        type=int)
+parser.add_argument('--batchSize', 
+                        help='input batch size',
+                        default=8,
+                        type=int)
+parser.add_argument('--which_model_netG',
+                        help='selects model to use for netG'
+                        default='cascade_unet',
+                        type=str)
+parser.add_argument('--ns',
+                        help='number of blocks for each module',
+                        default='5',
+                        type=str)
+parser.add_argument('--netG',  
+                        help="path to netG (to continue training)",
+                        default='')
+parser.add_argument('--norm',
+                        help='instance normalization or batch normalization',
+                        default='batch',
+                        type=str)
+parser.add_argument('--use_dropout',
+                        help='use dropout for the generator',
+                        action='store_true')
+parser.add_argument('--imageSize',
+                        help='the height / width of the input image to network',
+                        default=256,
+                        type=int)
+
+parser.add_argument('--outf',
+                        help='folder to output images and model checkpoints',
+                        default='.')
+parser.add_argument('--outf1',
+                        help='folder to output images and model checkpoints',
+                        default='.')
+parser.add_argument('--outf2',
+                        help='folder to output images and model checkpoints',
+                        default='.')
+
+parser.add_argument('--real', 
+                        help='test real images',
+                        action='store_true')
+parser.add_argument('--iteration', 
+                        help='number of iterative updates',
+                        default=0
+                        type=int)
+parser.add_argument('--n_outputs',
+                        help='number of images to save',
+                        default=0,
+                        type=int)
 
 
 opt = parser.parse_args()
@@ -122,7 +134,7 @@ input_real = input_real.to(device)
 input1 = input1.to(device)
 input2 = input2.to(device)
 netG.to(device)
-netG.eval()
+# netG.eval()
 
 criterion = nn.MSELoss()
 criterion.to(device)
@@ -134,8 +146,7 @@ optimizer = optim.Adam(netG.parameters(),
                        lr=lr, 
                        betas=beta[:2])
 
-print('this is device ', device)
-
+netG.train()
 for i, data in enumerate(dataloader, 1):
     if opt.real:
         input_cpu = data
