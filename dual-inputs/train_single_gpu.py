@@ -25,6 +25,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--dataroot', 
                         help='path to dataset',
                         required=True)
+
 parser.add_argument('--workers', 
                         help='number of data loading workers', 
                         default=2,
@@ -55,6 +56,14 @@ parser.add_argument('--imageSize',
                         help='the height / width of the input image to network',
                         default=256,
                         type=int)
+parser.add_argument('--epochs',
+                        help='number of epochs for training',
+                        default=1,
+                        type=int)
+parser.add_argument('--gpu',
+                        help='cuda:_x_ number',
+                        default=0,
+                        type=str)
 
 parser.add_argument('--outf',
                         help='folder to output images and model checkpoints',
@@ -77,10 +86,7 @@ parser.add_argument('--n_outputs',
                         help='number of images to save',
                         default=0,
                         type=int)
-parser.add_argument('--gpu',
-                        help='cuda:_x_ number',
-                        default=0,
-                        type=str)
+
 
 
 args = parser.parse_args()
@@ -169,42 +175,45 @@ for i, data in enumerate(dataloader, 1):
 
 netG.train()
 for epoch in args.epochs:
-    # for i, data in enumerate(dataloader, 1):
-    #     if args.real:
-    #         input_cpu = data
-    #         category = 'real'
+    for i, data in enumerate(dataloader, 1):
+        if args.real:
+            input_cpu = data
+            category = 'real'
             
-    #         input_real.resize_(input_cpu.size()).copy_(input_cpu)
-    #         if args.which_model_netG.startswith('cascade'):
-    #             res = netG(input_real)
-    #             if len(res) % 2 == 1:
-    #                 output_B, output_R = res[-1], res[-2]
-    #             else:
-    #                 output_B, output_R = res[-2], res[-1]
-    #         else:
-    #             output_B = netG(input)
+            input_real.resize_(input_cpu.size()).copy_(input_cpu)
+            if args.which_model_netG.startswith('cascade'):
+                res = netG(input_real)
+                if len(res) % 2 == 1:
+                    output_B, output_R = res[-1], res[-2]
+                else:
+                    output_B, output_R = res[-2], res[-1]
+            else:
+                output_B = netG(input)
 
-    #     else:
-    #         input_cpu1, input_cpu2, target_B_cpu1, target_B_cpu2, target_R_cpu1, target_R_cpu2 = data
-    #         category = 'test'
+        else:
+            input_1
             
-    #         input1.resize_(input_cpu1.size()).copy_(input_cpu1)
-    #         input2.resize_(input_cpu2.size()).copy_(input_cpu2)
-    #         if args.which_model_netG.startswith('cascade'):
-    #             res1, res2 = netG(input1, input2)
+            
+            # input_cpu1, input_cpu2, target_B_cpu1, target_B_cpu2, target_R_cpu1, target_R_cpu2 = data
+            # category = 'test'
+            
+            # input1.resize_(input_cpu1.size()).copy_(input_cpu1)
+            # input2.resize_(input_cpu2.size()).copy_(input_cpu2)
+            # if args.which_model_netG.startswith('cascade'):
+            #     res1, res2 = netG(input1, input2)
                 
-    #             print(res1)
-    #             print(res1.shape)
-    #             # Output training stats
+            #     print(res1)
+            #     print(res1.shape)
+            #     # Output training stats
 
-    #             if len(res1) % 2 == 1:
-    #                 output_B, output_R = res1[-1], res1[-2]
-    #             else:
-    #                 output_B, output_R = res1[-2], res1[-1]
+            #     if len(res1) % 2 == 1:
+            #         output_B, output_R = res1[-1], res1[-2]
+            #     else:
+            #         output_B, output_R = res1[-2], res1[-1]
                     
-    #             if len(res2) % 2 == 1:
-    #                 output_B, output_R = res2[-1], res2[-2]
-    #             else:
-    #                 output_B, output_R = res2[-2], res2[-1]
-    #         else:
-    #             output_B = netG(input)
+            #     if len(res2) % 2 == 1:
+            #         output_B, output_R = res2[-1], res2[-2]
+            #     else:
+            #         output_B, output_R = res2[-2], res2[-1]
+            # else:
+            #     output_B = netG(input)

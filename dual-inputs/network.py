@@ -11,6 +11,25 @@ from torch.nn import init
 #######################################
 ### Network ###
 #######################################
+
+def weights_init(net, init_type):
+    '''
+    initialize the model's weights
+    '''
+    def init_func(m):
+        classname = m.__class__.__name__
+
+        if hasattr(m, 'weight') and (classname.find('Conv') != -1 or classname.find('Linear') != -1):
+            if init_type == 'normal':
+                nn.init.normal_(m.weight.data, 0.0, 0.2)
+            else:
+                raise NotImplementedError(f'weightt initializattion method {init_type} is not implementetd')
+        elif classname.find('Norm') != -1:  # finds both batch and instance norms
+            nn.init.normal_(m.weight.data, 1.0, 0.02)
+        
+    # apply weight init
+    net.apply(init_func)
+    
 def get_norm_layer(norm_type):
     if norm_type == 'batch':
         norm_layer = functools.partial(nn.BatchNorm2d, affine=True)
@@ -37,7 +56,8 @@ def define_G(input_nc,
     use_gpu = len(gpu_ids) > 0
     if use_gpu:
         assert (torch.cuda.is_available())
-            
+    
+    
     norm_layer = get_norm_layer(norm_type=norm)
 
     if netG_model == 'cascade_unet':
@@ -55,15 +75,17 @@ def define_G(input_nc,
     else:
         raise Exception(f'Model name {netG_model} is not recognized')    
     
-    if len(gpu_ids) > 0:
-        netG.cuda(device=gpu_ids[0])
-        
+    
     # Handle multi-gpu if desired
     if len(gpu_ids) > 1:
         netG =netG.to('cuda')
         netG = nn.DataParallel(netG, list(range(len(gpu_ids))))
     elif len(gpu_ids) == 1:
         netG = netG.to(device=f"cuda:{gpu_ids[0]}")
+        
+    
+    weights_init(netG, init_type)
+    
     return netG
         
 #######################################
