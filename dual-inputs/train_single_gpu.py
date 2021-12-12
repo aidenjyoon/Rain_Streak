@@ -180,7 +180,7 @@ optimizer = optim.Adam(netG.parameters(),
 #             # don't use atm
 #             output_B = netG(input)
 
-print('start training')
+print('start training...')
 
 netG.train()
 for epoch in range(args.epochs):
@@ -191,7 +191,7 @@ for epoch in range(args.epochs):
             
             input_real.resize_(input_cpu.size()).copy_(input_cpu)
             if args.which_model_netG.startswith('cascade'):
-                res = netG(input_real)
+                res, _ = netG(input_real)
                 if len(res) % 2 == 1:
                     output_B, output_R = res[-1], res[-2]
                 else:
@@ -204,7 +204,7 @@ for epoch in range(args.epochs):
             
             input_real.resize_(input_data.size()).copy_(input_data)
             if args.which_model_netG.startswith('cascade'):
-                res = netG(input_real)
+                res, _ = netG(input_real)
                 
                 if len(res) % 2 == 1:
                     output_B, output_R = res[-1], res[-2]

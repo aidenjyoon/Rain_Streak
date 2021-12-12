@@ -151,7 +151,7 @@ class Generator_cascade(nn.Module):
                     gpu_ids=gpu_ids
                 )
             
-    def forward(self, input1, input2):
+    def forward(self, input1, input2=None):
         x1 = self.model1(input1)
         res1 = [x1]
 
@@ -164,18 +164,19 @@ class Generator_cascade(nn.Module):
                 zy = torch.cat([z, input1], 1)
                 x1 = self.model3(zy)
                 res1 += [x1]
-                
-        x2 = self.model1(input2)
-        res2 = [x2]
-        for i in range(self.iteration + 1):
-            if i % 2 == 0:
-                xy = torch.cat([x2, input2], 1)
-                z = self.model2(xy)
-                res2 += [z]
-            else:
-                zy = torch.cat([z, input2], 1)
-                x2 = self.model3(zy)
-                res2 += [x2]
+        
+        if input2 != None:
+            x2 = self.model1(input2)
+            res2 = [x2]
+            for i in range(self.iteration + 1):
+                if i % 2 == 0:
+                    xy = torch.cat([x2, input2], 1)
+                    z = self.model2(xy)
+                    res2 += [z]
+                else:
+                    zy = torch.cat([z, input2], 1)
+                    x2 = self.model3(zy)
+                    res2 += [x2]
         return res1, res2
 
 
