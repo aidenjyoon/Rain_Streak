@@ -109,7 +109,7 @@ if len(args.gpu) > 1:
         if id >= 0:
             args.gpu.append(id)
 else:
-    args.gpu = int(args.gpu)
+    args.gpu = [int(args.gpu)]
             
 try:
     os.makedirs(args.outf)
