@@ -81,7 +81,7 @@ parser.add_argument('--real',
                         action='store_true')
 parser.add_argument('--iteration', 
                         help='number of iterative updates',
-                        default=0
+                        default=0,
                         type=int)
 parser.add_argument('--n_outputs',
                         help='number of images to save',
