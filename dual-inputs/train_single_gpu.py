@@ -100,7 +100,7 @@ for str_id in str_ids:
     if id >= 0:
         args.ns.append(id)
         
-if args.gpu > 1:
+if len(args.gpu) > 1:
     # number of gpu into array
     str_ids = args.gpu.split(',')
     args.gpu = []
