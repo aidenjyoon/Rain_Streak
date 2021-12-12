@@ -164,21 +164,23 @@ optimizer = optim.Adam(netG.parameters(),
                        lr=lr, 
                        betas=beta[:2])
 
-for i, data in enumerate(dataloader, 1):
-    if args.real:
-        input_cpu = data
-        category = 'real'
+# for i, data in enumerate(dataloader, 1):
+#     if args.real:
+#         input_cpu = data
+#         category = 'real'
         
-        input_real.resize_(input_cpu.size()).copy_(input_cpu)
-        if args.which_model_netG.startswith('cascade'):
-            res = netG(input_real)
-            if len(res) % 2 == 1:
-                output_B1, output_R1 = res[-1], res[-2]
-            else:
-                output_B2, output_R2 = res[-2], res[-1]
-        else:
-            # don't use atm
-            output_B = netG(input)
+#         input_real.resize_(input_cpu.size()).copy_(input_cpu)
+#         if args.which_model_netG.startswith('cascade'):
+#             res = netG(input_real)
+#             if len(res) % 2 == 1:
+#                 output_B1, output_R1 = res[-1], res[-2]
+#             else:
+#                 output_B2, output_R2 = res[-2], res[-1]
+#         else:
+#             # don't use atm
+#             output_B = netG(input)
+
+print('start training')
 
 netG.train()
 for epoch in args.epochs:
