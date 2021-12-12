@@ -18,6 +18,7 @@ from PIL import Image
 
 from dataset import rain_dataset
 import network
+from vutil import save_image
 
 
 
@@ -151,6 +152,9 @@ input2 = input2.to(device)
 netG.to(device)
 # netG.eval()
 
+criterion = nn.MSELoss()
+criterion.to(device)
+
 lr = 0.0001
 beta = [0.9, 0.999]
 optimizer = optim.Adam(netG.parameters(), 
@@ -191,9 +195,52 @@ for epoch in args.epochs:
                 output_B = netG(input)
 
         else:
-            input_1
+            input_data, target_B_data, target_R_data = data
             
+            input_real.resize_(input_data.size()).copy_(input_data)
+            if args.which_model_netG.startswith('cascade'):
+                res = netG(input_real)
+                
+                if len(res) % 2 == 1:
+                    output_B, output_R = res[-1], res[-2]
+                else:
+                    output_B, output_R = res[-2], res[-1]
+            else:
+                raise NotImplementedError('requires stating which model type to use')
             
+            ### DELETE THIS
+            print(target_B_data.size())
+            
+            target_B = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)
+            target_R = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)
+
+            target_B.to(device)
+            target_R.to(device)
+
+            target_B.resize_(target_B_data.size()).copy_(target_B_data)
+            target_R.resize_(target_R_data.size()).copy_(target_R_data)
+            
+            # error
+            errB = criterion(output_B, target_B)
+            errR = criterion(output_R, target_R)
+            
+            loss = errB + errR
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+            
+                    
+        # Output training stats
+        if i % 50 == 0:
+            print(f'{i}/{len(dataloader)}\tLoss_B1: {errB}/tLoss_R1: {errR}')
+
+        # save trained image
+        if i % 1000 == 0:
+            if args.n_outputs == 0 or i <= args.n_outputs:
+                save_image(output_B1 / 2 + 0.5, f'../trained_imgs/{args.outf}/B_{i}.png')
+                if args.which_model_netG.startswith('cascade'):
+                    save_image(output_R1 / 2 + 0.5, f'../trained_imgs/{args.outf}/R_{i}.png')
+
             # input_cpu1, input_cpu2, target_B_cpu1, target_B_cpu2, target_R_cpu1, target_R_cpu2 = data
             # category = 'test'
             

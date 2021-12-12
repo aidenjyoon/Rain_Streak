@@ -192,16 +192,11 @@ for i, data in enumerate(dataloader, 1):
         target_R1 = torch.FloatTensor(opt.batchSize, 3, opt.imageSize, opt.imageSize)
         target_R2 = torch.FloatTensor(opt.batchSize, 3, opt.imageSize, opt.imageSize)
 
-        target_B1.resize_(target_B_cpu1.size()).copy_(target_B_cpu1)
-        target_B2.resize_(target_B_cpu2.size()).copy_(target_B_cpu2)
-        target_R1.resize_(target_R_cpu1.size()).copy_(target_R_cpu1)
-        target_R2.resize_(target_R_cpu2.size()).copy_(target_R_cpu2)
-
-        
         target_B1 = target_B1.to(device)
         target_B2 = target_B2.to(device)
         target_R1 = target_R1.to(device)
         target_R2 = target_R2.to(device)
+        
         target_B1.resize_(target_B_cpu1.size()).copy_(target_B_cpu1)
         target_B2.resize_(target_B_cpu2.size()).copy_(target_B_cpu2)
         target_R1.resize_(target_R_cpu1.size()).copy_(target_R_cpu1)
@@ -215,6 +210,7 @@ for i, data in enumerate(dataloader, 1):
 
         errN = errB1 + errB2 + errR1 + errR2
         
+        optimizer.zero_grad()
         errN.backward()
 
         optimizer.step()
