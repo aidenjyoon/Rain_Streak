@@ -36,7 +36,7 @@ parser.add_argument('--batchSize',
                         default=8,
                         type=int)
 parser.add_argument('--which_model_netG',
-                        help='selects model to use for netG'
+                        help='selects model to use for netG',
                         default='cascade_unet',
                         type=str)
 parser.add_argument('--ns',
