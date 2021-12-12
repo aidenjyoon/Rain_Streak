@@ -100,14 +100,16 @@ for str_id in str_ids:
     if id >= 0:
         args.ns.append(id)
         
-# if args.gpu
-#     # number of gpu into array
-#     str_ids = args.gpu.split(',')
-#     args.gpu = []
-#     for str_id in str_ids:
-#         id = int(str_id)
-#         if id >= 0:
-#             args.gpu.append(id)
+if args.gpu > 1:
+    # number of gpu into array
+    str_ids = args.gpu.split(',')
+    args.gpu = []
+    for str_id in str_ids:
+        id = int(str_id)
+        if id >= 0:
+            args.gpu.append(id)
+else:
+    args.gpu = int(args.gpu)
             
 try:
     os.makedirs(args.outf)
