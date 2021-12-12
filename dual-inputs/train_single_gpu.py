@@ -183,7 +183,7 @@ optimizer = optim.Adam(netG.parameters(),
 print('start training')
 
 netG.train()
-for epoch in args.epochs:
+for epoch in range(args.epochs):
     for i, data in enumerate(dataloader, 1):
         if args.real:
             input_cpu = data
