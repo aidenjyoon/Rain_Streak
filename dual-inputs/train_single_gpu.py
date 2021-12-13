@@ -253,14 +253,18 @@ for epoch in range(args.epochs):
                     
         # Output training stats
         if i % 50 == 0:
-            print(f'{i}/{len(dataloader)}\tLoss_B1: {errB}/tLoss_R1: {errR}')
+            print(f'{i}/{len(dataloader)}\tLoss_B1: {errB1}/tLoss_R1: {errR1}\tLoss_B2: {errB2}/tLoss_R2: {errR2}')
 
         # save trained image
         if i % 1000 == 0:
             if args.n_outputs == 0 or i <= args.n_outputs:
-                save_image(output_B1 / 2 + 0.5, f'../trained_imgs/{args.outf}/B_{i}.png')
+                save_image(output_B1 / 2 + 0.5, f'../trained_imgs/{args.outf}/B1_{i}.png')
                 if args.which_model_netG.startswith('cascade'):
-                    save_image(output_R1 / 2 + 0.5, f'../trained_imgs/{args.outf}/R_{i}.png')
+                    save_image(output_R1 / 2 + 0.5, f'../trained_imgs/{args.outf}/R1_{i}.png')
+            
+                save_image(output_B2 / 2 + 0.5, f'../trained_imgs/{args.outf}/B2_{i}.png')
+                if args.which_model_netG.startswith('cascade'):
+                    save_image(output_R2 / 2 + 0.5, f'../trained_imgs/{args.outf}/R2_{i}.png')
 
             # input_cpu1, input_cpu2, target_B_cpu1, target_B_cpu2, target_R_cpu1, target_R_cpu2 = data
             # category = 'test'
