@@ -146,10 +146,12 @@ dataloader = torch.utils.data.DataLoader(
     shuffle=False,
     num_workers=int(args.workers))
 
-input_real = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)
+input_real1 = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)
+input_real2 = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)
 input1 = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)
 input2 = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)
-input_real = input_real.to(device)
+input_real1 = input_real.to(device)
+input_real2 = input_real.to(device)
 input1 = input1.to(device)
 input2 = input2.to(device)
 netG.to(device)
@@ -181,7 +183,6 @@ optimizer = optim.Adam(netG.parameters(),
 #             output_B = netG(input)
 
 print('start training...')
-
 netG.train()
 for epoch in range(args.epochs):
     for i, data in enumerate(dataloader, 1):
@@ -189,47 +190,61 @@ for epoch in range(args.epochs):
             input_cpu = data
             category = 'real'
             
-            input_real.resize_(input_cpu.size()).copy_(input_cpu)
+            input_real1.resize_(input_cpu.size()).copy_(input_cpu)
+            input_real2.resize_(input_cpu.size()).copy_(input_cpu)
             if args.which_model_netG.startswith('cascade'):
-                res, _ = netG(input_real)
+                res1, res2 = netG(input_real1, input_real2)
                 if len(res) % 2 == 1:
-                    output_B, output_R = res[-1], res[-2]
+                    output_B1, output_R1 = res1[-1], res1[-2]
                 else:
-                    output_B, output_R = res[-2], res[-1]
+                    output_B1, output_R1 = res1[-2], res1[-1]
             else:
-                output_B = netG(input)
+                output_B1 = netG(input_real1)
 
         else:
-            input_data, target_B_data, target_R_data = data
+            input_data1, input_data2, target_B_data1, target_B_data2, target_R_data1, target_R_data2 = data
             
-            input_real.resize_(input_data.size()).copy_(input_data)
+            input_real1.resize_(input_data1.size()).copy_(input_data1)
             if args.which_model_netG.startswith('cascade'):
-                res, _ = netG(input_real)
+                res1, res2 = netG(input_real1, input_real2)
                 
-                if len(res) % 2 == 1:
-                    output_B, output_R = res[-1], res[-2]
+                if len(res1) % 2 == 1:
+                    output_B1, output_R1 = res1[-1], res1[-2]
                 else:
-                    output_B, output_R = res[-2], res[-1]
+                    output_B1, output_R1 = res1[-2], res1[-1]
+                    
+                if len(res2) % 2 == 1:
+                    output_B2, output_R2 = res2[-1], res2[-2]
+                else:
+                    output_B2, output_R2 = res2[-2], res2[-1]
             else:
                 raise NotImplementedError('requires stating which model type to use')
             
             ### DELETE THIS
-            print(target_B_data.size())
+            print(target_B_data1.size())
             
-            target_B = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)
-            target_R = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)
+            target_B1 = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)
+            target_B2 = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)
+            target_R1 = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)
+            target_R2 = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)
 
-            target_B.to(device)
-            target_R.to(device)
-
-            target_B.resize_(target_B_data.size()).copy_(target_B_data)
-            target_R.resize_(target_R_data.size()).copy_(target_R_data)
+            target_B1 = target_B1.to(device)
+            target_B2 = target_B2.to(device)
+            target_R1 = target_R1.to(device)
+            target_R2 = target_R2.to(device)
+            
+            target_B1.resize_(target_B_data1.size()).copy_(target_B_data1)
+            target_B2.resize_(target_B_data2.size()).copy_(target_B_data2)
+            target_R1.resize_(target_R_data1.size()).copy_(target_R_data1)
+            target_R2.resize_(target_R_data2.size()).copy_(target_R_data2)
             
             # error
-            errB = criterion(output_B, target_B)
-            errR = criterion(output_R, target_R)
+            errB1 = criterion(output_B1, target_B1)
+            errB2 = criterion(output_B2, target_B2)
+            errR1 = criterion(output_R1, target_R1)
+            errR2 = criterion(output_R2, target_R2)
             
-            loss = errB + errR
+            loss = errB1 + errB2 + errR1 + errR2
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
