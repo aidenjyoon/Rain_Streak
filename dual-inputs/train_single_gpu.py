@@ -221,7 +221,8 @@ for epoch in range(args.epochs):
                 raise NotImplementedError('requires stating which model type to use')
             
             ### DELETE THIS
-            print(target_B_data1.size())
+            # print(target_B_data1.size())
+            # torch.Size([8, 3, 256, 256])
             
             target_B1 = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)
             target_B2 = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)
