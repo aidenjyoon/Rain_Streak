@@ -153,12 +153,15 @@ dataset = rain_dataset(
     real=args.real)
 assert dataset
 
+sampler = sampler(dataset)
+
 dataloader = torch.utils.data.DataLoader(
     dataset,
     batch_size=args.batchSize,
     shuffle=False,
     num_workers=int(args.workers),
     sampler=sampler)
+
 
 print('====================================')
 # print("LENGTH OF DATALOADER  -  ", len(dataloader))
