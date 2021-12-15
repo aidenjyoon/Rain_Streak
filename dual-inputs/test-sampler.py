@@ -83,27 +83,27 @@ class rain_dataset(Dataset):
             input1 = Image.open(os.path.join(self.root, img)).convert('RGB')        # Image
             input2 = Image.open(os.path.join(self.root, img)).convert('RGB')        # Image
             
-            extracted_rain1 = img_as_float(input1) - img_as_float(input2)
-            extracted_rain2 = img_as_float(input2) - img_as_float(input1)
+            # extracted_rain1 = img_as_float(input1) - img_as_float(input2)
+            # extracted_rain2 = img_as_float(input2) - img_as_float(input1)
             
-            rain1_mask = extracted_rain1 >= 0
-            rain2_mask = extracted_rain2 >= 0
-            rain1 = extracted_rain1 * rain1_mask
-            rain2 = extracted_rain2 * rain2_mask
-            background1 = img_as_float(input1) - img_as_float(rain1)
-            background2 = img_as_float(input2) - img_as_float(rain2)
+            # rain1_mask = extracted_rain1 >= 0
+            # rain2_mask = extracted_rain2 >= 0
+            # rain1 = extracted_rain1 * rain1_mask
+            # rain2 = extracted_rain2 * rain2_mask
+            # background1 = img_as_float(input1) - img_as_float(rain1)
+            # background2 = img_as_float(input2) - img_as_float(rain2)
             
-            if self.transform is not None:
-                input1 = self.transform(input1)
-                input2 = self.transform(input2)
-            if self.target_transform is not None:
-                target1 = self.target_transform(background1)
-                target2 = self.target_transform(background2)
-            if self.rain_transform is not None:
-                target_rain1 = self.rain_transform(rain1)
-                target_rain2 = self.rain_transform(rain2)
+            # if self.transform is not None:
+            #     input1 = self.transform(input1)
+            #     input2 = self.transform(input2)
+            # if self.target_transform is not None:
+            #     target1 = self.target_transform(background1)
+            #     target2 = self.target_transform(background2)
+            # if self.rain_transform is not None:
+            #     target_rain1 = self.rain_transform(rain1)
+            #     target_rain2 = self.rain_transform(rain2)
             
-            return input1, input2, target1, target2, target_rain1, target_rain2
+            return input1, input2#, target1, target2, target_rain1, target_rain2
             
     def __len__(self):
         return len(self.ids)
