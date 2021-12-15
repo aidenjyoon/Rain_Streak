@@ -138,7 +138,7 @@ print(args.dataroot)
 
 
 transform = transforms.Compose([
-    transforms.Resize(args.imageSize),
+    # transforms.Resize(args.imageSize),
     # transforms.CenterCrop(opt.imageSize),
     transforms.ToTensor(),
     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
@@ -167,4 +167,6 @@ print('====================================')
 # print('====================================')
 
 for i, data in enumerate(dataloader):
+    
+    input1, input2 = data
     print(i, data)
