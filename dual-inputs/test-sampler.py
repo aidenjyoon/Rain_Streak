@@ -131,6 +131,9 @@ parser.add_argument('--batchSize',
 
 args = parser.parse_args()
 
+print(args.dataroot)
+
+
 transform = transforms.Compose([
     # transforms.Scale(opt.imageSize),
     # transforms.CenterCrop(opt.imageSize),
