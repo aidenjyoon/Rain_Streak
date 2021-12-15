@@ -128,6 +128,10 @@ parser.add_argument('--batchSize',
                         help='input batch size',
                         default=8,
                         type=int)
+parser.add_argument('--imageSize',
+                        help='the height / width of the input image to network',
+                        default=256,
+                        type=int)
 
 args = parser.parse_args()
 
