@@ -154,8 +154,8 @@ dataloader = torch.utils.data.DataLoader(
     sampler=sampler)
 
 print('====================================')
-print("LENGTH OF DATALOADER  -  ", len(dataloader))
-print('====================================')
+# print("LENGTH OF DATALOADER  -  ", len(dataloader))
+# print('====================================')
 
 for i, data in enumerate(dataloader, 1):
     print(i, data)
