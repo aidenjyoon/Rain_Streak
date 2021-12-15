@@ -157,5 +157,5 @@ print('====================================')
 # print("LENGTH OF DATALOADER  -  ", len(dataloader))
 # print('====================================')
 
-for i, data in enumerate(dataloader, 1):
+for i, data in enumerate(dataloader):
     print(i, data)
