@@ -29,7 +29,7 @@ from math import log10
 from PIL import Image
 
 
-class sampler(torch.util.data.Sampler):
+class sampler(torch.utils.data.Sampler):
     def __init__(self, data_source, invalid_idx):
         self.data_source = data_source
         self.invalid_idx = invalid_idx
@@ -150,7 +150,8 @@ dataloader = torch.utils.data.DataLoader(
     dataset,
     batch_size=args.batchSize,
     shuffle=False,
-    num_workers=int(args.workers))
+    num_workers=int(args.workers),
+    sampler=sampler)
 
 print('====================================')
 print("LENGTH OF DATALOADER  -  ", len(dataloader))
