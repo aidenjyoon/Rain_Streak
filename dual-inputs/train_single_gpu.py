@@ -126,7 +126,7 @@ if args.netG != '':
     netG.load_state_dict(torch.load(args.netG))
 
 transform = transforms.Compose([
-    # transforms.Scale(args.imageSize),
+    transforms.Scale(args.imageSize),
     # transforms.CenterCrop(args.imageSize),
     transforms.ToTensor(),
     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
@@ -155,7 +155,6 @@ input_real2 = input_real2.to(device)
 input1 = input1.to(device)
 input2 = input2.to(device)
 netG.to(device)
-# netG.eval()
 
 criterion = nn.MSELoss()
 criterion.to(device)
@@ -166,21 +165,6 @@ optimizer = optim.Adam(netG.parameters(),
                        lr=lr, 
                        betas=beta[:2])
 
-# for i, data in enumerate(dataloader, 1):
-#     if args.real:
-#         input_cpu = data
-#         category = 'real'
-        
-#         input_real.resize_(input_cpu.size()).copy_(input_cpu)
-#         if args.which_model_netG.startswith('cascade'):
-#             res = netG(input_real)
-#             if len(res) % 2 == 1:
-#                 output_B1, output_R1 = res[-1], res[-2]
-#             else:
-#                 output_B2, output_R2 = res[-2], res[-1]
-#         else:
-#             # don't use atm
-#             output_B = netG(input)
 
 print('start training...')
 netG.train()
@@ -194,7 +178,7 @@ for epoch in range(args.epochs):
             input_real2.resize_(input_cpu.size()).copy_(input_cpu)
             if args.which_model_netG.startswith('cascade'):
                 res1, res2 = netG(input_real1, input_real2)
-                if len(res) % 2 == 1:
+                if len(res1) % 2 == 1:
                     output_B1, output_R1 = res1[-1], res1[-2]
                 else:
                     output_B1, output_R1 = res1[-2], res1[-1]
@@ -223,7 +207,6 @@ for epoch in range(args.epochs):
             ### DELETE THIS
             # print(target_B_data1.size())
             # torch.Size([8, 3, 256, 256])
-            
             target_B1 = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)
             target_B2 = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)
             target_R1 = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)
@@ -250,7 +233,6 @@ for epoch in range(args.epochs):
             loss.backward()
             optimizer.step()
             
-                    
         # Output training stats
         if i % 50 == 0:
             print(f'{i}/{len(dataloader)}\tLoss_B1: {errB1}/tLoss_R1: {errR1}\tLoss_B2: {errB2}/tLoss_R2: {errR2}')
