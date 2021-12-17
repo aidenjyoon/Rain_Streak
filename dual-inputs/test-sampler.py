@@ -31,8 +31,9 @@ from PIL import Image
 
 
 class MySampler(torch.utils.data.Sampler):
-    def __init__(self, data_source):
+    def __init__(self, data_source, invalid_idx):
         self.data_source = data_source
+        self.invalid_idx = invalid_idx
         
     def __iter__(self):
         indices = torch.arange(len(self.data_source))
