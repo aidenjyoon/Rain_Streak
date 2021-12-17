@@ -146,15 +146,15 @@ class rain_dataset(Dataset):
             input1 = Image.open(os.path.join(self.root, img)).convert('RGB')        # Image
             input2 = Image.open(os.path.join(self.root, img)).convert('RGB')        # Image
             
-            # extracted_rain1 = img_as_float(input1) - img_as_float(input2)
-            # extracted_rain2 = img_as_float(input2) - img_as_float(input1)
+            extracted_rain1 = img_as_float(input1) - img_as_float(input2)
+            extracted_rain2 = img_as_float(input2) - img_as_float(input1)
             
-            # rain1_mask = extracted_rain1 >= 0
-            # rain2_mask = extracted_rain2 >= 0
-            # rain1 = extracted_rain1 * rain1_mask
-            # rain2 = extracted_rain2 * rain2_mask
-            # background1 = img_as_float(input1) - img_as_float(rain1)
-            # background2 = img_as_float(input2) - img_as_float(rain2)
+            rain1_mask = extracted_rain1 >= 0
+            rain2_mask = extracted_rain2 >= 0
+            rain1 = extracted_rain1 * rain1_mask
+            rain2 = extracted_rain2 * rain2_mask
+            background1 = img_as_float(input1) - img_as_float(rain1)
+            background2 = img_as_float(input2) - img_as_float(rain2)
             
             if self.transform is not None:
                 input1 = self.transform(input1)
