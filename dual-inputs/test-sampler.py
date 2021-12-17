@@ -232,4 +232,4 @@ print('====================================')
 for i, data in enumerate(dataloader):
     
     input1, input2 = data
-    print(i, data)
+    print(i, input1.shape)
