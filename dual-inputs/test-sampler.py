@@ -221,7 +221,6 @@ dataloader = torch.utils.data.DataLoader(
     dataset,
     batch_size=args.batchSize,
     shuffle=False,
-    num_workers=int(args.workers),
     )
 
 
