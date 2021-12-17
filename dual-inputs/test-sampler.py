@@ -38,7 +38,8 @@ class MySampler(torch.utils.data.Sampler):
         indices = torch.arange(len(self.data_source))
         paired_indices = indices.unfold(0, 2, 1)
         paired_indices = torch.stack(
-            [paired_indices[i] for i in range(len(paired_indices))])
+            [paired_indices[i] for i in range(len(paired_indices)) 
+                if not i in invalid_idx])
         paired_indices = paired_indices[torch.randperm(len(paired_indices))]
         indices = paired_indices.view(-1)
 
@@ -61,9 +62,9 @@ class MyDataset(Dataset):
 
 
 data = torch.tensor([11, 12, 13, 21, 22, 23, 31, 32, 33], dtype=torch.float)
-# invalid_idx = torch.tensor([2, 5, 8])
+invalid_idx = torch.tensor([2, 5, 8])
 dataset = MyDataset(data)
-sampler = MySampler(data)
+sampler = MySampler(data, invalid_idx)
 loader = torch.utils.data.DataLoader(
     dataset,
     batch_size=1,
@@ -72,6 +73,7 @@ loader = torch.utils.data.DataLoader(
 
 for x in loader:
     print(x)
+    print('==========')
 
 
 
