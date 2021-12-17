@@ -66,7 +66,7 @@ data = torch.tensor([11, 12, 13, 21, 22, 23, 31, 32, 33], dtype=torch.float)
 invalid_idx = torch.tensor([2, 5, 8])
 dataset = MyDataset(data)
 sampler = MySampler(data, invalid_idx)
-loader = DataLoader(
+loader = torch.utils.data.DataLoader(
     dataset,
     batch_size=1,
     sampler=sampler
