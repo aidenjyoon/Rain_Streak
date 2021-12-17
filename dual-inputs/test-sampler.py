@@ -39,19 +39,21 @@ class MySampler(torch.utils.data.Sampler):
         indices = torch.arange(len(self.data_source))
         paired_indices = indices.unfold(0, 2, 1)
         
-        print('paried_indices unfolded: ' , paired_indices)
+        print('paried_indices unfolded: \n' , paired_indices)
         print('==========')
         
         paired_indices = torch.stack(
             [paired_indices[i] for i in range(len(paired_indices)) 
                 if not i in invalid_idx])
         
-        print('paried_indices stacked: ' , paired_indices)
+        print('paried_indices stacked: \n' , paired_indices)
+        print('==========')
 
         
         paired_indices = paired_indices[torch.randperm(len(paired_indices))]
         indices = paired_indices.view(-1)
 
+        print(iter(indices.tolist()))
         return iter(indices.tolist())
     
     def __len__(self):
