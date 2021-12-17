@@ -38,6 +38,9 @@ class MySampler(torch.utils.data.Sampler):
     def __iter__(self):
         indices = torch.arange(len(self.data_source))
         paired_indices = indices.unfold(0, 2, 1)
+        
+        print('paried_indices unfolded: ' , paired_indices)
+        
         paired_indices = torch.stack(
             [paired_indices[i] for i in range(len(paired_indices)) 
                 if not i in invalid_idx])
@@ -75,6 +78,7 @@ loader = torch.utils.data.DataLoader(
 for x in loader:
     print(x)
     print('==========')
+    
 
 
 
