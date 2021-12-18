@@ -88,33 +88,34 @@ from PIL import Image
 #     print('==========')
     
 
-# def sampler(torch.utils.data.Sampler):
-#     def __init__(self, data_source):
-#         self.data_source = data_source
-        
-        
-#     def __iter__(self):
-        
-
-class sampler(torch.utils.data.Sampler):
+def sampler(torch.utils.data.Sampler):
     def __init__(self, data_source):
         self.data_source = data_source
         
+        
     def __iter__(self):
-        print("data source :", self.data_source)
         
-        indices = torch.arange(len(self.data_source))
-        paired_indices = indices.unfold(0,2,1)
-        paired_indices = torch.stack(
-            [paired_indices[i] for i in range(len(paired_indices))]
-        )
-        paired_indices = paired_indices[torch.randperm(len(paired_indices))]
-        indices = paired_indices.view(-1)
         
-        return iter(indices.tolist())
+
+# class sampler(torch.utils.data.Sampler):
+#     def __init__(self, data_source):
+#         self.data_source = data_source
         
-    def __len__(self):
-        return len(self.data_source)
+#     def __iter__(self):
+#         print("data source :", self.data_source)
+        
+#         indices = torch.arange(len(self.data_source))
+#         paired_indices = indices.unfold(0,2,1)
+#         paired_indices = torch.stack(
+#             [paired_indices[i] for i in range(len(paired_indices))]
+#         )
+#         paired_indices = paired_indices[torch.randperm(len(paired_indices))]
+#         indices = paired_indices.view(-1)
+        
+#         return iter(indices.tolist())
+        
+#     def __len__(self):
+#         return len(self.data_source)
 
 
 # class sampler(torch.utils.data.Sampler):
@@ -251,7 +252,7 @@ dataloader = torch.utils.data.DataLoader(
     batch_size=args.batchSize,
     shuffle=False,
     num_workers=int(args.workers),
-    sampler=sampler
+    # sampler=sampler
     )
 
 
