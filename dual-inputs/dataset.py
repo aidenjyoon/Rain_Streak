@@ -42,7 +42,7 @@ class rain_dataset(Dataset):
             # input = Image.open(os.path.join(self.root, 'I', img)).convert('RGB')        # Image
             # target = Image.open(os.path.join(self.root, 'B', img)).convert('RGB')       # Background
             # target_rain = Image.open(os.path.join(self.root, 'R', img)).convert('RGB')  # Rain
-            
+
             input1 = Image.open(os.path.join(self.root, img)).convert('RGB')        # Image
             input2 = Image.open(os.path.join(self.root, img)).convert('RGB')        # Image
             
