@@ -88,12 +88,12 @@ from PIL import Image
 #     print('==========')
     
 
-def sampler(torch.utils.data.Sampler):
-    def __init__(self, data_source):
-        self.data_source = data_source
+# def sampler(torch.utils.data.Sampler):
+#     def __init__(self, data_source):
+#         self.data_source = data_source
         
         
-    def __iter__(self):
+#     def __iter__(self):
         
         
 
