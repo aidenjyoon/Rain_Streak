@@ -194,64 +194,64 @@ class rain_dataset(Dataset):
     
     
 
-# parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser()
 
-# parser.add_argument('--dataroot', 
-#                         help='path to dataset',
-#                         default='../rain_generator/train_horse/',
-#                         type=str)
-# parser.add_argument('--real', 
-#                         help='test real images',
-#                         action='store_true')
-# parser.add_argument('--workers', 
-#                         help='number of data loading workers', 
-#                         default=2,
-#                         type=int)
-# parser.add_argument('--batchSize', 
-#                         help='input batch size',
-#                         default=8,
-#                         type=int)
-# parser.add_argument('--imageSize',
-#                         help='the height / width of the input image to network',
-#                         default=256,
-#                         type=int)
+parser.add_argument('--dataroot', 
+                        help='path to dataset',
+                        default='../rain_generator/train_horse/',
+                        type=str)
+parser.add_argument('--real', 
+                        help='test real images',
+                        action='store_true')
+parser.add_argument('--workers', 
+                        help='number of data loading workers', 
+                        default=2,
+                        type=int)
+parser.add_argument('--batchSize', 
+                        help='input batch size',
+                        default=8,
+                        type=int)
+parser.add_argument('--imageSize',
+                        help='the height / width of the input image to network',
+                        default=256,
+                        type=int)
 
-# args = parser.parse_args()
+args = parser.parse_args()
 
-# print(args.dataroot)
-
-
-# transform = transforms.Compose([
-#     # transforms.Resize(args.imageSize),
-#     # transforms.CenterCrop(opt.imageSize),
-#     transforms.ToTensor(),
-#     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
-# ])
-
-# dataset = rain_dataset(
-#     args.dataroot,
-#     transform=transform,
-#     target_transform=transform,
-#     rain_transform=transform,
-#     real=args.real)
-# assert dataset
-
-# sampler = sampler(dataset)
-
-# dataloader = torch.utils.data.DataLoader(
-#     dataset,
-#     batch_size=args.batchSize,
-#     shuffle=False,
-#     num_workers=int(args.workers),
-#     sampler=sampler
-#     )
+print(args.dataroot)
 
 
+transform = transforms.Compose([
+    # transforms.Resize(args.imageSize),
+    # transforms.CenterCrop(opt.imageSize),
+    transforms.ToTensor(),
+    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+])
+
+dataset = rain_dataset(
+    args.dataroot,
+    transform=transform,
+    target_transform=transform,
+    rain_transform=transform,
+    real=args.real)
+assert dataset
+
+sampler = sampler(dataset)
+
+dataloader = torch.utils.data.DataLoader(
+    dataset,
+    batch_size=args.batchSize,
+    shuffle=False,
+    num_workers=int(args.workers),
+    # sampler=sampler
+    )
+
+
+print('====================================')
+# print("LENGTH OF DATALOADER  -  ", len(dataloader))
 # print('====================================')
-# # print("LENGTH OF DATALOADER  -  ", len(dataloader))
-# # print('====================================')
 
-# for i, data in enumerate(dataloader):
+for i, data in enumerate(dataloader):
     
-#     input1, input2 = data
-#     print(i, input1.shape)
+    input1, input2 = data
+    print(i, input1.shape)
