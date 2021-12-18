@@ -83,12 +83,10 @@ from PIL import Image
 # )
 
 # for x in loader:
+#     x1, x2 = x
 #     print(x)
 #     print('==========')
     
-
-
-
 
 
 
@@ -109,6 +107,25 @@ class sampler(torch.utils.data.Sampler):
         
     def __len__(self):
         return len(self.data_source)
+
+
+# class sampler(torch.utils.data.Sampler):
+#     def __init__(self, data_source):
+#         self.data_source = data_source
+        
+#     def __iter__(self):
+#         indices = torch.arange(len(self.data_source))
+#         paired_indices = indices.unfold(0,2,1)
+#         paired_indices = torch.stack(
+#             [paired_indices[i] for i in range(len(paired_indices))]
+#         )
+#         paired_indices = paired_indices[torch.randperm(len(paired_indices))]
+#         indices = paired_indices.view(-1)
+        
+#         return iter(indices.tolist())
+        
+#     def __len__(self):
+#         return len(self.data_source)
 
 class rain_dataset(Dataset):
     def __init__(self,
@@ -132,7 +149,8 @@ class rain_dataset(Dataset):
         
         # print("THIS IS THE INDEX", index)
         
-        img = self.ids[index]
+        img1 = self.ids[index]
+        img2 = self.ids[index]
         if self.real:
             input = Image.open(os.path.join(self.root, img)).convert('RGB')
             if self.transform is not None:
@@ -142,9 +160,12 @@ class rain_dataset(Dataset):
             # input = Image.open(os.path.join(self.root, 'I', img)).convert('RGB')        # Image
             # target = Image.open(os.path.join(self.root, 'B', img)).convert('RGB')       # Background
             # target_rain = Image.open(os.path.join(self.root, 'R', img)).convert('RGB')  # Rain
-
-            input1 = Image.open(os.path.join(self.root, img)).convert('RGB')        # Image
-            input2 = Image.open(os.path.join(self.root, img)).convert('RGB')        # Image
+            
+            print('img1 name: ', img1)
+            print('img2 name: ', img2)
+            
+            input1 = Image.open(os.path.join(self.root, img1)).convert('RGB')        # Image
+            input2 = Image.open(os.path.join(self.root, img2)).convert('RGB')        # Image
             
             extracted_rain1 = img_as_float(input1) - img_as_float(input2)
             extracted_rain2 = img_as_float(input2) - img_as_float(input1)
@@ -173,64 +194,64 @@ class rain_dataset(Dataset):
     
     
 
-parser = argparse.ArgumentParser()
+# parser = argparse.ArgumentParser()
 
-parser.add_argument('--dataroot', 
-                        help='path to dataset',
-                        default='../rain_generator/train_horse/',
-                        type=str)
-parser.add_argument('--real', 
-                        help='test real images',
-                        action='store_true')
-parser.add_argument('--workers', 
-                        help='number of data loading workers', 
-                        default=2,
-                        type=int)
-parser.add_argument('--batchSize', 
-                        help='input batch size',
-                        default=8,
-                        type=int)
-parser.add_argument('--imageSize',
-                        help='the height / width of the input image to network',
-                        default=256,
-                        type=int)
+# parser.add_argument('--dataroot', 
+#                         help='path to dataset',
+#                         default='../rain_generator/train_horse/',
+#                         type=str)
+# parser.add_argument('--real', 
+#                         help='test real images',
+#                         action='store_true')
+# parser.add_argument('--workers', 
+#                         help='number of data loading workers', 
+#                         default=2,
+#                         type=int)
+# parser.add_argument('--batchSize', 
+#                         help='input batch size',
+#                         default=8,
+#                         type=int)
+# parser.add_argument('--imageSize',
+#                         help='the height / width of the input image to network',
+#                         default=256,
+#                         type=int)
 
-args = parser.parse_args()
+# args = parser.parse_args()
 
-print(args.dataroot)
-
-
-transform = transforms.Compose([
-    # transforms.Resize(args.imageSize),
-    # transforms.CenterCrop(opt.imageSize),
-    transforms.ToTensor(),
-    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
-])
-
-dataset = rain_dataset(
-    args.dataroot,
-    transform=transform,
-    target_transform=transform,
-    rain_transform=transform,
-    real=args.real)
-assert dataset
-
-sampler = sampler(dataset)
-
-dataloader = torch.utils.data.DataLoader(
-    dataset,
-    batch_size=args.batchSize,
-    shuffle=False,
-    num_workers=int(args.workers),
-    sampler=sampler
-    )
+# print(args.dataroot)
 
 
-print('====================================')
-# print("LENGTH OF DATALOADER  -  ", len(dataloader))
+# transform = transforms.Compose([
+#     # transforms.Resize(args.imageSize),
+#     # transforms.CenterCrop(opt.imageSize),
+#     transforms.ToTensor(),
+#     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+# ])
+
+# dataset = rain_dataset(
+#     args.dataroot,
+#     transform=transform,
+#     target_transform=transform,
+#     rain_transform=transform,
+#     real=args.real)
+# assert dataset
+
+# sampler = sampler(dataset)
+
+# dataloader = torch.utils.data.DataLoader(
+#     dataset,
+#     batch_size=args.batchSize,
+#     shuffle=False,
+#     num_workers=int(args.workers),
+#     sampler=sampler
+#     )
+
+
 # print('====================================')
+# # print("LENGTH OF DATALOADER  -  ", len(dataloader))
+# # print('====================================')
 
-for i, data in enumerate(dataloader):
+# for i, data in enumerate(dataloader):
     
-    input1, input2 = data
-    print(i, input1.shape)
+#     input1, input2 = data
+#     print(i, input1.shape)
