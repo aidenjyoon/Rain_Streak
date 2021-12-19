@@ -104,6 +104,9 @@ class sampler(torch.utils.data.Sampler):
     def __iter__(self):
         
         indices = torch.arange(len(self.data_source))
+        
+        print('DATA SOURCE', self.data_source[0])
+        
         paired_indices = indices.unfold(0,2,1)
         paired_indices = torch.stack(
             [paired_indices[i] for i in range(len(paired_indices))]
