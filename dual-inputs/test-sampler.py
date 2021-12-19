@@ -113,6 +113,9 @@ class sampler(torch.utils.data.Sampler):
             [paired_indices[i] for i in range(len(paired_indices))]
         )
         print('PAIRED INDICES',paired_indices[0])
+        print('PAIRED INDICES',paired_indices[1])
+        print('PAIRED INDICES',paired_indices[2])
+        print('PAIRED INDICES',paired_indices[3])
 
         
         # shuffle
