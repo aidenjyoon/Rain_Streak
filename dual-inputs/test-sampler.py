@@ -105,7 +105,7 @@ class sampler(torch.utils.data.Sampler):
         
         indices = torch.arange(len(self.data_source))
         
-        print('DATA SOURCE', self.data_source[0])
+        print('DATA SOURCE', self.data_source.ids)
         
         paired_indices = indices.unfold(0,2,1)
         paired_indices = torch.stack(
