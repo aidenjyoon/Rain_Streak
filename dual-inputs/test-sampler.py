@@ -103,15 +103,19 @@ class sampler(torch.utils.data.Sampler):
         
     def __iter__(self):
         
+        # names and idicies
         indices = torch.arange(len(self.data_source))
+        img_names = self.data_source.ids
         
-        print('DATA SOURCE', self.data_source.ids)
         
         paired_indices = indices.unfold(0,2,1)
         paired_indices = torch.stack(
             [paired_indices[i] for i in range(len(paired_indices))]
         )
+        
+        # shuffle
         paired_indices = paired_indices[torch.randperm(len(paired_indices))]
+        
         indices = paired_indices.view(-1)
         print('INDICES',indices)
         return iter(indices.tolist())
