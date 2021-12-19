@@ -250,7 +250,7 @@ sampler = sampler(dataset)
 dataloader = torch.utils.data.DataLoader(
     dataset,
     batch_size=args.batchSize,
-    shuffle=True,
+    # shuffle=True,
     num_workers=int(args.workers),
     sampler=sampler
     )
