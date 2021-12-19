@@ -112,6 +112,8 @@ class sampler(torch.utils.data.Sampler):
         paired_indices = torch.stack(
             [paired_indices[i] for i in range(len(paired_indices))]
         )
+        print('PAIRED INDICES',paired_indices[0])
+
         
         # shuffle
         paired_indices = paired_indices[torch.randperm(len(paired_indices))]
