@@ -140,7 +140,7 @@ class sampler(torch.utils.data.Sampler):
                 img_files = []
                     
         print('=========================')
-        print('DICT:', dict)            
+        print('DICT:', dict[0], '\n' dict[1])
         print('=========================')
     
     def __iter__(self):
