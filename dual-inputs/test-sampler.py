@@ -141,6 +141,7 @@ class sampler(torch.utils.data.Sampler):
                     
         print('=========================')
         print('DICT:', dict['0'], '\n', dict['1'])
+        print('count:', len(dict['0']), len(dict['3']))
         print('=========================')
     
     def __iter__(self):
