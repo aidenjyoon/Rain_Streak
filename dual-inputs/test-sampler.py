@@ -137,7 +137,8 @@ class sampler(torch.utils.data.Sampler):
                 # refresh
                 img_n = ''
                 img_files = []
-                    
+                
+        return dict
         # print('=========================')
         # print('DICT:', dict['0'], '\n', dict['1'])
         # print('count:', len(dict['0']), len(dict['3']))
