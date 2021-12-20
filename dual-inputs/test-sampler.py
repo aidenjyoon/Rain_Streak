@@ -105,25 +105,56 @@ class sampler(torch.utils.data.Sampler):
         
         # names and idicies
         indices = torch.arange(len(self.data_source))
-        img_names = self.data_source.ids
+        img_names = self.data_source.ids # ie. img_n112_0deg_rc200_2.jpg
         
-        
+        # To-do:
+        # go through img-names and filter
+        img_n = ''
+        counter = 0
+        dict = {}
+        for name in img_names:
+            temp = ''
+            # iterate through .jpg name
+            for idx, char in enumerate(name):
+                # check if at img_n
+                if idx > 4:
+                    # check if char isn't surpassing n..#.._
+                    if char != '_':
+                        # get the img_n
+                        temp = temp + char
+                    else:
+                        break
+    
+    
+            if img_n == '':
+                img_n = temp
+                dict[img_n] = 0
+                
+            # check if img_n changed or not
+            if img_n == temp:
+                counter += 1
+                dict[img_n] = counter
+            else: # if diff
+                # refresh
+                img_n = ''
+                counter = 0
+                    
+        print('=========================')
+        print('DICT:', dict)            
+        print('=========================')
+                    
+                    
         paired_indices = indices.unfold(0,2,1)
         paired_indices = torch.stack(
             [paired_indices[i] for i in range(len(paired_indices))]
         )
-        print('PAIRED INDICES',paired_indices[0])
-        print('PAIRED INDICES',paired_indices[1])
-        print('PAIRED INDICES',paired_indices[2])
-        print('PAIRED INDICES',paired_indices[3])
 
         
         # shuffle
-        paired_indices = paired_indices[torch.randperm(len(paired_indices))]
-        print('INDICES',paired_indices)
+        # paired_indices = paired_indices[torch.randperm(len(paired_indices))]
+        # print('INDICES',paired_indices)
 
-        indices = paired_indices.view(-1)
-        return iter(indices.tolist())
+        return iter(paired_indices.tolist())
         
     def __len__(self):
         return len(self.data_source)
