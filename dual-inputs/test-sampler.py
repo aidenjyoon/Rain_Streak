@@ -28,7 +28,7 @@ from torch.autograd import Variable
 from math import log10
 from PIL import Image
 
-
+from itertools import permutations
 
 # class MySampler(torch.utils.data.Sampler):
 #     def __init__(self, data_source, invalid_idx):
@@ -137,12 +137,12 @@ class sampler(torch.utils.data.Sampler):
                 # refresh
                 img_n = ''
                 img_files = []
-                
-        return dict
         # print('=========================')
         # print('DICT:', dict['0'], '\n', dict['1'])
         # print('count:', len(dict['0']), len(dict['3']))
-        # print('=========================')
+        # print('=========================')     
+        return dict
+        
     
     def __iter__(self):
         
@@ -150,9 +150,13 @@ class sampler(torch.utils.data.Sampler):
         print('how many images:', len(imgs_dict))
         
         for i in range(len(imgs_dict)):
-            print(i)
+            img_files_arr = imgs_dict[str(i)]
 
-                    
+            perm_list = list(permutations(range(len(img_files_arr))))
+            print('PERMUTATIONS: ', perm_list)
+            
+            break
+        
         paired_indices = self.indices.unfold(0,2,1)
         paired_indices = torch.stack(
             [paired_indices[i] for i in range(len(paired_indices))]
@@ -168,23 +172,6 @@ class sampler(torch.utils.data.Sampler):
     def __len__(self):
         return len(self.data_source)
 
-# class sampler(torch.utils.data.Sampler):
-#     def __init__(self, data_source):
-#         self.data_source = data_source
-        
-#     def __iter__(self):
-#         indices = torch.arange(len(self.data_source))
-#         paired_indices = indices.unfold(0,2,1)
-#         paired_indices = torch.stack(
-#             [paired_indices[i] for i in range(len(paired_indices))]
-#         )
-#         paired_indices = paired_indices[torch.randperm(len(paired_indices))]
-#         indices = paired_indices.view(-1)
-        
-#         return iter(indices.tolist())
-        
-#     def __len__(self):
-#         return len(self.data_source)
 
 class rain_dataset(Dataset):
     def __init__(self,
