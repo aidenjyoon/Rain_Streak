@@ -98,21 +98,22 @@ from PIL import Image
         
 
 class sampler(torch.utils.data.Sampler):
-    def __init__(self, data_source):
+    def __init__(self, data_source, batch_size=2):
         self.data_source = data_source
-        
-    def __iter__(self):
+        self.batch_size = batch_size
         
         # names and idicies
-        indices = torch.arange(len(self.data_source))
-        img_names = self.data_source.ids # ie. img_n112_0deg_rc200_2.jpg
+        self.indices = torch.arange(len(self.data_source))
+        self.img_names = self.data_source.ids # ie. img_n112_0deg_rc200_2.jpg
+
+    def get_dict(self):
         
-        # To-do:
-        # go through img-names and filter
+        # go through img-names and create a dictionary of item: count
         img_n = ''
         counter = 0
+        img_files = []
         dict = {}
-        for name in img_names:
+        for name in self.img_names:
             temp = ''
             # iterate through .jpg name
             for idx, char in enumerate(name):
@@ -125,26 +126,30 @@ class sampler(torch.utils.data.Sampler):
                     else:
                         break
     
-    
             if img_n == '':
                 img_n = temp
                 dict[img_n] = 0
                 
             # check if img_n changed or not
-            if img_n == temp:
-                counter += 1
-                dict[img_n] = counter
-            else: # if diff
+            if img_n == temp:   # if same
+                img_files.append(name)
+                dict[img_n] = img_file
+            else:               # if diff
                 # refresh
                 img_n = ''
-                counter = 0
+                img_files = []
                     
         print('=========================')
         print('DICT:', dict)            
         print('=========================')
+    
+    def __iter__(self):
+        
+        
+
+
                     
-                    
-        paired_indices = indices.unfold(0,2,1)
+        paired_indices = self.indices.unfold(0,2,1)
         paired_indices = torch.stack(
             [paired_indices[i] for i in range(len(paired_indices))]
         )
@@ -297,7 +302,7 @@ dataloader = torch.utils.data.DataLoader(
     )
 
 
-print('====================================')
+# print('====================================')
 # print("LENGTH OF DATALOADER  -  ", len(dataloader))
 # print('====================================')
 
