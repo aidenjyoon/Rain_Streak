@@ -98,9 +98,10 @@ from itertools import permutations
         
 
 class sampler(torch.utils.data.Sampler):
-    def __init__(self, data_source, batch_size=2):
+    def __init__(self, data_source, batch_size=2, r=100):
         self.data_source = data_source
         self.batch_size = batch_size
+        self.r = r
         
         # names and idicies
         self.indices = torch.arange(len(self.data_source))
@@ -152,7 +153,7 @@ class sampler(torch.utils.data.Sampler):
         for i in range(len(imgs_dict)):
             img_files_arr = imgs_dict[str(i)]
 
-            perm_list = list(permutations(range(len(img_files_arr))))
+            perm_list = list(permutations(range(len(img_files_arr), r=self.r)))
             print('PERMUTATIONS: ', perm_list)
             
             break
