@@ -28,7 +28,7 @@ from torch.autograd import Variable
 from math import log10
 from PIL import Image
 
-from itertools import permutations
+from itertools import combinations
 
 # class MySampler(torch.utils.data.Sampler):
 #     def __init__(self, data_source, invalid_idx):
@@ -98,14 +98,14 @@ from itertools import permutations
         
 
 class sampler(torch.utils.data.Sampler):
-    def __init__(self, data_source, batch_size=2, r=100):
+    def __init__(self, data_source, batch_size=2, comb_perc=0.2):
         self.data_source = data_source
         self.batch_size = batch_size
-        self.r = r
-        
+        self.comb_perc = comb_perc
         # names and idicies
         self.indices = torch.arange(len(self.data_source))
         self.img_names = self.data_source.ids # ie. img_n112_0deg_rc200_2.jpg
+
 
     def get_dict(self):
         
@@ -148,14 +148,15 @@ class sampler(torch.utils.data.Sampler):
     def __iter__(self):
         
         imgs_dict = self.get_dict()
+        r = self.comb_perc * (len(imgs_dict) // 2)
+
         print('how many images:', len(imgs_dict))
         
         for i in range(len(imgs_dict)):
             img_files_arr = imgs_dict[str(i)]
 
-            perm_list = list(permutations(range(len(img_files_arr), r=self.r)))
-            print('PERMUTATIONS: ', perm_list)
-            
+            comb_list = list(combinations(range(len(img_files_arr), r=r)))
+            print('COMBINATIONS: ', comb_list)
             break
         
         paired_indices = self.indices.unfold(0,2,1)
