@@ -145,7 +145,7 @@ class sampler(torch.utils.data.Sampler):
     
     def __iter__(self):
         
-        
+        self.get_dict(self)
 
 
                     
