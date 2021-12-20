@@ -158,7 +158,7 @@ class sampler(torch.utils.data.Sampler):
         # shuffle
         # paired_indices = paired_indices[torch.randperm(len(paired_indices))]
         # print('INDICES',paired_indices)
-
+        paired_indices = paired_indices.view(-1)
         return iter(paired_indices.tolist())
         
     def __len__(self):
