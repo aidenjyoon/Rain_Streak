@@ -148,7 +148,7 @@ class sampler(torch.utils.data.Sampler):
     def __iter__(self):
         
         imgs_dict = self.get_dict()
-        r = self.comb_perc * (len(imgs_dict) // 2)
+        r = int(self.comb_perc * (len(imgs_dict) // 2))
 
         print('R for combination:', r)
         
