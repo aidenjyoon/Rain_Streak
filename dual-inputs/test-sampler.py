@@ -146,7 +146,7 @@ class sampler(torch.utils.data.Sampler):
     def __iter__(self):
         
         imgs_dict = self.get_dict()
-        print('how many images:' len(imgs_dict))
+        print('how many images:', len(imgs_dict))
         
         for i in range(len(imgs_dict)):
             print(i)
