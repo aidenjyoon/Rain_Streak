@@ -110,7 +110,6 @@ class sampler(torch.utils.data.Sampler):
         
         # go through img-names and create a dictionary of item: count
         img_n = ''
-        counter = 0
         img_files = []
         dict = {}
         for name in self.img_names:
@@ -139,15 +138,18 @@ class sampler(torch.utils.data.Sampler):
                 img_n = ''
                 img_files = []
                     
-        print('=========================')
-        print('DICT:', dict['0'], '\n', dict['1'])
-        print('count:', len(dict['0']), len(dict['3']))
-        print('=========================')
+        # print('=========================')
+        # print('DICT:', dict['0'], '\n', dict['1'])
+        # print('count:', len(dict['0']), len(dict['3']))
+        # print('=========================')
     
     def __iter__(self):
         
-        self.get_dict()
-
+        dict = self.get_dict()
+        print('how many images:' len(dict))
+        
+        for i in range(len(dict)):
+            print(i)
 
                     
         paired_indices = self.indices.unfold(0,2,1)
