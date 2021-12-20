@@ -150,12 +150,12 @@ class sampler(torch.utils.data.Sampler):
         imgs_dict = self.get_dict()
         r = self.comb_perc * (len(imgs_dict) // 2)
 
-        print('how many images:', len(imgs_dict))
+        print('R for combination:', r)
         
         for i in range(len(imgs_dict)):
             img_files_arr = imgs_dict[str(i)]
 
-            comb_list = list(combinations(range(len(img_files_arr), r=r)))
+            comb_list = list(combinations(range(len(img_files_arr), r)))
             print('COMBINATIONS: ', comb_list)
             break
         
