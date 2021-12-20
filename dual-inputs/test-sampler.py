@@ -133,7 +133,7 @@ class sampler(torch.utils.data.Sampler):
             # check if img_n changed or not
             if img_n == temp:   # if same
                 img_files.append(name)
-                dict[img_n] = img_file
+                dict[img_n] = img_files
             else:               # if diff
                 # refresh
                 img_n = ''
