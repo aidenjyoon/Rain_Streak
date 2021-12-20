@@ -155,7 +155,7 @@ class sampler(torch.utils.data.Sampler):
         for i in range(len(imgs_dict)):
             img_files_arr = imgs_dict[str(i)]
 
-            comb_list = list(combinations(range(len(img_files_arr), r)))
+            comb_list = list(combinations(range(len(img_files_arr)), r))
             print('COMBINATIONS: ', comb_list)
             break
         
