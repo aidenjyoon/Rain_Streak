@@ -168,7 +168,7 @@ class sampler(torch.utils.data.Sampler):
             
             # shuffled_arr = torch.tensor(random.shuffle(img_files_arr))
             random.shuffle(img_files_arr)
-            
+            print(img_files_arr)
             paired_imgs = torch.tensor(img_files_arr).unfold(0,2,1)
             print(len(paired_imgs))
             break
