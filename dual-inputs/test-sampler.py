@@ -166,13 +166,14 @@ class sampler(torch.utils.data.Sampler):
             # ie. if we have 200 images, we'd say we want twice as much pairs or half as much pairs
             #   if its more than given image pairs, we'd shuffle up the array and pair again until we have desirable amount
             
+            # cant use torch.unfold since torch.tensor only accepts nubmers no str
             # shuffled_arr = torch.tensor(random.shuffle(img_files_arr))
             random.shuffle(img_files_arr)
             print(len(img_files_arr))
-            # print(type( torch.tensor(img_files_arr) ))
-            paired_imgs = torch.tensor(img_files_arr)
-            paired_imgs = paired_imgs.unfold(0,2,1)
+            paired_imgs = [( img_files_arr[i], img_files_arr[i+1] ) for i in range(len(img_files_arr))]
+            print(paired_imgs)
             print(len(paired_imgs))
+            
             break
         
         paired_indices = self.indices.unfold(0,2,1)
