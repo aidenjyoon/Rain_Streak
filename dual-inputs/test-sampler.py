@@ -141,7 +141,7 @@ class sampler(torch.utils.data.Sampler):
         # print('=========================')
         # print('DICT:', dict['0'], '\n', dict['1'])
         # print('count:', len(dict['0']), len(dict['3']))
-        # print('=========================')     
+        # print('=========================')
         return dict
         
     
@@ -154,6 +154,7 @@ class sampler(torch.utils.data.Sampler):
         
         for i in range(len(imgs_dict)):
             img_files_arr = imgs_dict[str(i)]
+            print(img_files_arr)
 
             comb_list = list(combinations(range(len(img_files_arr)), r))
             print('COMBINATIONS: ', comb_list)
@@ -164,7 +165,6 @@ class sampler(torch.utils.data.Sampler):
             [paired_indices[i] for i in range(len(paired_indices))]
         )
 
-        
         # shuffle
         # paired_indices = paired_indices[torch.randperm(len(paired_indices))]
         # print('INDICES',paired_indices)
