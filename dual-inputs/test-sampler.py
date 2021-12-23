@@ -27,9 +27,6 @@ import torchvision.utils as vutils
 from torch.autograd import Variable
 from math import log10
 from PIL import Image
-
-from itertools import combinations
-
 # class MySampler(torch.utils.data.Sampler):
 #     def __init__(self, data_source, invalid_idx):
 #         self.data_source = data_source
@@ -108,6 +105,12 @@ class sampler(torch.utils.data.Sampler):
 
 
     def get_dict(self):
+        '''
+        create a dictionary of synthesized images
+        key - which image was used for synthesis in string integers ('0', '1', '2',..)
+        value - list of image file names synthesized with key image
+            (ie. if key = 1, value = [img_n1_0deg_rc200_2.jpg, img_n1_33deg_rc200_2.jpg])
+        '''
         
         # go through img-names and create a dictionary of item: count
         img_n = ''
@@ -138,6 +141,7 @@ class sampler(torch.utils.data.Sampler):
                 # refresh
                 img_n = ''
                 img_files = []
+                
         # print('=========================')
         # print('DICT:', dict['0'], '\n', dict['1'])
         # print('count:', len(dict['0']), len(dict['3']))
@@ -148,16 +152,23 @@ class sampler(torch.utils.data.Sampler):
     def __iter__(self):
         
         imgs_dict = self.get_dict()
-        r = int(self.comb_perc * (len(imgs_dict) // 2))
 
-        print('R for combination:', r)
-        
+
         for i in range(len(imgs_dict)):
             img_files_arr = imgs_dict[str(i)]
-            print(img_files_arr)
-
-            comb_list = list(combinations(range(len(img_files_arr)), r))
-            print('COMBINATIONS: ', comb_list)
+            
+            # TODO FIX: currently combination is outputting too much for server to handle
+            # 10 ^ 86 since 200 choose 19
+            # need to find a way to solve this whilst still having a random pair
+            
+            # solution idea: randomize array and then pair them up randomly.
+            # then get up to a certain percentage of the pairs 
+            # ie. if we have 200 images, we'd say we want twice as much pairs or half as much pairs
+            #   if its more than given image pairs, we'd shuffle up the array and pair again until we have desirable amount
+            
+            shuffled_arr = torch.tensor(random.shuffle(img_files_arr))
+            paired_imgs = shuffled_arr.unfold(0,2,1)
+            print(len(paired_imgs))
             break
         
         paired_indices = self.indices.unfold(0,2,1)
