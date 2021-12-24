@@ -34,7 +34,7 @@ class sampler(torch.utils.data.Sampler):
         self.img_names = self.data_source.ids # ie. img_n112_0deg_rc200_2.jpg
 
         # number of desired dataset length
-        self.n = len(self.data_source)
+        self.n = 1
 
     def get_dict(self):
         '''
@@ -73,7 +73,6 @@ class sampler(torch.utils.data.Sampler):
                 # refresh
                 img_n = ''
                 img_files = []
-                
         # print('=========================')
         # print('DICT:', dict['0'], '\n', dict['1'])
         # print('count:', len(dict['0']), len(dict['3']))
@@ -90,9 +89,11 @@ class sampler(torch.utils.data.Sampler):
 
         # for each image background
         for i in range(len(imgs_dict)):
+            self.n = len(imgs_dict[str(i)])
             
             # until we have enough pairs
             while (len(paired_indices_list) < self.n):
+                
                 print('LENGTH OF LIST: ', len(paired_indices_list))
                 img_files_arr = imgs_dict[str(i)]
                 indices = np.arange(len(img_files_arr))
