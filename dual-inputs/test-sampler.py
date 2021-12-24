@@ -93,10 +93,10 @@ class sampler(torch.utils.data.Sampler):
         for i in range(len(imgs_dict)):
             self.n = len(imgs_dict[str(i)])
             
-            print('==========================')
-            print('THIS IS IN SAMPLER i', i)
-            print('N: ', self.n)
-            print('==========================')
+            # print('==========================')
+            # print('THIS IS IN SAMPLER i', i)
+            # print('N: ', self.n)
+            # print('==========================')
             
             # until we have enough pairs
             while (len(paired_indices_list) < self.n):
@@ -104,6 +104,9 @@ class sampler(torch.utils.data.Sampler):
                 print('LENGTH OF LIST: ', len(paired_indices_list))
                 img_files_arr = imgs_dict[str(i)]
                 indices = np.arange(len(img_files_arr))
+                print('==========================')
+                print('IMG-FILES-ARR',img_files_arr)
+                print('==========================')
 
                 # shuffle and pair images
                 img_files_arr, indices = sklearn.utils.shuffle(img_files_arr, indices)
@@ -111,7 +114,9 @@ class sampler(torch.utils.data.Sampler):
                 paired_indices = [( indices[i], indices[i+1] ) for i in range(len(indices) - 1)]
                 
                 paired_imgs_list += paired_imgs
-                paired_indices_list += paired_indices                    
+                paired_indices_list += paired_indices   
+                
+                                 
         print(paired_indices_list)
         return iter(paired_indices_list)
         
@@ -240,4 +245,4 @@ dataloader = torch.utils.data.DataLoader(
 for i, data in enumerate(dataloader):
     
     input1, input2, target1, target2, target_rain1, target_rain2 = data
-    print(i, input1.shape, input2.shape, target1.shape, target2.shape, target_rain1.shape, target_rain2.shape)
+    # print(i, input1.shape, input2.shape, target1.shape, target2.shape, target_rain1.shape, target_rain2.shape)
