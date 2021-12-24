@@ -9,7 +9,7 @@ import random
 import cv2
 from skimage import io
 from skimage.util import img_as_float
-import sklearn.utils
+import sklearn
 
 import argparse
 import os
