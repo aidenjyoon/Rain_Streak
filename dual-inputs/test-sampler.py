@@ -107,11 +107,11 @@ class sampler(torch.utils.data.Sampler):
                 paired_indices_list.append(paired_indices)
             break
         
-        # single_list = reduce(lambda x,y: x+y, paired_indices_list)
+        paired_indices_list = reduce(lambda x,y: x+y, paired_indices_list)
         # print(single_list)
-        print(paired_indices)
-        print(paired_indices[0][0])
-        return iter(paired_indices)
+        # print(paired_indices)
+        # print(paired_indices[0][0])
+        return iter(paired_indices_list)
         
     def __len__(self):
         return len(self.data_source)
