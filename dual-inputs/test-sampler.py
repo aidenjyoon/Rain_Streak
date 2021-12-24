@@ -91,21 +91,17 @@ class sampler(torch.utils.data.Sampler):
         print('==========================')
         # for each image background
         for i in range(len(imgs_dict)):
+            n_pairs = 0
             self.n = len(imgs_dict[str(i)])
             
-            # print('==========================')
-            # print('THIS IS IN SAMPLER i', i)
-            # print('N: ', self.n)
-            # print('==========================')
-            
             # until we have enough pairs
-            while (len(paired_indices_list) < self.n):
+            while (n_pairs < self.n):
                 
                 print('LENGTH OF LIST: ', len(paired_indices_list))
                 img_files_arr = imgs_dict[str(i)]
                 indices = np.arange(len(img_files_arr))
                 print('==========================')
-                print('IMG-FILES-ARR',img_files_arr)
+                print('IMG-FILES-ARR', img_files_arr)
                 print('==========================')
 
                 # shuffle and pair images
@@ -113,6 +109,7 @@ class sampler(torch.utils.data.Sampler):
                 paired_imgs = [( img_files_arr[i], img_files_arr[i+1] ) for i in range(len(img_files_arr) - 1)]
                 paired_indices = [( indices[i], indices[i+1] ) for i in range(len(indices) - 1)]
                 
+                n_pairs += len(paired_indices)
                 paired_imgs_list += paired_imgs
                 paired_indices_list += paired_indices   
                 
