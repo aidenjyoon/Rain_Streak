@@ -104,6 +104,7 @@ class sampler(torch.utils.data.Sampler):
                 indices = np.arange(prev_img_count, len(img_files_arr) + prev_img_count)
                 print('==========================')
                 print('IMG-FILES-ARR', img_files_arr)
+                print('indices: ' indices)
                 print('==========================')
 
                 # shuffle and pair images
@@ -118,7 +119,7 @@ class sampler(torch.utils.data.Sampler):
                 
             prev_img_count = len(paired_imgs_list)
                                  
-        print(paired_indices_list)
+        # print(paired_indices_list)
         return iter(paired_indices_list)
         
     def __len__(self):
