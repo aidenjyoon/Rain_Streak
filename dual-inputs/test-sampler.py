@@ -152,7 +152,6 @@ class sampler(torch.utils.data.Sampler):
     def __iter__(self):
         
         imgs_dict = self.get_dict()
-        paired_imgs = 0
 
         for i in range(len(imgs_dict)):
             img_files_arr = imgs_dict[str(i)]
@@ -163,7 +162,6 @@ class sampler(torch.utils.data.Sampler):
             
             # img_files_arr[:], indices[:] = zip(*combined)
             img_files_arr, indices = sklearn.utils.shuffle(img_files_arr, indices)
-            
             
             # TODO FIX: currently combination is outputting too much for server to handle
             # 10 ^ 86 since 200 choose 19
@@ -190,7 +188,9 @@ class sampler(torch.utils.data.Sampler):
 
         # shuffle
         # paired_indices = paired_indices[torch.randperm(len(paired_indices))]
-        print('INDICES',paired_indices) 
+        print(paired_imgs)
+        print('INDICES',paired_indices)
+        
         return iter(paired_indices.tolist())
         
     def __len__(self):
