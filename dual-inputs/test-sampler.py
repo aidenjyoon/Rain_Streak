@@ -112,7 +112,7 @@ class sampler(torch.utils.data.Sampler):
                 
                 paired_imgs_list += paired_imgs
                 paired_indices_list += paired_indices                    
-
+        print(paired_indices_list)
         return iter(paired_indices_list)
         
     def __len__(self):
@@ -142,7 +142,7 @@ class rain_dataset(torch.utils.data.Dataset):
         img1 = self.ids[index[0]]
         img2 = self.ids[index[1]]
         if self.real:
-            input = Image.open(os.path.join(self.root, img)).convert('RGB')
+            input = Image.open(os.path.join(self.root, img1)).convert('RGB')
             if self.transform is not None:
                 input = self.transform(input)
             return input
