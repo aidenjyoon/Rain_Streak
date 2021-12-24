@@ -9,6 +9,7 @@ import random
 import cv2
 from skimage import io
 from skimage.util import img_as_float
+import sklearn.utils
 
 import argparse
 import os
@@ -157,6 +158,11 @@ class sampler(torch.utils.data.Sampler):
             img_files_arr = imgs_dict[str(i)]
             indices = np.arange(len(img_files_arr))
             # TODO pair two lists together for shuffling ttogether
+            # combined = list(zip(img_files_arr, indices))
+            # random.shuffle(combined)
+            
+            # img_files_arr[:], indices[:] = zip(*combined)
+            img_files_arr, indices = sklearn.utils.shuffle(img_files_arr, indices)
             
             
             # TODO FIX: currently combination is outputting too much for server to handle
@@ -172,9 +178,9 @@ class sampler(torch.utils.data.Sampler):
             # shuffled_arr = torch.tensor(random.shuffle(img_files_arr))
             
             # shuffle and pair images
-            random.shuffle(img_files_arr)
+            # random.shuffle(img_files_arr)
             paired_imgs = [( img_files_arr[i], img_files_arr[i+1] ) for i in range(len(img_files_arr) - 1)]
-            
+            paired_indices = [( indices[i], indices[i+1] ) for i in range(len(indices) - 1)]
             break
         
         # paired_indices = self.indices.unfold(0,2,1)
@@ -184,9 +190,8 @@ class sampler(torch.utils.data.Sampler):
 
         # shuffle
         # paired_indices = paired_indices[torch.randperm(len(paired_indices))]
-        # print('INDICES',paired_indices) 
-        paired_imgs = paired_imgs.view(-1)
-        return iter(paired_imgs.tolist())
+        print('INDICES',paired_indices) 
+        return iter(paired_indices.tolist())
         
     def __len__(self):
         return len(self.data_source)
@@ -214,8 +219,8 @@ class rain_dataset(Dataset):
         
         # print("THIS IS THE INDEX", index)
         
-        img1 = self.ids[index]
-        img2 = self.ids[index]
+        img1 = self.ids[index[0]]
+        img2 = self.ids[index[1]]
         if self.real:
             input = Image.open(os.path.join(self.root, img)).convert('RGB')
             if self.transform is not None:
