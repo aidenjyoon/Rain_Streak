@@ -94,7 +94,7 @@ class sampler(torch.utils.data.Sampler):
             n_pairs = 0
             self.n = len(imgs_dict[str(i)])
 
-            prev_imgs_count = 0
+            prev_imgs_count = len(paired_imgs_list)
             
             # until we have enough pairs
             while (n_pairs < self.n):
@@ -117,9 +117,7 @@ class sampler(torch.utils.data.Sampler):
                 n_pairs += len(paired_indices)
                 paired_imgs_list += paired_imgs
                 paired_indices_list += paired_indices
-                
-            prev_imgs_count = len(paired_imgs_list)
-                                 
+                                                 
         # print(paired_indices_list)
         return iter(paired_indices_list)
         
