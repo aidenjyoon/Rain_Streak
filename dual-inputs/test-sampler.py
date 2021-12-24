@@ -85,6 +85,7 @@ class sampler(torch.utils.data.Sampler):
         imgs_dict = self.get_dict()
         paired_imgs_list = []
         paired_indices_list = []
+        prev_imgs_count = 0
 
         print('==========================')
         print('THIS IS DICTIONARY LENGTH', len(imgs_dict))
@@ -94,16 +95,17 @@ class sampler(torch.utils.data.Sampler):
             n_pairs = 0
             self.n = len(imgs_dict[str(i)])
             
+            
             # until we have enough pairs
             while (n_pairs < self.n):
                 
                 print('LENGTH OF LIST: ', len(paired_indices_list))
                 img_files_arr = imgs_dict[str(i)]
-                indices = np.arange(self.n, len(img_files_arr) + self.n)
+                indices = np.arange(prev_imgs_count, len(img_files_arr) + prev_imgs_count)
                 print('==========================')
                 print('IMG-FILES-ARR', img_files_arr)
                 print('indices: ', indices)
-                print('prev_imgs_count: ', self.n)
+                print('prev_imgs_count: ', prev_imgs_count)
                 print('==========================')
 
                 # shuffle and pair images
@@ -115,6 +117,8 @@ class sampler(torch.utils.data.Sampler):
                 n_pairs += len(paired_indices)
                 paired_imgs_list += paired_imgs
                 paired_indices_list += paired_indices
+                
+            prev_imgs_count += self.n
                                                  
         # print(paired_indices_list)
         return iter(paired_indices_list)
