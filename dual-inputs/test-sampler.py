@@ -166,7 +166,7 @@ class rain_dataset(torch.utils.data.Dataset):
                 target_rain1 = self.rain_transform(rain1)
                 target_rain2 = self.rain_transform(rain2)
             
-            return input1, input2#, target1, target2, target_rain1, target_rain2
+            return input1, input2, target1, target2, target_rain1, target_rain2
             
     def __len__(self):
         return len(self.ids)
@@ -232,6 +232,5 @@ dataloader = torch.utils.data.DataLoader(
 
 for i, data in enumerate(dataloader):
     
-    input1, input2 = data
-    print(i, input1.shape)
-    break
+    input1, input2, target1, target2, target_rain1, target_rain2 = data
+    print(i, input1.shape, input2.shape, target1.shape, target2.shape, target_rain1.shape, target_rain2.shape)
