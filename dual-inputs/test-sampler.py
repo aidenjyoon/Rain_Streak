@@ -103,11 +103,8 @@ class sampler(torch.utils.data.Sampler):
                 paired_imgs = [( img_files_arr[i], img_files_arr[i+1] ) for i in range(len(img_files_arr) - 1)]
                 paired_indices = [( indices[i], indices[i+1] ) for i in range(len(indices) - 1)]
                 
-                paired_imgs_list.append(paired_imgs)
-                paired_indices_list.append(paired_indices)
-                if len(paired_indices_list) > 1:
-                    print(paired_indices_list)
-                    paired_indices_list = reduce(lambda x,y: x+y, paired_indices_list)
+                paired_imgs_list += paired_imgs
+                paired_indices_list += paired_indices                    
 
             break
         # print(single_list)
