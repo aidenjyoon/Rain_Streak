@@ -93,19 +93,17 @@ class sampler(torch.utils.data.Sampler):
         for i in range(len(imgs_dict)):
             n_pairs = 0
             self.n = len(imgs_dict[str(i)])
-
-            prev_imgs_count = len(paired_imgs_list)
             
             # until we have enough pairs
             while (n_pairs < self.n):
                 
                 print('LENGTH OF LIST: ', len(paired_indices_list))
                 img_files_arr = imgs_dict[str(i)]
-                indices = np.arange(prev_imgs_count, len(img_files_arr) + prev_imgs_count)
+                indices = np.arange(self.n, len(img_files_arr) + self.n)
                 print('==========================')
                 print('IMG-FILES-ARR', img_files_arr)
                 print('indices: ', indices)
-                print('prev_imgs_count: ', prev_imgs_count)
+                print('prev_imgs_count: ', self.n)
                 print('==========================')
 
                 # shuffle and pair images
