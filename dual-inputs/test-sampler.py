@@ -101,7 +101,7 @@ class sampler(torch.utils.data.Sampler):
                 
                 print('LENGTH OF LIST: ', len(paired_indices_list))
                 img_files_arr = imgs_dict[str(i)]
-                indices = np.arange(prev_img_count, len(img_files_arr) + prev_img_count)
+                indices = np.arange(prev_imgs_count, len(img_files_arr) + prev_imgs_count)
                 print('==========================')
                 print('IMG-FILES-ARR', img_files_arr)
                 print('indices: ', indices)
