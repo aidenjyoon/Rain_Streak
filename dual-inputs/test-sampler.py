@@ -18,7 +18,7 @@ import torch.nn as nn
 import torch.nn.parallel
 import torch.backends.cudnn as cudnn
 import torch.optim as optim
-import torch.utils.data as Dataset
+import torch.utils.data
 import torchvision.datasets as dset
 import torchvision.transforms as transforms
 import torchvision.utils as vutils
@@ -117,7 +117,7 @@ class sampler(torch.utils.data.Sampler):
         return len(self.data_source)
 
 
-class rain_dataset(Dataset):
+class rain_dataset(torch.utils.data.Dataset):
     def __init__(self,
                  root,
                  transform=None,
