@@ -86,9 +86,14 @@ class sampler(torch.utils.data.Sampler):
         paired_imgs_list = []
         paired_indices_list = []
 
-
+        print('==========================')
+        print('THIS IS DICTIONARY LENGTH', len(imgs_dict))
+        print('==========================')
         # for each image background
         for i in range(len(imgs_dict)):
+            print('==========================')
+            print('THIS IS IN SAMPLER i', i)
+            print('==========================')
             self.n = len(imgs_dict[str(i)])
             
             # until we have enough pairs
