@@ -105,9 +105,9 @@ class sampler(torch.utils.data.Sampler):
                 
                 paired_imgs_list.append(paired_imgs)
                 paired_indices_list.append(paired_indices)
+                paired_indices_list = reduce(lambda x,y: x+y, paired_indices_list)
+
             break
-        
-        paired_indices_list = reduce(lambda x,y: x+y, paired_indices_list)
         # print(single_list)
         # print(paired_indices)
         # print(paired_indices[0][0])
