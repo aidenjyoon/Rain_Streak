@@ -95,10 +95,9 @@ from PIL import Image
         
 
 class sampler(torch.utils.data.Sampler):
-    def __init__(self, data_source, batch_size=2, comb_perc=0.2):
+    def __init__(self, data_source, batch_size=2):
         self.data_source = data_source
         self.batch_size = batch_size
-        self.comb_perc = comb_perc
         # names and idicies
         self.indices = torch.arange(len(self.data_source))
         self.img_names = self.data_source.ids # ie. img_n112_0deg_rc200_2.jpg
@@ -152,10 +151,13 @@ class sampler(torch.utils.data.Sampler):
     def __iter__(self):
         
         imgs_dict = self.get_dict()
-
+        paired_imgs = 0
 
         for i in range(len(imgs_dict)):
             img_files_arr = imgs_dict[str(i)]
+            indices = np.arange(len(img_files_arr))
+            # TODO pair two lists together for shuffling ttogether
+            
             
             # TODO FIX: currently combination is outputting too much for server to handle
             # 10 ^ 86 since 200 choose 19
@@ -168,24 +170,23 @@ class sampler(torch.utils.data.Sampler):
             
             # cant use torch.unfold since torch.tensor only accepts nubmers no str
             # shuffled_arr = torch.tensor(random.shuffle(img_files_arr))
+            
+            # shuffle and pair images
             random.shuffle(img_files_arr)
-            print(len(img_files_arr))
             paired_imgs = [( img_files_arr[i], img_files_arr[i+1] ) for i in range(len(img_files_arr) - 1)]
-            print(paired_imgs)
-            print(len(paired_imgs))
             
             break
         
-        paired_indices = self.indices.unfold(0,2,1)
-        paired_indices = torch.stack(
-            [paired_indices[i] for i in range(len(paired_indices))]
-        )
+        # paired_indices = self.indices.unfold(0,2,1)
+        # paired_indices = torch.stack(
+        #     [paired_indices[i] for i in range(len(paired_indices))]
+        # )
 
         # shuffle
         # paired_indices = paired_indices[torch.randperm(len(paired_indices))]
-        # print('INDICES',paired_indices)
-        paired_indices = paired_indices.view(-1)
-        return iter(paired_indices.tolist())
+        # print('INDICES',paired_indices) 
+        paired_imgs = paired_imgs.view(-1)
+        return iter(paired_imgs.tolist())
         
     def __len__(self):
         return len(self.data_source)
