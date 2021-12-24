@@ -9,8 +9,6 @@ import random
 import time
 from collections import OrderedDict
 import itertools
-from functools import reduce
-from math import log10
 from PIL import Image
 
 import torch
@@ -26,10 +24,10 @@ from torch.autograd import Variable
 
         
 
+
 class sampler(torch.utils.data.Sampler):
-    def __init__(self, data_source, batch_size=2):
+    def __init__(self, data_source):
         self.data_source = data_source
-        self.batch_size = batch_size
         
         # names and idicies
         self.indices = torch.arange(len(self.data_source))
@@ -140,8 +138,8 @@ class rain_dataset(torch.utils.data.Dataset):
                 input = self.transform(input)
             return input
         else:
-            # print('img1 name: ', img1)
-            # print('img2 name: ', img2)
+            print('img1 name: ', img1)
+            print('img2 name: ', img2)
             
             input1 = Image.open(os.path.join(self.root, img1)).convert('RGB')        # Image
             input2 = Image.open(os.path.join(self.root, img2)).convert('RGB')        # Image
