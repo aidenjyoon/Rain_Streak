@@ -149,8 +149,8 @@ class rain_dataset(torch.utils.data.Dataset):
                 input = self.transform(input)
             return input
         else:
-            print('img1 name: ', img1)
-            print('img2 name: ', img2)
+            # print('img1 name: ', img1)
+            # print('img2 name: ', img2)
             
             input1 = Image.open(os.path.join(self.root, img1)).convert('RGB')        # Image
             input2 = Image.open(os.path.join(self.root, img2)).convert('RGB')        # Image
