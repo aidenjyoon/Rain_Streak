@@ -1,108 +1,42 @@
-import os
-import itertools
-import numpy as np
-from PIL import Image
-import torch
-from torch.utils.data import Dataset
-import random
-
 import cv2
 from skimage import io
 from skimage.util import img_as_float
 import sklearn
-
+import numpy as np
 import argparse
 import os
 import random
 import time
 from collections import OrderedDict
+import itertools
+from functools import reduce
+from math import log10
+from PIL import Image
+
 import torch
 import torch.nn as nn
 import torch.nn.parallel
 import torch.backends.cudnn as cudnn
 import torch.optim as optim
-import torch.utils.data
+import torch.utils.data import Dataset
 import torchvision.datasets as dset
 import torchvision.transforms as transforms
 import torchvision.utils as vutils
 from torch.autograd import Variable
-from math import log10
-from PIL import Image
-# class MySampler(torch.utils.data.Sampler):
-#     def __init__(self, data_source, invalid_idx):
-#         self.data_source = data_source
-#         self.invalid_idx = invalid_idx
-        
-#     def __iter__(self):
-#         indices = torch.arange(len(self.data_source))
-#         paired_indices = indices.unfold(0, 2, 1)
-        
-#         print('paried_indices unfolded: \n' , paired_indices)
-#         print('==========')
-        
-#         paired_indices = torch.stack(
-#             [paired_indices[i] for i in range(len(paired_indices)) 
-#                 if not i in invalid_idx])
-        
-#         print('paried_indices stacked: \n' , paired_indices)
-#         print('==========')
 
-        
-#         paired_indices = paired_indices[torch.randperm(len(paired_indices))]
-#         indices = paired_indices.view(-1)
-
-#         print((indices.tolist()))
-#         return iter(indices.tolist())
-    
-#     def __len__(self):
-#         return len(self.data_source)
-
-
-# class MyDataset(Dataset):
-#     def __init__(self, data):
-#         self.data = data
-        
-#     def __getitem__(self, index):
-#         x = self.data[index]
-#         return x
-    
-#     def __len__(self):
-#         return len(self.data)
-
-
-# data = torch.tensor([11, 12, 13, 21, 22, 23, 31, 32, 33], dtype=torch.float)
-# invalid_idx = torch.tensor([2, 5, 8])
-# dataset = MyDataset(data)
-# sampler = MySampler(data, invalid_idx)
-# loader = torch.utils.data.DataLoader(
-#     dataset,
-#     batch_size=1,
-#     sampler=sampler
-# )
-
-# for x in loader:
-#     x1, x2 = x
-#     print(x)
-#     print('==========')
-    
-
-# def sampler(torch.utils.data.Sampler):
-#     def __init__(self, data_source):
-#         self.data_source = data_source
-        
-        
-#     def __iter__(self):
-        
         
 
 class sampler(torch.utils.data.Sampler):
     def __init__(self, data_source, batch_size=2):
         self.data_source = data_source
         self.batch_size = batch_size
+        
         # names and idicies
         self.indices = torch.arange(len(self.data_source))
         self.img_names = self.data_source.ids # ie. img_n112_0deg_rc200_2.jpg
 
+        # number of desired dataset length
+        self.n = len(self.data_source)
 
     def get_dict(self):
         '''
@@ -152,46 +86,32 @@ class sampler(torch.utils.data.Sampler):
     def __iter__(self):
         
         imgs_dict = self.get_dict()
+        paired_imgs_list = []
+        paired_indices_list = []
 
+
+        # for each image background
         for i in range(len(imgs_dict)):
-            img_files_arr = imgs_dict[str(i)]
-            indices = np.arange(len(img_files_arr))
-            # TODO pair two lists together for shuffling ttogether
-            # combined = list(zip(img_files_arr, indices))
-            # random.shuffle(combined)
             
-            # img_files_arr[:], indices[:] = zip(*combined)
-            img_files_arr, indices = sklearn.utils.shuffle(img_files_arr, indices)
-            
-            # TODO FIX: currently combination is outputting too much for server to handle
-            # 10 ^ 86 since 200 choose 19
-            # need to find a way to solve this whilst still having a random pair
-            
-            # solution idea: randomize array and then pair them up randomly.
-            # then get up to a certain percentage of the pairs 
-            # ie. if we have 200 images, we'd say we want twice as much pairs or half as much pairs
-            #   if its more than given image pairs, we'd shuffle up the array and pair again until we have desirable amount
-            
-            # cant use torch.unfold since torch.tensor only accepts nubmers no str
-            # shuffled_arr = torch.tensor(random.shuffle(img_files_arr))
-            
-            # shuffle and pair images
-            # random.shuffle(img_files_arr)
-            paired_imgs = [( img_files_arr[i], img_files_arr[i+1] ) for i in range(len(img_files_arr) - 1)]
-            paired_indices = [( indices[i], indices[i+1] ) for i in range(len(indices) - 1)]
+            # until we have enough pairs
+            while (len(paired_indices_list) < self.n):
+                img_files_arr = imgs_dict[str(i)]
+                indices = np.arange(len(img_files_arr))
+
+                # shuffle and pair images
+                img_files_arr, indices = sklearn.utils.shuffle(img_files_arr, indices)
+                paired_imgs = [( img_files_arr[i], img_files_arr[i+1] ) for i in range(len(img_files_arr) - 1)]
+                paired_indices = [( indices[i], indices[i+1] ) for i in range(len(indices) - 1)]
+                
+                paired_imgs_list.append(paired_imgs)
+                paired_indices_list.append(paired_indices)
             break
         
-        # paired_indices = self.indices.unfold(0,2,1)
-        # paired_indices = torch.stack(
-        #     [paired_indices[i] for i in range(len(paired_indices))]
-        # )
-
-        # shuffle
-        # paired_indices = paired_indices[torch.randperm(len(paired_indices))]
-        print(paired_imgs)
-        print('INDICES',paired_indices)
-        
-        return iter(paired_indices.tolist())
+        # single_list = reduce(lambda x,y: x+y, paired_indices_list)
+        # print(single_list)
+        print(paired_indices)
+        print(paired_indices[0][0])
+        return iter(paired_indices)
         
     def __len__(self):
         return len(self.data_source)
