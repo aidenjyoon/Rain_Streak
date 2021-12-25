@@ -171,9 +171,9 @@ optimizer = optim.Adam(netG.parameters(),
 print('start training...')
 netG.train()
 for epoch in range(args.epochs):
-    for i, data in enumerate(dataloader, start=1):
+    for data in dataloader:
         
-        print(i, data)
+        print(data)
         # if args.real:
         #     input_cpu = data
         #     category = 'real'
