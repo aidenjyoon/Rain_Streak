@@ -14,7 +14,7 @@ from skimage import io
 from skimage.util import img_as_float
 
 
-class sampler(torch.utils.data.Sampler):
+class mySampler(torch.utils.data.Sampler):
     def __init__(self, data_source):
         self.data_source = data_source
         

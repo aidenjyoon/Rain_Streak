@@ -16,7 +16,7 @@ from torch.autograd import Variable
 from math import log10
 from PIL import Image
 
-from dataset import rain_dataset
+from dataset import rain_dataset, mySampler
 import network
 from vutil import save_image
 
@@ -63,7 +63,7 @@ parser.add_argument('--epochs',
                         type=int)
 parser.add_argument('--gpu',
                         help='cuda:_x_ number',
-                        default=0,
+                        default='0',
                         type=str)
 
 parser.add_argument('--outf',
@@ -144,7 +144,9 @@ dataloader = torch.utils.data.DataLoader(
     dataset,
     batch_size=args.batchSize,
     shuffle=False,
-    num_workers=int(args.workers))
+    num_workers=int(args.workers),
+    sampler=mySampler
+)
 
 input_real1 = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)
 input_real2 = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)

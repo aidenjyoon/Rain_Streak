@@ -25,7 +25,7 @@ from torch.autograd import Variable
         
 
 
-class sampler(torch.utils.data.Sampler):
+class mySampler(torch.utils.data.Sampler):
     def __init__(self, data_source):
         self.data_source = data_source
         
