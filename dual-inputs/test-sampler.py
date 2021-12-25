@@ -230,14 +230,14 @@ dataset = rain_dataset(
     real=args.real)
 assert dataset
 
-sampler = sampler(dataset)
+mySampler = mySampler(dataset)
 
 dataloader = torch.utils.data.DataLoader(
     dataset,
     batch_size=args.batchSize,
     shuffle=False,
     num_workers=int(args.workers),
-    sampler=sampler
+    sampler=mySampler
     )
 
 
