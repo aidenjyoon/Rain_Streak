@@ -172,7 +172,9 @@ print('start training...')
 netG.train()
 for epoch in range(args.epochs):
     for i, data in enumerate(dataloader, start=1):
-                # if args.real:
+        
+        print(i)
+        # if args.real:
         #     input_cpu = data
         #     category = 'real'
             
