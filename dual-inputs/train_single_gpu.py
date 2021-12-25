@@ -29,7 +29,7 @@ parser.add_argument('--dataroot',
 
 parser.add_argument('--workers', 
                         help='number of data loading workers', 
-                        default=2,
+                        default=1,
                         type=int)
 parser.add_argument('--batchSize', 
                         help='input batch size',
@@ -171,10 +171,8 @@ optimizer = optim.Adam(netG.parameters(),
 print('start training...')
 netG.train()
 for epoch in range(args.epochs):
-    for data in dataloader:
-        
-        print(data)
-        # if args.real:
+    for i, data in enumerate(dataloader, start=1):
+                # if args.real:
         #     input_cpu = data
         #     category = 'real'
             
