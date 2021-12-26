@@ -109,7 +109,7 @@ if len(args.gpu) > 1:
             args.gpu.append(id)
 else:
     args.gpu = [int(args.gpu)]
-    
+
 try:
     os.makedirs(args.outf)
 except OSError:
@@ -139,6 +139,7 @@ dataset = rain_dataset(
     real=args.real
 )
 assert dataset
+
 
 mySampler = mySampler(dataset)
 
@@ -172,6 +173,7 @@ optimizer = optim.Adam(netG.parameters(),
 print('start training...')
 netG.train()
 for epoch in range(args.epochs):
+    print(f'start epoch {epoch}...')
     for i, data in enumerate(dataloader, start=1):
         print(i)
         # if args.real:
