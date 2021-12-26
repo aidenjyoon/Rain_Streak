@@ -216,7 +216,7 @@ print(args.dataroot)
 
 
 transform = transforms.Compose([
-    # transforms.Resize(args.imageSize),
+    transforms.Resize(256),
     # transforms.CenterCrop(opt.imageSize),
     transforms.ToTensor(),
     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
