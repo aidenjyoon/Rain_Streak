@@ -89,7 +89,6 @@ parser.add_argument('--n_outputs',
                         type=int)
 
 
-
 args = parser.parse_args()
 
 # number of downsampling into array
@@ -110,7 +109,7 @@ if len(args.gpu) > 1:
             args.gpu.append(id)
 else:
     args.gpu = [int(args.gpu)]
-            
+    
 try:
     os.makedirs(args.outf)
 except OSError:
@@ -137,7 +136,8 @@ dataset = rain_dataset(
     transform=transform,
     target_transform=transform,
     rain_transform=transform,
-    real=args.real)
+    real=args.real
+)
 assert dataset
 
 mySampler = mySampler(dataset)
@@ -169,12 +169,10 @@ optimizer = optim.Adam(netG.parameters(),
                        lr=lr, 
                        betas=beta[:2])
 
-
 print('start training...')
 netG.train()
 for epoch in range(args.epochs):
     for i, data in enumerate(dataloader, start=1):
-        
         print(i)
         # if args.real:
         #     input_cpu = data
