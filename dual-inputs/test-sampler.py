@@ -304,7 +304,7 @@ from vutil import save_image
 parser = argparse.ArgumentParser()
 parser.add_argument('--dataroot', 
                         help='path to dataset',
-                        default='../rain_generator/train_horse'
+                        default='../rain_generator/train_horse',
                         required=True)
 
 parser.add_argument('--workers', 
