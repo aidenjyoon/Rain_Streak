@@ -238,7 +238,7 @@ for epoch in range(args.epochs):
             
         # Output training stats
         if i % 500 == 0:
-            print(f'{i}/{len(dataloader)}\tLoss_B1: {errB1}/tLoss_R1: {errR1}\tLoss_B2: {errB2}/tLoss_R2: {errR2}')
+            print(f'{i}/{len(dataloader)}\tLoss_B1: {errB1}/tLoss_R1: {errR1}\tLoss_B2: {errB2}/tLoss_R2: {errR2}\n')
 
         # save trained image
         if i % 10000 == 0:
@@ -252,7 +252,7 @@ for epoch in range(args.epochs):
                     save_image(output_R2 / 2 + 0.5, f'../trained_imgs/{args.outf}/R2_{i}.png')
     
     # save model
-    torch.save(netG, f'epoch{epoch}_model_save.pth')
+    torch.save(netG, f'./model_save/epoch{epoch}_model_save.pth')
 
             # input_cpu1, input_cpu2, target_B_cpu1, target_B_cpu2, target_R_cpu1, target_R_cpu2 = data
             # category = 'test'
