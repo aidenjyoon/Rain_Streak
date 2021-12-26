@@ -209,6 +209,10 @@ parser.add_argument('--imageSize',
                         help='the height / width of the input image to network',
                         default=256,
                         type=int)
+parser.add_argument('--gpu',
+                        help='gpu',
+                        default='0',
+                        type=str)
 
 args = parser.parse_args()
 
@@ -240,6 +244,29 @@ dataloader = torch.utils.data.DataLoader(
     sampler=mySampler
     )
 
+if len(args.gpu) > 1:
+    # number of gpu into array
+    str_ids = args.gpu.split(',')
+    args.gpu = []
+    for str_id in str_ids:
+        id = int(str_id)
+        if id >= 0:
+            args.gpu.append(id)
+else:
+    args.gpu = [int(args.gpu)]
+    
+print("THIS PRINTS GPU: ", args.gpu)
+    
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu', index=args.gpu[0])
+    
+input_real1 = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)
+input_real2 = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)
+input1 = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)
+input2 = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)
+input_real1 = input_real1.to(device)
+input_real2 = input_real2.to(device)
+input1 = input1.to(device)
+input2 = input2.to(device)
 
 # print('====================================')
 # print("LENGTH OF DATALOADER  -  ", len(dataloader))
