@@ -152,13 +152,13 @@ class rain_dataset(torch.utils.data.Dataset):
                 input1 = self.transform(input1)
                 input2 = self.transform(input2)
             if self.target_transform is not None:
-                target1 = self.target_transform(background1)
-                target2 = self.target_transform(background2)
+                target_background1 = self.target_transform(background1)
+                target_background2 = self.target_transform(background2)
             if self.rain_transform is not None:
                 target_rain1 = self.rain_transform(rain1)
                 target_rain2 = self.rain_transform(rain2)
             
-            return input1, input2, target1, target2, target_rain1, target_rain2
+            return input1, input2, target_background1, target_background2, target_rain1, target_rain2
             
     def __len__(self):
         return len(self.ids)
