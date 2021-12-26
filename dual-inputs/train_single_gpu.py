@@ -59,7 +59,7 @@ parser.add_argument('--imageSize',
                         type=int)
 parser.add_argument('--epochs',
                         help='number of epochs for training',
-                        default=1,
+                        default=5,
                         type=int)
 parser.add_argument('--gpu',
                         help='cuda:_x_ number',
@@ -237,11 +237,11 @@ for epoch in range(args.epochs):
             optimizer.step()
             
         # Output training stats
-        if i % 50 == 0:
+        if i % 500 == 0:
             print(f'{i}/{len(dataloader)}\tLoss_B1: {errB1}/tLoss_R1: {errR1}\tLoss_B2: {errB2}/tLoss_R2: {errR2}')
 
         # save trained image
-        if i % 1000 == 0:
+        if i % 10000 == 0:
             if args.n_outputs == 0 or i <= args.n_outputs:
                 save_image(output_B1 / 2 + 0.5, f'../trained_imgs/{args.outf}/B1_{i}.png')
                 if args.which_model_netG.startswith('cascade'):
