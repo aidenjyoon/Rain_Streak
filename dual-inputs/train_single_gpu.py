@@ -176,105 +176,101 @@ for epoch in range(args.epochs):
     print(f'start epoch {epoch}...')
     
     for i, data in enumerate(dataloader, start=1):
-        print(i)
-        # if args.real:
-        #     input_cpu = data
-        #     category = 'real'
+        if args.real:
+            input_cpu = data
+            category = 'real'
             
-        #     input_real1.resize_(input_cpu.size()).copy_(input_cpu)
-        #     input_real2.resize_(input_cpu.size()).copy_(input_cpu)
-        #     if args.which_model_netG.startswith('cascade'):
-        #         res1, res2 = netG(input_real1, input_real2)
-        #         if len(res1) % 2 == 1:
-        #             output_B1, output_R1 = res1[-1], res1[-2]
-        #         else:
-        #             output_B1, output_R1 = res1[-2], res1[-1]
-        #     else:
-        #         output_B1 = netG(input_real1)
+            input_real1.resize_(input_cpu.size()).copy_(input_cpu)
+            input_real2.resize_(input_cpu.size()).copy_(input_cpu)
+            if args.which_model_netG.startswith('cascade'):
+                res1, res2 = netG(input_real1, input_real2)
+                if len(res1) % 2 == 1:
+                    output_B1, output_R1 = res1[-1], res1[-2]
+                else:
+                    output_B1, output_R1 = res1[-2], res1[-1]
+            else:
+                output_B1 = netG(input_real1)
 
-        # else:
-        #     input_data1, input_data2, target_B_data1, target_B_data2, target_R_data1, target_R_data2 = data
+        else:
+            input_data1, input_data2, target_B_data1, target_B_data2, target_R_data1, target_R_data2 = data
             
-        #     input_real1.resize_(input_data1.size()).copy_(input_data1)
-        #     if args.which_model_netG.startswith('cascade'):
-        #         res1, res2 = netG(input_real1, input_real2)
+            input_real1.resize_(input_data1.size()).copy_(input_data1)
+            if args.which_model_netG.startswith('cascade'):
+                res1, res2 = netG(input_real1, input_real2)
                 
-        #         if len(res1) % 2 == 1:
-        #             output_B1, output_R1 = res1[-1], res1[-2]
-        #         else:
-        #             output_B1, output_R1 = res1[-2], res1[-1]
+                if len(res1) % 2 == 1:
+                    output_B1, output_R1 = res1[-1], res1[-2]
+                else:
+                    output_B1, output_R1 = res1[-2], res1[-1]
                     
-        #         if len(res2) % 2 == 1:
-        #             output_B2, output_R2 = res2[-1], res2[-2]
-        #         else:
-        #             output_B2, output_R2 = res2[-2], res2[-1]
-        #     else:
-        #         raise NotImplementedError('requires stating which model type to use')
+                if len(res2) % 2 == 1:
+                    output_B2, output_R2 = res2[-1], res2[-2]
+                else:
+                    output_B2, output_R2 = res2[-2], res2[-1]
+            else:
+                raise NotImplementedError('requires stating which model type to use')
             
-        #     ### DELETE THIS
-        #     # print(target_B_data1.size())
-        #     # torch.Size([8, 3, 256, 256])
-        #     target_B1 = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)
-        #     target_B2 = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)
-        #     target_R1 = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)
-        #     target_R2 = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)
+            target_B1 = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)
+            target_B2 = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)
+            target_R1 = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)
+            target_R2 = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)
 
-        #     target_B1 = target_B1.to(device)
-        #     target_B2 = target_B2.to(device)
-        #     target_R1 = target_R1.to(device)
-        #     target_R2 = target_R2.to(device)
+            target_B1 = target_B1.to(device)
+            target_B2 = target_B2.to(device)
+            target_R1 = target_R1.to(device)
+            target_R2 = target_R2.to(device)
             
-        #     target_B1.resize_(target_B_data1.size()).copy_(target_B_data1)
-        #     target_B2.resize_(target_B_data2.size()).copy_(target_B_data2)
-        #     target_R1.resize_(target_R_data1.size()).copy_(target_R_data1)
-        #     target_R2.resize_(target_R_data2.size()).copy_(target_R_data2)
+            target_B1.resize_(target_B_data1.size()).copy_(target_B_data1)
+            target_B2.resize_(target_B_data2.size()).copy_(target_B_data2)
+            target_R1.resize_(target_R_data1.size()).copy_(target_R_data1)
+            target_R2.resize_(target_R_data2.size()).copy_(target_R_data2)
             
-        #     # error
-        #     errB1 = criterion(output_B1, target_B1)
-        #     errB2 = criterion(output_B2, target_B2)
-        #     errR1 = criterion(output_R1, target_R1)
-        #     errR2 = criterion(output_R2, target_R2)
+            # error
+            errB1 = criterion(output_B1, target_B1)
+            errB2 = criterion(output_B2, target_B2)
+            errR1 = criterion(output_R1, target_R1)
+            errR2 = criterion(output_R2, target_R2)
             
-        #     loss = errB1 + errB2 + errR1 + errR2
-        #     optimizer.zero_grad()
-        #     loss.backward()
-        #     optimizer.step()
+            loss = errB1 + errB2 + errR1 + errR2
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
             
-        # # Output training stats
-        # if i % 50 == 0:
-        #     print(f'{i}/{len(dataloader)}\tLoss_B1: {errB1}/tLoss_R1: {errR1}\tLoss_B2: {errB2}/tLoss_R2: {errR2}')
+        # Output training stats
+        if i % 50 == 0:
+            print(f'{i}/{len(dataloader)}\tLoss_B1: {errB1}/tLoss_R1: {errR1}\tLoss_B2: {errB2}/tLoss_R2: {errR2}')
 
-        # # save trained image
-        # if i % 1000 == 0:
-        #     if args.n_outputs == 0 or i <= args.n_outputs:
-        #         save_image(output_B1 / 2 + 0.5, f'../trained_imgs/{args.outf}/B1_{i}.png')
-        #         if args.which_model_netG.startswith('cascade'):
-        #             save_image(output_R1 / 2 + 0.5, f'../trained_imgs/{args.outf}/R1_{i}.png')
+        # save trained image
+        if i % 1000 == 0:
+            if args.n_outputs == 0 or i <= args.n_outputs:
+                save_image(output_B1 / 2 + 0.5, f'../trained_imgs/{args.outf}/B1_{i}.png')
+                if args.which_model_netG.startswith('cascade'):
+                    save_image(output_R1 / 2 + 0.5, f'../trained_imgs/{args.outf}/R1_{i}.png')
             
-        #         save_image(output_B2 / 2 + 0.5, f'../trained_imgs/{args.outf}/B2_{i}.png')
-        #         if args.which_model_netG.startswith('cascade'):
-        #             save_image(output_R2 / 2 + 0.5, f'../trained_imgs/{args.outf}/R2_{i}.png')
+                save_image(output_B2 / 2 + 0.5, f'../trained_imgs/{args.outf}/B2_{i}.png')
+                if args.which_model_netG.startswith('cascade'):
+                    save_image(output_R2 / 2 + 0.5, f'../trained_imgs/{args.outf}/R2_{i}.png')
 
-        #     # input_cpu1, input_cpu2, target_B_cpu1, target_B_cpu2, target_R_cpu1, target_R_cpu2 = data
-        #     # category = 'test'
+            # input_cpu1, input_cpu2, target_B_cpu1, target_B_cpu2, target_R_cpu1, target_R_cpu2 = data
+            # category = 'test'
             
-        #     # input1.resize_(input_cpu1.size()).copy_(input_cpu1)
-        #     # input2.resize_(input_cpu2.size()).copy_(input_cpu2)
-        #     # if args.which_model_netG.startswith('cascade'):
-        #     #     res1, res2 = netG(input1, input2)
+            # input1.resize_(input_cpu1.size()).copy_(input_cpu1)
+            # input2.resize_(input_cpu2.size()).copy_(input_cpu2)
+            # if args.which_model_netG.startswith('cascade'):
+            #     res1, res2 = netG(input1, input2)
                 
-        #     #     print(res1)
-        #     #     print(res1.shape)
-        #     #     # Output training stats
+            #     print(res1)
+            #     print(res1.shape)
+            #     # Output training stats
 
-        #     #     if len(res1) % 2 == 1:
-        #     #         output_B, output_R = res1[-1], res1[-2]
-        #     #     else:
-        #     #         output_B, output_R = res1[-2], res1[-1]
+            #     if len(res1) % 2 == 1:
+            #         output_B, output_R = res1[-1], res1[-2]
+            #     else:
+            #         output_B, output_R = res1[-2], res1[-1]
                     
-        #     #     if len(res2) % 2 == 1:
-        #     #         output_B, output_R = res2[-1], res2[-2]
-        #     #     else:
-        #     #         output_B, output_R = res2[-2], res2[-1]
-        #     # else:
-        #     #     output_B = netG(input)
+            #     if len(res2) % 2 == 1:
+            #         output_B, output_R = res2[-1], res2[-2]
+            #     else:
+            #         output_B, output_R = res2[-2], res2[-1]
+            # else:
+            #     output_B = netG(input)
