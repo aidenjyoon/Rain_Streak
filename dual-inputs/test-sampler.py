@@ -455,4 +455,4 @@ for epoch in range(args.epochs):
     print(f'start epoch {epoch}...')
     
     for i, data in enumerate(dataloader, start=1):
-        print(i)
+        print(i, data.shape)
