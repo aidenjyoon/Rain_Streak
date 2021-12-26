@@ -404,7 +404,7 @@ if args.netG != '':
     netG.load_state_dict(torch.load(args.netG))
 
 transform = transforms.Compose([
-    transforms.Resize(args.imageSize),
+    # transforms.Resize(args.imageSize),
     # transforms.CenterCrop(args.imageSize),
     transforms.ToTensor(),
     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
