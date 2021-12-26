@@ -304,6 +304,7 @@ from vutil import save_image
 parser = argparse.ArgumentParser()
 parser.add_argument('--dataroot', 
                         help='path to dataset',
+                        default='../rain_generator/train_horse'
                         required=True)
 
 parser.add_argument('--workers', 
@@ -312,7 +313,7 @@ parser.add_argument('--workers',
                         type=int)
 parser.add_argument('--batchSize', 
                         help='input batch size',
-                        default=8,
+                        default=2,
                         type=int)
 parser.add_argument('--which_model_netG',
                         help='selects model to use for netG',
@@ -320,7 +321,7 @@ parser.add_argument('--which_model_netG',
                         type=str)
 parser.add_argument('--ns',
                         help='number of blocks for each module',
-                        default='5',
+                        default='5,5,5',
                         type=str)
 parser.add_argument('--netG',  
                         help="path to netG (to continue training)",
