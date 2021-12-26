@@ -33,7 +33,7 @@ parser.add_argument('--workers',
                         type=int)
 parser.add_argument('--batchSize', 
                         help='input batch size',
-                        default=8,
+                        default=2,
                         type=int)
 parser.add_argument('--which_model_netG',
                         help='selects model to use for netG',
