@@ -305,7 +305,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--dataroot', 
                         help='path to dataset',
                         default='../rain_generator/train_horse',
-                        required=True)
+                        required=False)
 
 parser.add_argument('--workers', 
                         help='number of data loading workers', 
@@ -456,4 +456,4 @@ for epoch in range(args.epochs):
     print(f'start epoch {epoch}...')
     
     for i, data in enumerate(dataloader, start=1):
-        print(i, data.shape)
+        print(i, len(dataloader))
