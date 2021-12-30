@@ -290,6 +290,7 @@ import torch.optim as optim
 import torch.utils.data
 import torchvision.datasets as dset
 import torchvision.transforms as transforms
+import torchvision.utils
 import torchvision.utils as vutils
 from torch.autograd import Variable
 from math import log10
@@ -431,24 +432,24 @@ dataloader = torch.utils.data.DataLoader(
     sampler=mySampler
 )
 
-# input_real1 = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)
-# input_real2 = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)
-# input1 = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)
-# input2 = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)
-# input_real1 = input_real1.to(device)
-# input_real2 = input_real2.to(device)
-# input1 = input1.to(device)
-# input2 = input2.to(device)
-# netG.to(device)
+input_real1 = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)
+input_real2 = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)
+input1 = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)
+input2 = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)
+input_real1 = input_real1.to(device)
+input_real2 = input_real2.to(device)
+input1 = input1.to(device)
+input2 = input2.to(device)
+netG.to(device)
 
-# criterion = nn.MSELoss()
-# criterion.to(device)
+criterion = nn.MSELoss()
+criterion.to(device)
 
-# lr = 0.0001
-# beta = [0.9, 0.999]
-# optimizer = optim.Adam(netG.parameters(), 
-#                        lr=lr, 
-#                        betas=beta[:2])
+lr = 0.0001
+beta = [0.9, 0.999]
+optimizer = optim.Adam(netG.parameters(), 
+                       lr=lr, 
+                       betas=beta[:2])
 
 print('start training...')
 # netG.train()
@@ -456,4 +457,44 @@ for epoch in range(args.epochs):
     print(f'start epoch {epoch}...')
     
     for i, data in enumerate(dataloader, start=1):
-        print(i, len(dataloader))
+        input_data1, input_data2, target_B_data1, target_B_data2, target_R_data1, target_R_data2 = data
+            
+        input_real1.resize_(input_data1.size()).copy_(input_data1)
+        if args.which_model_netG.startswith('cascade'):
+            res1, res2 = netG(input_real1, input_real2)
+            
+            if len(res1) % 2 == 1:
+                output_B1, output_R1 = res1[-1], res1[-2]
+            else:
+                output_B1, output_R1 = res1[-2], res1[-1]
+                
+            if len(res2) % 2 == 1:
+                output_B2, output_R2 = res2[-1], res2[-2]
+            else:
+                output_B2, output_R2 = res2[-2], res2[-1]
+        else:
+            raise NotImplementedError('requires stating which model type to use')
+        
+        target_B1 = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)
+        target_B2 = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)
+        target_R1 = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)
+        target_R2 = torch.FloatTensor(args.batchSize, 3, args.imageSize, args.imageSize)
+
+        target_B1 = target_B1.to(device)
+        target_B2 = target_B2.to(device)
+        target_R1 = target_R1.to(device)
+        target_R2 = target_R2.to(device)
+        
+        target_B1.resize_(target_B_data1.size()).copy_(target_B_data1)
+        target_B2.resize_(target_B_data2.size()).copy_(target_B_data2)
+        target_R1.resize_(target_R_data1.size()).copy_(target_R_data1)
+        target_R2.resize_(target_R_data2.size()).copy_(target_R_data2)
+        
+        torchvision.utils.save_image(
+            target_B1, f'target_B1_{i}.jpg', normalize=False, range=(0, 1))
+        torchvision.utils.save_image(
+            target_B2, f'target_B2_{i}.jpg', normalize=False, range=(0, 1))
+        torchvision.utils.save_image(
+            target_R1, f'target_R1_{i}.jpg', normalize=False, range=(0, 1))
+        torchvision.utils.save_image(
+            target_R2, f'target_R2_{i}.jpg', normalize=False, range=(0, 1))
