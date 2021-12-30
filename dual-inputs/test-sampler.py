@@ -491,10 +491,10 @@ for epoch in range(args.epochs):
         target_R2.resize_(target_R_data2.size()).copy_(target_R_data2)
         
         torchvision.utils.save_image(
-            target_B1, f'target_B1_{i}.jpg', normalize=False, range=(0, 1))
+            target_B1, f'junk/target_B1_{i}.jpg', normalize=False, range=(0, 1))
         torchvision.utils.save_image(
-            target_B2, f'target_B2_{i}.jpg', normalize=False, range=(0, 1))
+            target_B2, f'junk/target_B2_{i}.jpg', normalize=False, range=(0, 1))
         torchvision.utils.save_image(
-            target_R1, f'target_R1_{i}.jpg', normalize=False, range=(0, 1))
+            target_R1, f'junk/target_R1_{i}.jpg', normalize=False, range=(0, 1))
         torchvision.utils.save_image(
-            target_R2, f'target_R2_{i}.jpg', normalize=False, range=(0, 1))
+            target_R2, f'junk/target_R2_{i}.jpg', normalize=False, range=(0, 1))
