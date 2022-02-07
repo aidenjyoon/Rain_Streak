@@ -152,8 +152,13 @@ class Generator_cascade(nn.Module):
                 )
             
     def forward(self, input1, input2=None):
+        # model1 output with input 1
         x1 = self.model1(input1)
+        
+        # img 1
         res1 = [x1]
+        # img 2
+        res2 = []
 
         for i in range(self.iteration + 1):
             if i % 2 == 0:
@@ -165,7 +170,8 @@ class Generator_cascade(nn.Module):
                 x1 = self.model3(zy)
                 res1 += [x1]
         
-        if input2 != None:
+        # for second image
+        if input2 != None:                  # incase i implement single image training
             x2 = self.model1(input2)
             res2 = [x2]
             for i in range(self.iteration + 1):
@@ -177,6 +183,7 @@ class Generator_cascade(nn.Module):
                     zy = torch.cat([z, input2], 1)
                     x2 = self.model3(zy)
                     res2 += [x2]
+                    
         return res1, res2
 
 
@@ -336,4 +343,3 @@ class UnetSkipConnectionBlock(nn.Module):
             return x1
         else:
             return torch.cat([x1, x], 1)
-    
