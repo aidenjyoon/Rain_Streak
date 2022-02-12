@@ -272,13 +272,13 @@ for epoch in range(args.epochs):
         # save trained image
         if i % 10000 == 0:
             if args.n_outputs == 0 or i <= args.n_outputs:
-                save_image(output_B1 / 2 + 0.5, f'../trained_imgs/{args.outf_B1}/B1_{i}.png')
+                save_image(output_B1 / 2 + 0.5, f'../../trained_imgs/{args.outf_B1}/B1_{i}.png')
                 if args.which_model_netG.startswith('cascade'):
-                    save_image(output_R1 / 2 + 0.5, f'../trained_imgs/{args.outf_R1}/R1_{i}.png')
+                    save_image(output_R1 / 2 + 0.5, f'../../trained_imgs/{args.outf_R1}/R1_{i}.png')
             
-                save_image(output_B2 / 2 + 0.5, f'../trained_imgs/{args.outf_B2}/B2_{i}.png')
+                save_image(output_B2 / 2 + 0.5, f'../../trained_imgs/{args.outf_B2}/B2_{i}.png')
                 if args.which_model_netG.startswith('cascade'):
-                    save_image(output_R2 / 2 + 0.5, f'../trained_imgs/{args.outf_R2}/R2_{i}.png')
+                    save_image(output_R2 / 2 + 0.5, f'../../trained_imgs/{args.outf_R2}/R2_{i}.png')
     
     # save model
     torch.save(netG, f'./model_save/epoch{epoch}_model_save.pth')
