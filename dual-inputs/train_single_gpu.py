@@ -249,7 +249,7 @@ for epoch in range(args.epochs):
             potential_R1 = input_real1 - output_B1.to(device)
             potential_R2 = input_real2 - output_B2.to(device)
             
-            print(potential_B1.size)
+            print(potential_B1.shape)
  
 
             # mse error
