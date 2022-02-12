@@ -230,20 +230,14 @@ for epoch in range(args.epochs):
                                     
             else:
                 raise NotImplementedError('requires stating which model type to use')
-
-                
-                
-                
                 
             # should net clean background
-            potential_B1 = input_data1 - output_R1
-            potential_B2 = input_data2 - output_R2
+            potential_B1 = input_data1 - output_R1.to(device)
+            potential_B2 = input_data2 - output_R2.to(device)
 
             # should = Rain
-            potential_R1 = input_data1 - output_B1
-            potential_R2 = input_data2 - output_B2
-
-
+            potential_R1 = input_data1 - output_B1.to(device)
+            potential_R2 = input_data2 - output_B2.to(device)
 
             # mse error
             errB1 = criterion(output_B1, target_B1)
