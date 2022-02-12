@@ -233,14 +233,6 @@ for epoch in range(args.epochs):
             else:
                 raise NotImplementedError('requires stating which model type to use')
 
-            # cuda_check1 = target_B1.is_cuda
-            # cuda_check2 = input_data1.is_cuda
-            
-            
-
-            # print("target_B1: ", output_R1.get_device())
-            # print("input_data1: ", input_data1.get_device())               
-            
             # should net clean background
             potential_B1 = input_real1 - output_R1.to(device)
             potential_B2 = input_real2 - output_R2.to(device)
@@ -249,7 +241,6 @@ for epoch in range(args.epochs):
             potential_R1 = input_real1 - output_B1.to(device)
             potential_R2 = input_real2 - output_B2.to(device)
             
-            print(potential_B1.shape)
  
 
             # mse error
