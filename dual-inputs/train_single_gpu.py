@@ -113,10 +113,10 @@ if len(args.gpu) > 1:
 else:
     args.gpu = [int(args.gpu)]
 
-try:
-    os.makedirs(args.outf)
-except OSError:
-    pass
+# try:
+#     os.makedirs(args.outf)
+# except OSError:
+#     pass
 
 nc = 3
 ngf = 64
