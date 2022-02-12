@@ -209,6 +209,8 @@ for epoch in range(args.epochs):
             # input data
             input_real1.resize_(input_data1.size()).copy_(input_data1)
             input_real2.resize_(input_data2.size()).copy_(input_data2)
+            input_real1 = input_real1.to(device)
+            input_real1 = input_real2.to(device)
             # cleaned target images
             target_B1.resize_(target_B_data1.size()).copy_(target_B_data1)
             target_B2.resize_(target_B_data2.size()).copy_(target_B_data2)
