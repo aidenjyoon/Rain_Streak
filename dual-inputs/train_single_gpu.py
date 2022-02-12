@@ -238,6 +238,9 @@ for epoch in range(args.epochs):
             # should = Rain
             potential_R1 = input_data1 - output_B1.to(device)
             potential_R2 = input_data2 - output_B2.to(device)
+            
+            print("potentialB1: ", potential_B1.size)
+            print("target_B1: ", target_B1.size)
 
             # mse error
             errB1 = criterion(output_B1, target_B1)
