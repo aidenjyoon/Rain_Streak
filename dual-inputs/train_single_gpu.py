@@ -256,7 +256,7 @@ for epoch in range(args.epochs):
             
             # loss
             loss = errB1 + errB2 + errR1 + errR2 + errPB1 + errPB2 + errPR1 + errPR2
-            loss = loss / .0
+            loss = loss / 8.0
             
             optimizer.zero_grad()
             loss.backward()
