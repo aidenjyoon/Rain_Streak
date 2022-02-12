@@ -66,15 +66,18 @@ parser.add_argument('--gpu',
                         default='0',
                         type=str)
 
-parser.add_argument('--outf',
+parser.add_argument('--outf_B1',
                         help='folder to output images and model checkpoints',
-                        default='.')
-parser.add_argument('--outf1',
+                        default='B1')
+parser.add_argument('--outf_R1',
                         help='folder to output images and model checkpoints',
-                        default='.')
-parser.add_argument('--outf2',
+                        default='R1')
+parser.add_argument('--outf_B2',
                         help='folder to output images and model checkpoints',
-                        default='.')
+                        default='B2')
+parser.add_argument('--outf_R2',
+                        help='folder to output images and model checkpoints',
+                        default='R2')
 
 parser.add_argument('--real', 
                         help='test real images',
@@ -264,18 +267,18 @@ for epoch in range(args.epochs):
             
         # Output training stats
         if i % 500 == 0:
-            print(f'{i}/{len(dataloader)}\tLoss_B1: {errB1}/tLoss_R1: {errR1}\tLoss_B2: {errB2}/tLoss_R2: {errR2}\n')
+            print(f'{i}/{len(dataloader)}\tLoss_B1: {errB1}\tLoss_R1: {errR1}\n\tLoss_B2: {errB2}\tLoss_R2: {errR2}\n')
 
         # save trained image
         if i % 10000 == 0:
             if args.n_outputs == 0 or i <= args.n_outputs:
-                save_image(output_B1 / 2 + 0.5, f'../trained_imgs/{args.outf}/B1_{i}.png')
+                save_image(output_B1 / 2 + 0.5, f'../trained_imgs/{args.outf_B1}/B1_{i}.png')
                 if args.which_model_netG.startswith('cascade'):
-                    save_image(output_R1 / 2 + 0.5, f'../trained_imgs/{args.outf}/R1_{i}.png')
+                    save_image(output_R1 / 2 + 0.5, f'../trained_imgs/{args.outf_R1}/R1_{i}.png')
             
-                save_image(output_B2 / 2 + 0.5, f'../trained_imgs/{args.outf}/B2_{i}.png')
+                save_image(output_B2 / 2 + 0.5, f'../trained_imgs/{args.outf_B2}/B2_{i}.png')
                 if args.which_model_netG.startswith('cascade'):
-                    save_image(output_R2 / 2 + 0.5, f'../trained_imgs/{args.outf}/R2_{i}.png')
+                    save_image(output_R2 / 2 + 0.5, f'../trained_imgs/{args.outf_R2}/R2_{i}.png')
     
     # save model
     torch.save(netG, f'./model_save/epoch{epoch}_model_save.pth')
