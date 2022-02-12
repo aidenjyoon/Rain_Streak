@@ -210,7 +210,7 @@ for epoch in range(args.epochs):
             input_real1.resize_(input_data1.size()).copy_(input_data1)
             input_real2.resize_(input_data2.size()).copy_(input_data2)
             input_real1 = input_real1.to(device)
-            input_real1 = input_real2.to(device)
+            input_real2 = input_real2.to(device)
             # cleaned target images
             target_B1.resize_(target_B_data1.size()).copy_(target_B_data1)
             target_B2.resize_(target_B_data2.size()).copy_(target_B_data2)
@@ -238,16 +238,16 @@ for epoch in range(args.epochs):
             
             
 
-            print("target_B1: ", target_B1.get_device())
+            print("target_B1: ", output_R1.get_device())
             print("input_data1: ", input_data1.get_device())               
             
             # should net clean background
-            potential_B1 = input_data1 - output_R1.to(device)
-            potential_B2 = input_data2 - output_R2.to(device)
+            potential_B1 = input_real1 - output_R1.to(device)
+            potential_B2 = input_real2 - output_R2.to(device)
 
             # should = Rain
-            potential_R1 = input_data1 - output_B1.to(device)
-            potential_R2 = input_data2 - output_B2.to(device)
+            potential_R1 = input_real1 - output_B1.to(device)
+            potential_R2 = input_real2 - output_B2.to(device)
             
  
 
