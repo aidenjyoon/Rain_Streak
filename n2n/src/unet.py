@@ -221,59 +221,59 @@ class UNet(nn.Module):
         self._init_weights()
         
 
-        ##Directional Dilated Convolution
-        #weights1 = torch.Tensor([[0, 1, 0], [0, 1, 0], [0, 1, 0]]).unsqueeze(0)
-        #weights1.requires_grad = True
-        self.ddc1= nn.Conv2d(48, 48, kernel_size=3, stride=1, padding=1, bias=False)
-        #with torch.no_grad():
-        #    self.ddc1.weight = nn.Parameter(weights1*self.ddc1.weight)
-        self.bnd1=nn.BatchNorm2d(48)
+        # ### Directional Dilated Convolution ###
+        # # weights1 = torch.Tensor([[0, 1, 0], [0, 1, 0], [0, 1, 0]]).unsqueeze(0)
+        # # weights1.requires_grad = True
+        # self.ddc1= nn.Conv2d(48, 48, kernel_size=3, stride=1, padding=1, bias=False)
+        # # with torch.no_grad():
+        # #    self.ddc1.weight = nn.Parameter(weights1*self.ddc1.weight)
+        # self.bnd1=nn.BatchNorm2d(48)
 
-        #weights2 = torch.Tensor([[1, 0, 0], [0, 1, 0], [0, 0, 1]]).unsqueeze(0)
-        #weights2.requires_grad = True
-        self.ddc2= nn.Conv2d(48, 48, kernel_size=3, stride=1, padding=1, bias=False)
-        #with torch.no_grad():
-        #    self.ddc2.weight = nn.Parameter(weights2*self.ddc2.weight)
-        self.bnd2=nn.BatchNorm2d(48)
+        # # weights2 = torch.Tensor([[1, 0, 0], [0, 1, 0], [0, 0, 1]]).unsqueeze(0)
+        # # weights2.requires_grad = True
+        # self.ddc2= nn.Conv2d(48, 48, kernel_size=3, stride=1, padding=1, bias=False)
+        # # with torch.no_grad():
+        # #    self.ddc2.weight = nn.Parameter(weights2*self.ddc2.weight)
+        # self.bnd2=nn.BatchNorm2d(48)
 
-        #weights3 = torch.Tensor([[0, 0, 1], [0, 1, 0], [1, 0, 0]]).unsqueeze(0)
-        #weights3.requires_grad = True
-        self.ddc3= nn.Conv2d(48, 48, kernel_size=3, stride=1, padding=1, bias=False)
-        #with torch.no_grad():
-        #    self.ddc3.weight = nn.Parameter(weights2*self.ddc2.weight)
-        self.bnd3=nn.BatchNorm2d(48)
+        # # weights3 = torch.Tensor([[0, 0, 1], [0, 1, 0], [1, 0, 0]]).unsqueeze(0)
+        # # weights3.requires_grad = True
+        # self.ddc3= nn.Conv2d(48, 48, kernel_size=3, stride=1, padding=1, bias=False)
+        # # with torch.no_grad():
+        # #    self.ddc3.weight = nn.Parameter(weights2*self.ddc2.weight)
+        # self.bnd3=nn.BatchNorm2d(48)
 
-        #weights4 = torch.Tensor([[0, 1, 0], [0, 1, 0], [0, 1, 0]]).unsqueeze(0)
-        #weights4.requires_grad = True
-        self.ddc4= nn.Conv2d(48, 48, kernel_size=3, stride=1, padding=1, bias=False)
-        #with torch.no_grad():
-        #    self.ddc4.weight = nn.Parameter(weights1*self.ddc1.weight)
-        self.bnd4=nn.BatchNorm2d(48)
+        # # weights4 = torch.Tensor([[0, 1, 0], [0, 1, 0], [0, 1, 0]]).unsqueeze(0)
+        # # weights4.requires_grad = True
+        # self.ddc4= nn.Conv2d(48, 48, kernel_size=3, stride=1, padding=1, bias=False)
+        # # with torch.no_grad():
+        # #    self.ddc4.weight = nn.Parameter(weights1*self.ddc1.weight)
+        # self.bnd4=nn.BatchNorm2d(48)
 
-        #weights5 = torch.Tensor([[1, 0, 0], [0, 1, 0], [0, 0, 1]]).unsqueeze(0)
-        #weights5.requires_grad = True
-        self.ddc5= nn.Conv2d(48, 48, kernel_size=3, stride=1, padding=1, bias=False)
-        #with torch.no_grad():
-        #    self.ddc5.weight = nn.Parameter(weights2*self.ddc2.weight)
-        self.bnd5=nn.BatchNorm2d(48)
+        # # weights5 = torch.Tensor([[1, 0, 0], [0, 1, 0], [0, 0, 1]]).unsqueeze(0)
+        # # weights5.requires_grad = True
+        # self.ddc5= nn.Conv2d(48, 48, kernel_size=3, stride=1, padding=1, bias=False)
+        # # with torch.no_grad():
+        # #    self.ddc5.weight = nn.Parameter(weights2*self.ddc2.weight)
+        # self.bnd5=nn.BatchNorm2d(48)
 
-        #weights6 = torch.Tensor([[0, 0, 1], [0, 1, 0], [1, 0, 0]]).unsqueeze(0)
-        #weights6.requires_grad = True
-        self.ddc6= nn.Conv2d(48, 48, kernel_size=3, stride=1, padding=1, bias=False)
-        #with torch.no_grad():
-        #    self.ddc6.weight = nn.Parameter(weights2*self.ddc2.weight)
-        self.bnd6=nn.BatchNorm2d(48)
+        # # weights6 = torch.Tensor([[0, 0, 1], [0, 1, 0], [1, 0, 0]]).unsqueeze(0)
+        # # weights6.requires_grad = True
+        # self.ddc6= nn.Conv2d(48, 48, kernel_size=3, stride=1, padding=1, bias=False)
+        # # with torch.no_grad():
+        # #    self.ddc6.weight = nn.Parameter(weights2*self.ddc2.weight)
+        # self.bnd6=nn.BatchNorm2d(48)
 
-        ##IRNN
-        #self.dsc1 = DSC_Module(48, 48,alpha=0.8)#edited
-        #self.bns1=nn.BatchNorm2d(48)
-        #self.dsc2 = DSC_Module(48, 48,alpha=0.8)#edited
-        #self.bns2=nn.BatchNorm2d(48)
+        # ### IRNN ### 
+        self.dsc1 = DSC_Module(48, 48,alpha=0.8)
+        self.bns1=nn.BatchNorm2d(48)
+        self.dsc2 = DSC_Module(48, 48,alpha=0.8)
+        self.bns2=nn.BatchNorm2d(48)
 
-        #self.defc1=DeformableConv2d(48, 48, kernel_size=3, stride=1, padding=1, bias=False)
-        #self.bne1=nn.BatchNorm2d(48)
-        #self.defc2=DeformableConv2d(48, 48, kernel_size=3, stride=1, padding=1, bias=False)
-        #self.bne2=nn.BatchNorm2d(48)
+        # self.defc1=DeformableConv2d(48, 48, kernel_size=3, stride=1, padding=1, bias=False)
+        # self.bne1=nn.BatchNorm2d(48)
+        # self.defc2=DeformableConv2d(48, 48, kernel_size=3, stride=1, padding=1, bias=False)
+        # self.bne2=nn.BatchNorm2d(48)
 
 
 
